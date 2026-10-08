@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulare: Was prüft der Browser, was wird gesendet?</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script src="main.js" defer></script>
+</head>
+
+<body class="struktur">
+  <header>
+    <h1>Formulare: Was prüft der Browser, was wird gesendet?</h1>
+    <p>
+      <span class="legende legende-element">input</span> Formularfeld &nbsp;
+      <span class="legende legende-name">name</span> wird gesendet &nbsp;
+      <span class="legende legende-label">label</span> verknüpfte Beschriftung &nbsp;
+      <span class="legende legende-fehlt">fehlt</span> Problem
+    </p>
+    <div class="werkzeuge">
+      <label><input type="checkbox" id="struktur-schalter" checked> Struktur anzeigen</label>
+      <label><input type="checkbox" id="validierung-schalter" checked> Browser-Validierung</label>
+      <span>Methode:</span>
+      <label><input type="radio" name="methode-wahl" value="get" checked> GET</label>
+      <label><input type="radio" name="methode-wahl" value="post"> POST</label>
+    </div>
+  </header>
+
+  <main>
+    <!-- Ein einziges Formular; die fieldsets gliedern es in Themen. -->
+    <form id="formular" action="/anmeldung" method="get">
+
+      <fieldset>
+        <legend>1. label und name</legend>
+        <p>Nur Felder <strong>mit name</strong> werden gesendet. Das <strong>label</strong> beschriftet das Feld
+           für Screenreader; ein Klick darauf setzt den Fokus ins Feld. Ein Platzhalter ersetzt kein label.</p>
+        <div class="beispiel">
+          <label for="vorname">Vorname</label>
+          <input type="text" id="vorname" name="vorname" value="Erika">
+
+          <label for="spitzname">Spitzname (ohne name)</label>
+          <input type="text" id="spitzname" value="Eri">
+
+          <input type="text" name="ort" placeholder="Ort (nur Platzhalter, kein label)">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Eingabetypen</legend>
+        <p>Der Typ bestimmt Tastatur (mobil), Bedienelement und Prüfung. Gesendet wird immer Text.</p>
+        <div class="beispiel">
+          <label for="email">E-Mail</label>
+          <input type="email" id="email" name="email" value="erika@example.org">
+
+          <label for="telefon">Telefon</label>
+          <input type="tel" id="telefon" name="telefon" value="0711 123456">
+
+          <label for="anzahl">Anzahl (1–10)</label>
+          <input type="number" id="anzahl" name="anzahl" min="1" max="10" value="3">
+
+          <label for="datum">Datum</label>
+          <input type="date" id="datum" name="datum" value="2026-11-13">
+
+          <label for="farbe">Lieblingsfarbe</label>
+          <input type="color" id="farbe" name="farbe" value="#00aadc">
+
+          <label for="lautstaerke">Lautstärke</label>
+          <input type="range" id="lautstaerke" name="lautstaerke" min="0" max="100" value="40">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Auswahl</legend>
+        <p>Zusammengehörige Optionen gruppiert ein eigenes fieldset mit legend. Radio-Buttons mit gleichem name bilden eine Gruppe – gesendet wird nur der gewählte Wert.
+           Checkboxen senden nur, wenn sie angehakt sind; gleicher name ergibt mehrere Werte.</p>
+        <div class="beispiel">
+          <fieldset>
+            <legend>Anreise</legend>
+            <div><input type="radio" id="bahn" name="anreise" value="bahn" checked><label for="bahn">Bahn</label></div>
+            <div><input type="radio" id="bus" name="anreise" value="bus"><label for="bus">Bus</label></div>
+            <div><input type="radio" id="rad" name="anreise" value="rad"><label for="rad">Fahrrad</label></div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Unterlagen</legend>
+            <div><input type="checkbox" id="skript" name="unterlagen" value="skript" checked><label for="skript">Skript</label></div>
+            <div><input type="checkbox" id="folien" name="unterlagen" value="folien" checked><label for="folien">Folien</label></div>
+            <div><input type="checkbox" id="newsletter" name="newsletter" value="ja"><label for="newsletter">Newsletter</label></div>
+          </fieldset>
+
+          <label for="semester">Semester</label>
+          <select id="semester" name="semester">
+            <option value="1">1. Semester</option>
+            <option value="2" selected>2. Semester</option>
+            <option value="3">3. Semester</option>
+          </select>
+
+          <label for="bemerkung">Bemerkung</label>
+          <textarea id="bemerkung" name="bemerkung" rows="2">Ich komme etwas später.</textarea>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>4. Validierung ohne JavaScript</legend>
+        <p>Die Attribute prüft der Browser selbst. Die Werte sind absichtlich falsch –
+           korrigieren Sie sie und beobachten Sie den Status.</p>
+        <div class="beispiel">
+          <label for="matrikel">Matrikelnummer (6 Ziffern)</label>
+          <input type="text" id="matrikel" name="matrikel" required pattern="[0-9]{6}" value="12345" class="pruefen">
+
+          <label for="kontakt">E-Mail (Pflicht)</label>
+          <input type="email" id="kontakt" name="kontakt" required value="erika.example.org" class="pruefen">
+
+          <label for="passwort">Passwort (mind. 8 Zeichen)</label>
+          <input type="password" id="passwort" name="passwort" required minlength="8" class="pruefen">
+
+          <label for="alter">Alter (18–99)</label>
+          <input type="number" id="alter" name="alter" min="18" max="99" value="17" class="pruefen">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>5. Besondere Felder und Absenden</legend>
+        <p>hidden wird unsichtbar mitgesendet, readonly ebenfalls. disabled wird <strong>nicht</strong> gesendet.</p>
+        <div class="beispiel">
+          <input type="hidden" name="kurs" value="inte-w26">
+
+          <label for="kursnummer">Kursnummer (readonly)</label>
+          <input type="text" id="kursnummer" name="kursnummer" value="IT-1234" readonly>
+
+          <label for="rabatt">Rabatt (disabled)</label>
+          <input type="text" id="rabatt" name="rabatt" value="10 %" disabled>
+
+          <div class="knoepfe">
+            <button type="submit">Absenden</button>
+            <button type="reset">Zurücksetzen</button>
+            <button type="button">Nur ein Button</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+
+    <aside id="ausgabe" aria-labelledby="ausgabe-titel">
+      <h2 id="ausgabe-titel">Was würde gesendet?</h2>
+      <p class="anfrage"><code id="anfrage"></code></p>
+      <pre id="rumpf" hidden></pre>
+      <p id="warnung" hidden>Achtung: Bei GET steht das Passwort im Klartext in der URL –
+         sichtbar im Verlauf und in Server-Logs. Für solche Daten POST verwenden (und HTTPS).</p>
+      <table>
+        <thead>
+          <tr><th scope="col">name</th><th scope="col">value</th></tr>
+        </thead>
+        <tbody id="daten"></tbody>
+      </table>
+      <p id="absende-status" aria-live="polite"></p>
+    </aside>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 HS Esslingen – Internet-Technologien</p>
+  </footer>
+</body>
+
+</html>

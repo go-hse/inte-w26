@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Canvas – Beispiele zur 2D-API</title>
+  <style>
+    :root {
+      --dunkelblau: #193058;
+      --cyan: #00aadc;
+      --hintergrund: #f0f0f0;
+    }
+    html {
+      overflow-y: scroll;            /* Scrollleiste immer da: Breite bleibt beim Neuzeichnen stabil */
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: var(--hintergrund);
+      color: var(--dunkelblau);
+    }
+    header {
+      padding: 1rem 1.5rem 0.5rem;
+    }
+    h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.4rem;
+    }
+    header p {
+      margin: 0.25rem 0;
+      max-width: 60rem;
+    }
+    #info {
+      min-height: 1.5em;
+      font-family: ui-monospace, Consolas, monospace;
+      color: #b6163d;
+    }
+    canvas {
+      display: block;
+      width: 100%;                   /* CSS-Anzeigegröße; die Puffergröße setzt das Skript */
+    }
+  </style>
+  <!-- defer: Skript läuft erst, wenn das HTML geparst ist (canvas existiert dann) -->
+  <script src="canvas_24_examples.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>HTML-Canvas: Beispiele zur 2D-API</h1>
+    <p>Jede Kachel zeigt eine Technik des 2D-Kontexts. Alle Beispiele zeichnen in einem eigenen
+       Koordinatensystem von 150 × 150 Einheiten; das Raster passt sich der Fensterbreite an.</p>
+    <p>Fahren Sie mit der Maus über eine Kachel: Das Canvas kennt keine Objekte –
+       welche Kachel getroffen wurde, berechnet das Skript selbst aus den Koordinaten.</p>
+    <p id="info" aria-live="polite"></p>
+  </header>
+  <main>
+    <canvas id="canvas" role="img"
+            aria-label="Raster mit Beispielen der Canvas-2D-API: Rechtecke, Text, Pfade, Kreisbögen, Kurven, Bilder, Farben, Transparenz, Linienstile, Farbverläufe, Schatten, Compositing, Clipping, Animation und Pixelmanipulation">
+      Ihr Browser unterstützt das canvas-Element nicht. Die Seite zeigt Beispiele zur Canvas-2D-API
+      (Rechtecke, Pfade, Kurven, Bilder, Farben, Linienstile, Verläufe, Schatten, Compositing,
+      Clipping, Animation und Pixelmanipulation).
+    </canvas>
+  </main>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>div und span mit id und class</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script src="main.js" defer></script>
+</head>
+
+<body class="struktur">
+  <header>
+    <h1>div und span mit id und class</h1>
+    <a href="#kontakt" class="sprungmarke">Zum Kontakt</a>
+    <p>
+      <span class="legende legende-div">div</span> Block-Element &nbsp;
+      <span class="legende legende-span">span</span> Inline-Element &nbsp;
+      <span class="legende legende-id">#id</span> eindeutiger Bezeichner &nbsp;
+      <span class="legende legende-class">.class</span> Gruppe, mehrfach vergebbar
+    </p>
+    <div class="werkzeuge">
+      <label><input type="checkbox" id="struktur-schalter" checked> Struktur anzeigen</label>
+      <span>Selektor ausprobieren:</span>
+      <button type="button" data-selektor="div">div</button>
+      <button type="button" data-selektor="span">span</button>
+      <button type="button" data-selektor=".hinweis">.hinweis</button>
+      <button type="button" data-selektor=".wichtig">.wichtig</button>
+      <button type="button" data-selektor=".hinweis.wichtig">.hinweis.wichtig</button>
+      <button type="button" data-selektor="#kontakt">#kontakt</button>
+      <output id="treffer" aria-live="polite"></output>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>1. Block-Elemente: <code>div</code></h2>
+      <p>Ein <code>div</code> beginnt in einer neuen Zeile und ist so breit wie der verfügbare Platz –
+        auch wenn sein Inhalt kurz ist.</p>
+      <div class="beispiel">
+        <div>Erster Block</div>
+        <div>Zweiter Block – steht darunter, nicht daneben</div>
+        <div>Dritter Block mit <div>verschachteltem Block</div> darin</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Inline-Elemente: <code>span</code></h2>
+      <p>Ein <code>span</code> fließt im Text mit und ist nur so breit wie sein Inhalt.</p>
+      <div class="beispiel">
+        <p>Dieser Absatz enthält <span>ein span</span> mitten im Satz. Auch <span>ein zweites span</span>
+          bleibt in derselben Zeile, und bei Platzmangel bricht <span>ein langes span mit viel Text
+            einfach mit dem Satz um</span>, statt einen eigenen Block zu bilden.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. <code>class</code>: mehrfach vergeben und kombinierbar</h2>
+      <p>Alle Elemente mit derselben Klasse bekommen per CSS denselben Stil. Ein Element darf mehrere
+        Klassen haben (durch Leerzeichen getrennt) – die Stile werden kombiniert.</p>
+      <div class="beispiel">
+        <div class="hinweis">Block mit class="hinweis"</div>
+        <div class="wichtig">Block mit class="wichtig"</div>
+        <div class="hinweis wichtig">Block mit class="hinweis wichtig" – beide Stile</div>
+        <p>Klassen gibt es auch für Inline-Elemente: <span class="hinweis">hinweis</span>,
+          <span class="wichtig">wichtig</span> und <span class="hinweis wichtig">beides</span>.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. <code>id</code>: genau einmal im Dokument</h2>
+      <p>Eine <code>id</code> darf nur einmal vorkommen. Sie dient als Sprungmarke
+        (<a href="#kontakt">Link zu #kontakt</a>) und für den gezielten Zugriff per CSS und JavaScript.</p>
+      <div class="beispiel">
+        <div id="kontakt" class="hinweis">
+          Kontakt: <span id="mail">info@example.org</span>
+        </div>
+      </div>
+      <p id="id-pruefung"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 HS Esslingen – Internet-Technologien</p>
+  </footer>
+</body>
+
+</html>

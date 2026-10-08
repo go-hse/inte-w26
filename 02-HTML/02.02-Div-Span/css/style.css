@@ -1,0 +1,135 @@
+/* ------------------------------------------------------------------
+   Seitenlayout
+   ------------------------------------------------------------------ */
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: #193058;
+}
+header, main, footer {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+header {
+  padding-top: 1rem;
+}
+h1 {
+  margin-bottom: 0.25rem;
+}
+section {
+  margin: 2rem 0;
+}
+code {
+  font-family: ui-monospace, Consolas, monospace;
+}
+.werkzeuge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  position: sticky;              /* bleibt beim Scrollen sichtbar */
+  top: 0;
+  background: #f0f0f0;
+  z-index: 1;
+}
+.werkzeuge button {
+  font-family: ui-monospace, Consolas, monospace;
+  cursor: pointer;
+}
+.werkzeuge button[aria-pressed="true"] {
+  background: #ff9800;
+}
+#treffer {
+  font-weight: bold;
+}
+.beispiel {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 6px;
+}
+.quelltext {
+  background: #193058;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 0 0 6px 6px;
+  margin-top: 0;
+  overflow-x: auto;
+  font-size: 13px;
+}
+
+/* ------------------------------------------------------------------
+   Stile der Beispiele: so würde man class und id normalerweise nutzen
+   ------------------------------------------------------------------ */
+.hinweis {
+  background: #fff3b0;           /* alle Elemente mit class="hinweis" */
+}
+.wichtig {
+  color: #b6163d;                /* alle Elemente mit class="wichtig" */
+  font-weight: bold;
+}
+#kontakt {
+  border-left: 6px solid #b6163d; /* genau ein Element: id="kontakt" */
+  padding: 0.5rem 1rem;
+}
+
+/* ------------------------------------------------------------------
+   Strukturansicht (nur zur Veranschaulichung, per Checkbox schaltbar)
+   Die Beschriftung steht im Attribut data-label, das main.js setzt.
+   ------------------------------------------------------------------ */
+.struktur .beispiel div {
+  outline: 2px dashed #193058;
+  outline-offset: -2px;
+  margin: 0.5rem 0;
+  padding: 0.25rem 0.5rem 0.5rem;
+}
+.struktur .beispiel span {
+  outline: 2px solid #00aadc;
+  outline-offset: 1px;
+}
+.struktur .beispiel [id] {
+  outline-color: #b6163d;        /* Elemente mit id: rot */
+}
+.struktur .beispiel [data-label]::before {
+  content: attr(data-label);
+  font: 11px/1.4 ui-monospace, Consolas, monospace;
+  font-weight: normal;
+  color: #fff;
+  padding: 0 0.35em;
+  margin-right: 0.35em;
+  border-radius: 3px;
+}
+.struktur .beispiel div[data-label]::before {
+  display: table;                /* eigene Zeile über dem Inhalt des Blocks */
+  margin-bottom: 0.25rem;
+  background: #193058;
+}
+.struktur .beispiel span[data-label]::before {
+  background: #00aadc;
+  color: #193058;
+}
+.struktur .beispiel [id][data-label]::before {
+  background: #b6163d;
+  color: #fff;
+}
+
+/* Treffer eines Selektors (Buttons oben) */
+.treffer {
+  box-shadow: 0 0 0 4px #ff9800;
+}
+
+/* Legende im Kopf */
+.legende {
+  font: 12px ui-monospace, Consolas, monospace;
+  padding: 0 0.4em;
+  border-radius: 3px;
+  color: #fff;
+}
+.legende-div   { background: #193058; }
+.legende-span  { background: #00aadc; color: #193058; }
+.legende-id    { background: #b6163d; }
+.legende-class { background: #fff3b0; color: #193058; }

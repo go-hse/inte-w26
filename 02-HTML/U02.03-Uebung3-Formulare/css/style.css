@@ -1,0 +1,119 @@
+/* Übung 3 – Formulare
+   Dieses Stylesheet ist fertig und muss nicht verändert werden. */
+
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: #193058;
+}
+
+main {
+  max-width: 40rem;
+  margin: 1.5rem auto 3rem;
+  padding: 0 1rem;
+}
+
+form {
+  background: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+}
+
+fieldset {
+  border: 1px solid #c8c8c8;
+  border-radius: 6px;
+  margin: 0 0 1.25rem;
+  padding: 0.5rem 1rem 1rem;
+}
+legend {
+  font-weight: bold;
+  padding: 0 0.4rem;
+}
+
+label {
+  display: block;
+  margin-top: 0.75rem;
+}
+/* Radio-Buttons und Checkboxen: Beschriftung in derselben Zeile */
+input[type="radio"] + label,
+input[type="checkbox"] + label {
+  display: inline;
+  margin: 0 1rem 0 0.25rem;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  padding: 0.3rem 0.4rem;
+  border: 2px solid #c8c8c8;
+  border-radius: 4px;
+}
+input:not([type="radio"], [type="checkbox"]),
+select,
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Native Validierung sichtbar machen – erst nachdem die Nutzerin etwas eingegeben hat */
+input:user-invalid,
+select:user-invalid,
+textarea:user-invalid {
+  border-color: #b6163d;
+  background: #fdecef;
+}
+input:user-valid,
+select:user-valid,
+textarea:user-valid {
+  border-color: #2e7d32;
+}
+/* Pflichtfelder: Sternchen hinter dem Label */
+label:has(+ :required)::after {
+  content: " *";
+  color: #b6163d;
+}
+
+.hilfe {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0.2rem 0 0;
+}
+
+.knoepfe {
+  display: flex;
+  gap: 1rem;
+}
+button {
+  font: inherit;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button[type="submit"] {
+  background: #193058;
+  color: #fff;
+}
+button[type="reset"] {
+  background: #c8c8c8;
+}
+
+/* Ergebnisseite danke.html */
+table {
+  border-collapse: collapse;
+  background: #fff;
+  width: 100%;
+}
+th,
+td {
+  border: 1px solid #c8c8c8;
+  padding: 0.4rem 0.75rem;
+  text-align: left;
+}
+th {
+  background: #193058;
+  color: #fff;
+}

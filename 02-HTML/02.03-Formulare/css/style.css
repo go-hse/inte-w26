@@ -1,0 +1,271 @@
+/* ------------------------------------------------------------------
+   Seitenlayout
+   ------------------------------------------------------------------ */
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: #193058;
+}
+header, footer {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+header {
+  padding-top: 1rem;
+}
+h1 {
+  margin-bottom: 0.25rem;
+}
+code {
+  font-family: ui-monospace, Consolas, monospace;
+}
+.werkzeuge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  position: sticky;              /* bleibt beim Scrollen sichtbar */
+  top: 0;
+  background: #f0f0f0;
+  z-index: 2;
+}
+
+/* Formular links, Ausgabe rechts (auf schmalen Bildschirmen untereinander) */
+main {
+  max-width: 72rem;
+  margin: 1rem auto;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 22rem;
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+}
+
+fieldset {
+  border: none;
+  margin: 0 0 2rem;
+  padding: 0;
+}
+legend {
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding: 0;
+}
+.beispiel {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 6px 6px 0 0;
+}
+.quelltext {
+  background: #193058;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 0 0 6px 6px;
+  margin-top: 0;
+  overflow-x: auto;
+  font-size: 13px;
+}
+
+/* ------------------------------------------------------------------
+   Formularelemente
+   ------------------------------------------------------------------ */
+.beispiel > label {
+  display: block;
+  margin-top: 0.75rem;
+}
+.beispiel > label:first-child {
+  margin-top: 0;
+}
+/* Radio-Buttons und Checkboxen: label in derselben Zeile wie das Feld */
+input[type="radio"] + label,
+input[type="checkbox"] + label {
+  margin-left: 0.3rem;
+}
+/* Verschachtelte fieldsets für Options-Gruppen */
+.beispiel fieldset {
+  border: 1px solid #c8c8c8;
+  border-radius: 4px;
+  padding: 0.25rem 1rem 0.5rem;
+  margin: 0 0 0.75rem;
+}
+.beispiel legend {
+  font-size: 1rem;
+  padding: 0 0.3rem;
+}
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+input:not([type="radio"], [type="checkbox"], [type="color"], [type="range"]),
+select,
+textarea {
+  padding: 0.3rem 0.4rem;
+  border: 2px solid #c8c8c8;
+  border-radius: 4px;
+  min-width: 16rem;
+}
+input:disabled {
+  background: #eee;
+  color: #888;
+}
+input:read-only:not(:disabled) {
+  background: #f6f6f6;
+}
+/* Validierungszustände: erst nach einer Eingabe einfärben */
+input:user-invalid {
+  border-color: #b6163d;
+  background: #fdecef;
+}
+input:user-valid {
+  border-color: #2e7d32;
+}
+.knoepfe {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+button {
+  padding: 0.4rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: #c8c8c8;
+}
+button[type="submit"] {
+  background: #193058;
+  color: #fff;
+}
+
+/* Status der Validierung (Abschnitt 4) */
+.status {
+  display: block;
+  font-size: 0.85rem;
+  font-family: ui-monospace, Consolas, monospace;
+}
+.status.ok {
+  color: #2e7d32;
+}
+.status.fehler {
+  color: #b6163d;
+}
+
+/* ------------------------------------------------------------------
+   Strukturansicht: Etiketten hinter jedem Feld (main.js fügt sie ein)
+   ------------------------------------------------------------------ */
+.etikett {
+  display: none;
+}
+.struktur .etikett {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  margin: 0 0.4rem;
+  vertical-align: middle;
+  font: 11px/1.4 ui-monospace, Consolas, monospace;
+}
+.etikett span {
+  padding: 0 0.35em;
+  border-radius: 3px;
+}
+.etikett .element { background: #193058; color: #fff; }
+.etikett .name    { background: #fff3b0; color: #193058; }
+.etikett .label   { background: #00aadc; color: #193058; }
+.etikett .fehlt   { background: #b6163d; color: #fff; }
+.etikett .info    { background: #e0e0e0; color: #193058; }
+
+[hidden] {
+  display: none !important;      /* hidden gewinnt auch gegen display-Regeln */
+}
+.knoepfe .etikett {
+  align-self: center;
+}
+
+/* Hover über ein Feld: zugehöriges label hervorheben (und umgekehrt) */
+.verknuepft {
+  outline: 2px solid #00aadc;
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------
+   Ausgabe: was gesendet würde
+   ------------------------------------------------------------------ */
+aside {
+  position: sticky;
+  top: 3.5rem;
+  background: #fff;
+  border-radius: 6px;
+  border-top: 4px solid #00aadc;
+  padding: 0.5rem 1rem 1rem;
+  font-size: 0.9rem;
+}
+aside h2 {
+  margin: 0.25rem 0 0.5rem;
+  font-size: 1.1rem;
+}
+.anfrage code,
+#rumpf {
+  display: block;
+  background: #193058;
+  color: #fff;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  word-break: break-all;
+  white-space: pre-wrap;
+  font-size: 12px;
+  margin: 0 0 0.5rem;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th,
+td {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 0.15rem 0.4rem;
+  text-align: left;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 12px;
+  word-break: break-all;
+}
+th {
+  background: #e0f4fb;
+}
+#warnung {
+  background: #fdecef;
+  border-left: 4px solid #b6163d;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+}
+#absende-status {
+  font-weight: bold;
+}
+#absende-status.ok {
+  color: #2e7d32;
+}
+#absende-status.fehler {
+  color: #b6163d;
+}
+
+/* Legende im Kopf */
+.legende {
+  font: 12px ui-monospace, Consolas, monospace;
+  padding: 0 0.4em;
+  border-radius: 3px;
+}
+.legende-element { background: #193058; color: #fff; }
+.legende-name    { background: #fff3b0; }
+.legende-label   { background: #00aadc; }
+.legende-fehlt   { background: #b6163d; color: #fff; }

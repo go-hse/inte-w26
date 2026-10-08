@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Übung 3 – Übertragene Daten</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <!-- Diese Seite ist fertig. Sie zeigt, was das Formular (method="get") übertragen hat. -->
+  <main>
+    <h1>Übertragene Formulardaten</h1>
+    <p>Bei <code>method="get"</code> stehen die Daten in der Adresszeile:</p>
+    <p><code id="query"></code></p>
+    <p>Aufgeschlüsselt nach dem <code>name</code>-Attribut der Felder:</p>
+    <table>
+      <thead>
+        <tr><th scope="col">name</th><th scope="col">value</th></tr>
+      </thead>
+      <tbody id="daten"></tbody>
+    </table>
+    <p><a href="index.html">Zurück zum Formular</a></p>
+  </main>
+  <script>
+    const parameter = new URLSearchParams(location.search);
+    document.getElementById("query").textContent = location.search || "(keine Daten)";
+    const tbody = document.getElementById("daten");
+    for (const [name, wert] of parameter) {
+      const zeile = tbody.insertRow();
+      zeile.insertCell().textContent = name;
+      zeile.insertCell().textContent = wert;
+    }
+  </script>
+</body>
+</html>

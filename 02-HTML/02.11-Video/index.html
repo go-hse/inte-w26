@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HTML-Video: Beispiel</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f0f0f0;
+      color: #193058;
+      margin: 0;
+      padding: 1rem 1.5rem 3rem;
+    }
+    main {
+      max-width: 864px;
+      margin: 0 auto;
+    }
+    video {
+      display: block;
+      width: 100%;           /* skaliert mit, width/height-Attribute halten das Seitenverhältnis */
+      height: auto;
+      background: #000;
+      border-radius: 6px;
+    }
+    .hero {
+      max-width: 320px;
+    }
+    code {
+      background: #fff;
+      padding: 0 0.25em;
+    }
+    #pip-status {
+      color: #b6163d;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>HTML-Video</h1>
+
+    <!-- 1. Standard-Player -------------------------------------------------------------- -->
+    <h2>1. Video mit Bedienelementen, Vorschaubild und Untertiteln</h2>
+
+    <!--
+      controls        : native Bedienoberfläche des Browsers
+      width/height    : reservieren den Platz, bevor das Video geladen ist
+      poster          : Vorschaubild bis zum ersten Frame
+      preload         : nur ein Hinweis an den Browser (none | metadata | auto)
+    -->
+    <video id="film" controls width="864" height="480" poster="img/poster.png" preload="metadata">
+      <!-- Der Browser nimmt die erste Quelle, deren Format (type) er abspielen kann. -->
+      <source src="video/Prof_Cook.mp4" type="video/mp4">
+      <!-- Weitere Formate wären hier möglich, z. B.:
+           <source src="video/Prof_Cook.webm" type="video/webm"> -->
+
+      <!-- Untertitel (WebVTT). captions: vollständige Transkription inkl. Geräusche,
+           subtitles: Übersetzung bei verständlichem Ton. -->
+      <track kind="captions" src="untertitel/en.vtt" srclang="en" label="English (captions)" default>
+      <track kind="subtitles" src="untertitel/de.vtt" srclang="de" label="Deutsch">
+
+      <!-- Fallback: nur sichtbar, wenn der Browser das video-Element nicht kennt -->
+      <p>Ihr Browser unterstützt das video-Element nicht.
+         <a href="video/Prof_Cook.mp4">Video herunterladen</a></p>
+    </video>
+
+    <p>
+      <button id="pip" type="button" hidden>Bild-im-Bild</button>
+      <span id="pip-status"></span>
+    </p>
+
+    <!-- 2. Hintergrundvideo ------------------------------------------------------------- -->
+    <h2>2. Hintergrundvideo: <code>autoplay muted loop playsinline</code></h2>
+    <p>Browser blockieren Autoplay nur bei hörbarem Ton. Stummgeschaltet (<code>muted</code>)
+       startet das Video sofort; <code>playsinline</code> verhindert den Vollbildmodus auf iOS.</p>
+
+    <video class="hero" autoplay muted loop playsinline width="864" height="480"
+           poster="img/poster.png" aria-hidden="true">
+      <source src="video/Prof_Cook.mp4" type="video/mp4">
+    </video>
+
+    <p><small>Video erzeugt mit ComfyUI, Minimax H3 auf RTX 4060 TI, &copy; 2026 Andreas Roessler</small></p>
+  </main>
+
+  <script>
+    // Picture-in-Picture ist noch keine Baseline-Funktion: erst prüfen, dann anbieten.
+    const video = document.getElementById("film");
+    const button = document.getElementById("pip");
+    const status = document.getElementById("pip-status");
+
+    if (document.pictureInPictureEnabled) {
+      button.hidden = false;
+      button.addEventListener("click", async () => {
+        try {
+          if (document.pictureInPictureElement) {
+            await document.exitPictureInPicture();
+          } else {
+            await video.requestPictureInPicture();
+          }
+        } catch (err) {
+          status.textContent = "Bild-im-Bild nicht möglich: " + err.message;
+        }
+      });
+    } else {
+      status.textContent = "Bild-im-Bild wird von diesem Browser nicht unterstützt.";
+    }
+
+    // Bei "Bewegung reduzieren" das Hintergrundvideo anhalten
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.querySelector("video.hero").pause();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="130" viewBox="0 0 600 130" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="pfeil" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#00aadc"/>
+    </marker>
+  </defs>
+  <rect width="600" height="130" fill="#f7f9fc"/>
+  <g font-size="18" font-weight="bold" text-anchor="middle">
+    <rect x="15" y="40" width="105" height="50" rx="8" fill="#193058"/>
+    <text x="67.5" y="71" fill="#fff">HTML</text>
+    <rect x="170" y="40" width="105" height="50" rx="8" fill="#193058"/>
+    <text x="222.5" y="71" fill="#fff">CSS</text>
+    <rect x="325" y="40" width="105" height="50" rx="8" fill="#193058"/>
+    <text x="377.5" y="71" fill="#fff">JavaScript</text>
+    <rect x="480" y="40" width="105" height="50" rx="8" fill="#b6163d"/>
+    <text x="532.5" y="71" fill="#fff">Vue.js</text>
+  </g>
+  <g stroke="#00aadc" stroke-width="4" marker-end="url(#pfeil)">
+    <line x1="122" y1="65" x2="166" y2="65"/>
+    <line x1="277" y1="65" x2="321" y2="65"/>
+    <line x1="432" y1="65" x2="476" y2="65"/>
+  </g>
+  <g font-size="12" fill="#193058" text-anchor="middle">
+    <text x="67.5" y="110">Struktur</text>
+    <text x="222.5" y="110">Gestaltung</text>
+    <text x="377.5" y="110">Verhalten</text>
+    <text x="532.5" y="110">Framework</text>
+  </g>
+</svg>
