@@ -1,0 +1,166 @@
+/* ------------------------------------------------------------------
+   Seitenlayout
+   ------------------------------------------------------------------ */
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: #193058;
+}
+header, main, footer {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+header {
+  padding-top: 1rem;
+}
+h1 {
+  margin-bottom: 0.25rem;
+}
+section {
+  margin: 2rem 0;
+  scroll-margin-top: 4rem;       /* Sprungmarken nicht unter der Werkzeugleiste verstecken */
+}
+code {
+  font-family: ui-monospace, Consolas, monospace;
+}
+.werkzeuge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  position: sticky;              /* bleibt beim Scrollen sichtbar */
+  top: 0;
+  background: #f0f0f0;
+  z-index: 1;
+}
+#kopf {
+  font-weight: bold;
+}
+.beispiel {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;              /* breite Tabellen scrollen statt die Seite zu sprengen */
+}
+.quelltext {
+  background: #193058;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 0 0 6px 6px;
+  margin-top: 0;
+  overflow-x: auto;
+  font-size: 13px;
+}
+
+/* Bedienelemente unter Abschnitt 2 */
+.aktion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.aktion p {
+  flex-basis: 100%;
+  margin: 0;
+}
+.aktion input,
+.aktion button {
+  font: inherit;
+  padding: 0.25rem 0.4rem;
+}
+.aktion input[type="number"] {
+  width: 5rem;
+}
+.aktion button {
+  background: #193058;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.35rem 1rem;
+  cursor: pointer;
+}
+#summe-pruefung {
+  font-weight: bold;
+}
+#summe-pruefung.ok     { color: #2e7d32; }
+#summe-pruefung.fehler { color: #b6163d; }
+
+/* ------------------------------------------------------------------
+   Stile der Beispiele: so würde man Tabellen normalerweise gestalten
+   ------------------------------------------------------------------ */
+table {
+  border-collapse: collapse;     /* eine Linie zwischen Zellen statt zwei */
+}
+caption {
+  text-align: left;
+  font-weight: bold;
+  padding-bottom: 0.4rem;
+}
+th,
+td {
+  border: 1px solid #c8c8c8;
+  padding: 0.35rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: #e0f4fb;
+}
+tfoot :is(th, td) {
+  font-weight: bold;
+  border-top: 2px solid #193058;
+}
+#ressourcen td {
+  text-align: right;             /* Zahlen rechtsbündig */
+}
+
+/* Hover: Datenzelle und ihre Kopfzellen */
+.zelle-markiert {
+  outline: 3px solid #ff9800;
+  outline-offset: -3px;
+}
+.kopf-markiert {
+  background: #ff9800;
+  color: #193058;
+}
+
+/* ------------------------------------------------------------------
+   Strukturansicht (nur zur Veranschaulichung, per Checkbox schaltbar)
+   Die Beschriftung steht im Attribut data-label, das main.js setzt.
+   ------------------------------------------------------------------ */
+.struktur .beispiel [data-label]::before {
+  content: attr(data-label);
+  display: table;                /* eigene Zeile über dem Inhalt der Zelle */
+  margin-bottom: 0.2rem;
+  font: 11px/1.4 ui-monospace, Consolas, monospace;
+  font-weight: normal;
+  padding: 0 0.35em;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.struktur .beispiel th[data-label]::before { background: #193058; color: #fff; }
+.struktur .beispiel td[data-label]::before { background: #e0e0e0; color: #193058; }
+.struktur .beispiel caption[data-label]::before { background: #e0e0e0; color: #193058; }
+
+/* Zeilengruppen als farbiger Streifen am linken Zellrand */
+.struktur .beispiel thead :is(th, td) { box-shadow: inset 5px 0 0 #00aadc; }
+.struktur .beispiel tbody :is(th, td) { box-shadow: inset 5px 0 0 #e0c200; }
+.struktur .beispiel tfoot :is(th, td) { box-shadow: inset 5px 0 0 #b6163d; }
+
+/* Legende im Kopf */
+.legende {
+  font: 12px ui-monospace, Consolas, monospace;
+  padding: 0 0.4em;
+  border-radius: 3px;
+}
+.legende-th    { background: #193058; color: #fff; }
+.legende-td    { background: #e0e0e0; }
+.legende-thead { border-left: 5px solid #00aadc; background: #fff; }
+.legende-tbody { border-left: 5px solid #e0c200; background: #fff; }
+.legende-tfoot { border-left: 5px solid #b6163d; background: #fff; }
+.legende-kopf  { background: #ff9800; }

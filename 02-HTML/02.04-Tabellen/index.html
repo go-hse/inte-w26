@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tabellen: Zeilen, Zellen und Kopfzellen</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script src="main.js" defer></script>
+</head>
+
+<body class="struktur">
+  <header>
+    <h1>Tabellen: Zeilen, Zellen und Kopfzellen</h1>
+    <p>
+      <span class="legende legende-th">th</span> Kopfzelle &nbsp;
+      <span class="legende legende-td">td</span> Datenzelle &nbsp;
+      <span class="legende legende-thead">thead</span>
+      <span class="legende legende-tbody">tbody</span>
+      <span class="legende legende-tfoot">tfoot</span> Zeilengruppen &nbsp;
+      <span class="legende legende-kopf">Kopfzellen einer Zelle</span>
+    </p>
+    <div class="werkzeuge">
+      <label><input type="checkbox" id="struktur-schalter" checked> Struktur anzeigen</label>
+      <label><input type="checkbox" id="raster-schalter"> Raster (Zeile/Spalte)</label>
+      <span>Mauszeiger auf eine Datenzelle:</span>
+      <output id="kopf" aria-live="polite">zugehörige Kopfzellen werden markiert</output>
+    </div>
+  </header>
+
+  <main>
+    <section id="grundgeruest">
+      <h2>1. Grundgerüst: <code>table</code>, <code>tr</code>, <code>th</code>, <code>td</code></h2>
+      <p>Eine Tabelle wird Zeile für Zeile aufgebaut: <code>tr</code> ist eine Zeile, darin stehen die Zellen.
+        <code>th</code> ist eine Kopfzelle, <code>td</code> eine Datenzelle. Spalten gibt es im Quelltext nicht –
+        sie ergeben sich aus der Position der Zellen. Tabellen sind für tabellarische Daten da, nicht für das
+        Seitenlayout; das übernimmt CSS.</p>
+      <p>Achtung: Der Quelltext unter dem Beispiel wird aus dem DOM erzeugt. Dort steht ein <code>tbody</code>,
+        obwohl es im HTML fehlt – der Browser ergänzt es beim Parsen selbst.</p>
+      <div class="beispiel">
+        <table>
+          <tr>
+            <th>Code</th>
+            <th>Bedeutung</th>
+            <th>Klasse</th>
+          </tr>
+          <tr>
+            <td>200</td>
+            <td>OK</td>
+            <td>Erfolg</td>
+          </tr>
+          <tr>
+            <td>301</td>
+            <td>Moved Permanently</td>
+            <td>Umleitung</td>
+          </tr>
+          <tr>
+            <td>404</td>
+            <td>Not Found</td>
+            <td>Client-Fehler</td>
+          </tr>
+          <tr>
+            <td>500</td>
+            <td>Internal Server Error</td>
+            <td>Server-Fehler</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="gruppen">
+      <h2>2. <code>caption</code>, <code>thead</code>, <code>tbody</code>, <code>tfoot</code> und <code>scope</code></h2>
+      <p><code>caption</code> ist die Überschrift der Tabelle. <code>thead</code>, <code>tbody</code> und
+        <code>tfoot</code> gliedern die Zeilen in Kopf, Rumpf und Fuß. <code>scope="col"</code> macht eine
+        Kopfzelle zur Spaltenüberschrift, <code>scope="row"</code> zur Zeilenüberschrift – Screenreader lesen sie
+        beim Navigieren durch die Zellen mit vor. Probieren Sie es mit dem Mauszeiger aus.</p>
+      <div class="beispiel">
+        <table id="ressourcen">
+          <caption>Ressourcen der Startseite</caption>
+          <thead>
+            <tr>
+              <th scope="col">Datei</th>
+              <th scope="col">Größe (KB)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">index.html</th>
+              <td>12</td>
+            </tr>
+            <tr>
+              <th scope="row">style.css</th>
+              <td>8</td>
+            </tr>
+            <tr>
+              <th scope="row">main.js</th>
+              <td>21</td>
+            </tr>
+            <tr>
+              <th scope="row">logo.png</th>
+              <td>45</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th scope="row">Summe</th>
+              <td>86</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="aktion">
+        <p>Auch per JavaScript ist die Gliederung nutzbar: <code>tabelle.tBodies[0].rows</code> liefert nur die
+          Datenzeilen, <code>tabelle.tFoot</code> den Fuß. <code>insertRow()</code> fügt eine Zeile ein,
+          <code>insertCell()</code> eine Zelle – allerdings immer ein <code>td</code>; eine Kopfzelle muss man
+          mit <code>createElement("th")</code> anlegen.</p>
+        <label for="neu-datei">Datei</label>
+        <input type="text" id="neu-datei" value="favicon.ico">
+        <label for="neu-groesse">Größe (KB)</label>
+        <input type="number" id="neu-groesse" value="4" min="0">
+        <button type="button" id="zeile-ergaenzen">Zeile mit insertRow() ergänzen</button>
+        <p id="summe-pruefung" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section id="verbinden">
+      <h2>3. Zellen verbinden: <code>colspan</code> und <code>rowspan</code></h2>
+      <p><code>colspan="2"</code> streckt eine Zelle über zwei Spalten, <code>rowspan="2"</code> über zwei
+        Zeilen. Der Platz, den sie belegt, fehlt den anderen Zeilen: Die zweite Zeile im Rumpf hat deshalb ein
+        <code>td</code> weniger, die letzte nur noch eines. Schalten Sie oben das Raster ein, um die Position
+        jeder Zelle zu sehen.</p>
+      <div class="beispiel">
+        <table>
+          <caption>Laborbelegung, Raum F01.110</caption>
+          <thead>
+            <tr>
+              <th scope="col">Zeit</th>
+              <th scope="col">Montag</th>
+              <th scope="col">Dienstag</th>
+              <th scope="col">Mittwoch</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">08:00</th>
+              <td rowspan="2">Praktikum Web</td>
+              <td>Vorlesung</td>
+              <td>Vorlesung</td>
+            </tr>
+            <tr>
+              <th scope="row">10:00</th>
+              <td colspan="2">Projektarbeit</td>
+            </tr>
+            <tr>
+              <th scope="row">12:00</th>
+              <td colspan="3">Mittagspause</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 HS Esslingen – Internet-Technologien</p>
+  </footer>
+</body>
+
+</html>

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Listen: ul, ol und dl</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script src="main.js" defer></script>
+</head>
+
+<body class="struktur">
+  <header>
+    <h1>Listen: ul, ol und dl</h1>
+    <p>
+      <span class="legende legende-ul">ul</span> ungeordnete Liste &nbsp;
+      <span class="legende legende-ol">ol</span> geordnete Liste &nbsp;
+      <span class="legende legende-li">li</span> Listeneintrag &nbsp;
+      <span class="legende legende-dl">dl · dt · dd</span> Beschreibungsliste &nbsp;
+      <span class="legende legende-a">a</span> Link
+    </p>
+    <div class="werkzeuge">
+      <label><input type="checkbox" id="struktur-schalter" checked> Struktur anzeigen</label>
+      <label><input type="checkbox" id="marker-schalter" checked> Aufzählungszeichen (CSS)</label>
+      <span>Selektor ausprobieren:</span>
+      <button type="button" data-selektor="ul > li">ul &gt; li</button>
+      <button type="button" data-selektor="ol > li">ol &gt; li</button>
+      <button type="button" data-selektor="li li">li li</button>
+      <button type="button" data-selektor="dt">dt</button>
+      <button type="button" data-selektor="dd">dd</button>
+      <button type="button" data-selektor='a[href^="#"]'>a[href^="#"]</button>
+      <output id="treffer" aria-live="polite"></output>
+    </div>
+  </header>
+
+  <main>
+    <section id="ungeordnet">
+      <h2>1. Ungeordnete Liste: <code>ul</code></h2>
+      <p>Für Aufzählungen, bei denen die Reihenfolge keine Rolle spielt. Jeder Eintrag steht in einem
+        <code>li</code>; das Aufzählungszeichen erzeugt der Browser. Screenreader kündigen eine Liste mit der
+        Anzahl ihrer Einträge an – die Strukturansicht zeigt diese Zahl ebenfalls.</p>
+      <div class="beispiel">
+        <ul>
+          <li>HTML – Struktur und Bedeutung</li>
+          <li>CSS – Darstellung</li>
+          <li>JavaScript – Verhalten</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="geordnet">
+      <h2>2. Geordnete Liste: <code>ol</code></h2>
+      <p>Für Schritte oder Ranglisten, bei denen die Reihenfolge zählt. Die Nummern stehen nicht im Quelltext –
+        der Browser zählt selbst. Ein Eintrag mehr oder weniger, und die Nummerierung stimmt trotzdem.
+        Faustregel: Ändert das Vertauschen zweier Einträge die Bedeutung? Dann <code>ol</code>.</p>
+      <div class="beispiel">
+        <ol>
+          <li>Ordner für das Projekt anlegen</li>
+          <li>index.html mit dem Grundgerüst erstellen</li>
+          <li>Seite im Browser öffnen</li>
+          <li>Quelltext mit dem W3C-Validator prüfen</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="attribute">
+      <h2>3. Zählung steuern: <code>start</code>, <code>reversed</code>, <code>type</code></h2>
+      <p><code>start</code> setzt die Zählung fort, wenn Text eine Liste unterbricht. <code>reversed</code>
+        zählt rückwärts, <code>type</code> wählt Buchstaben oder römische Zahlen. Alle drei beschreiben die
+        Bedeutung der Zählung – Farbe oder Form der Zeichen regelt CSS.</p>
+      <div class="beispiel">
+        <ol>
+          <li>DNS-Anfrage: Domain in IP-Adresse auflösen</li>
+          <li>TCP-Verbindung aufbauen</li>
+          <li>HTTP-Request senden</li>
+        </ol>
+        <p>… jetzt arbeitet der Server …</p>
+        <ol start="4">
+          <li>HTTP-Response empfangen</li>
+          <li>HTML parsen und Seite darstellen</li>
+        </ol>
+        <p>Countdown bis zur Abgabe:</p>
+        <ol reversed>
+          <li>Validator meldet keine Fehler</li>
+          <li>Quelltext ist eingerückt und kommentiert</li>
+          <li>Abgeben</li>
+        </ol>
+        <p>Antwortoptionen einer ARS-Frage:</p>
+        <ol type="A">
+          <li>HTML</li>
+          <li>CSS</li>
+          <li>JavaScript</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="verschachtelt">
+      <h2>4. Verschachtelte Listen</h2>
+      <p>Eine Unterliste steht <strong>innerhalb eines <code>li</code></strong>, direkt hinter dem Text des
+        übergeordneten Eintrags. <code>ul</code> und <code>ol</code> lassen sich dabei beliebig mischen.</p>
+      <div class="beispiel">
+        <ul>
+          <li>Grundlagen</li>
+          <li>HTML5
+            <ul>
+              <li>Struktur eines Dokuments</li>
+              <li>Body-Elemente
+                <ol>
+                  <li>Listen</li>
+                  <li>Tabellen</li>
+                  <li>Formulare</li>
+                </ol>
+              </li>
+              <li>Canvas und Video</li>
+            </ul>
+          </li>
+          <li>CSS</li>
+        </ul>
+      </div>
+      <p class="hinweis-fehler">Häufiger Fehler – die innere Liste steht direkt im <code>ul</code>, nicht in
+        einem <code>li</code>. Der Browser stellt das meist trotzdem eingerückt dar, der Validator meldet aber
+        einen Fehler:</p>
+      <pre class="quelltext falsch"><code>&lt;ul&gt;
+  &lt;li&gt;HTML5&lt;/li&gt;
+  &lt;ul&gt;                       &lt;!-- falsch: ul als direktes Kind von ul --&gt;
+    &lt;li&gt;Body-Elemente&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/ul&gt;</code></pre>
+      <p id="listen-pruefung"></p>
+    </section>
+
+    <section id="beschreibung">
+      <h2>5. Beschreibungsliste: <code>dl</code>, <code>dt</code>, <code>dd</code></h2>
+      <p>Für Paare aus Begriff und Beschreibung, etwa ein Glossar oder technische Daten. <code>dt</code> ist
+        der Begriff, <code>dd</code> die Beschreibung. Ein Begriff darf mehrere Beschreibungen haben.</p>
+      <div class="beispiel">
+        <dl>
+          <dt>HTTP</dt>
+          <dd>Protokoll, mit dem Browser und Webserver Anfragen und Antworten austauschen</dd>
+          <dt>DNS</dt>
+          <dd>Übersetzt Domainnamen in IP-Adressen</dd>
+          <dt>URL</dt>
+          <dd>Adresse einer Ressource im Web</dd>
+          <dd>Beispiel: https://www.hs-esslingen.de/studium</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="navigation">
+      <h2>6. Listen als Navigation: <code>nav</code> + <code>ul</code> + <code>a</code></h2>
+      <p>Menüs sind fast immer ungeordnete Listen von Links. Per CSS werden sie waagerecht und verlieren
+        ihre Punkte – im Quelltext bleiben sie Listen. Ein Link kann auf eine Sprungmarke (<code>#id</code>)
+        dieser Seite zeigen, auf ein anderes Dokument oder auf eine Sprungmarke in einem anderen Dokument.</p>
+      <div class="beispiel">
+        <nav class="menue" aria-label="Abschnitte dieser Seite">
+          <ul>
+            <li><a href="#ungeordnet">ul</a></li>
+            <li><a href="#geordnet">ol</a></li>
+            <li><a href="#verschachtelt">Verschachtelt</a></li>
+            <li><a href="#beschreibung">dl</a></li>
+          </ul>
+        </nav>
+        <ul>
+          <li><a href="../02.02-Div-Span/index.html">Beispiel div und span</a></li>
+          <li><a href="../02.04-Tabellen/index.html#verbinden">Tabellen: Zellen verbinden</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 HS Esslingen – Internet-Technologien</p>
+  </footer>
+</body>
+
+</html>

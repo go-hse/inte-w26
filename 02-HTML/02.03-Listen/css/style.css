@@ -1,0 +1,185 @@
+/* ------------------------------------------------------------------
+   Seitenlayout
+   ------------------------------------------------------------------ */
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: #193058;
+}
+header, main, footer {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+header {
+  padding-top: 1rem;
+}
+h1 {
+  margin-bottom: 0.25rem;
+}
+section {
+  margin: 2rem 0;
+  scroll-margin-top: 4rem;       /* Sprungmarken nicht unter der Werkzeugleiste verstecken */
+}
+code {
+  font-family: ui-monospace, Consolas, monospace;
+}
+.werkzeuge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  position: sticky;              /* bleibt beim Scrollen sichtbar */
+  top: 0;
+  background: #f0f0f0;
+  z-index: 1;
+}
+.werkzeuge button {
+  font-family: ui-monospace, Consolas, monospace;
+  cursor: pointer;
+}
+.werkzeuge button[aria-pressed="true"] {
+  background: #ff9800;
+}
+#treffer {
+  font-weight: bold;
+}
+.beispiel {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 6px;
+}
+.quelltext {
+  background: #193058;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 0 0 6px 6px;
+  margin-top: 0;
+  overflow-x: auto;
+  font-size: 13px;
+}
+
+/* Gegenbeispiel in Abschnitt 4 */
+.quelltext.falsch {
+  background: #fdecef;
+  color: #b6163d;
+  border-left: 6px solid #b6163d;
+  border-radius: 6px;
+}
+#listen-pruefung {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+/* ------------------------------------------------------------------
+   Stile der Beispiele: so würde man Listen normalerweise gestalten
+   ------------------------------------------------------------------ */
+.beispiel p {
+  margin: 0.5rem 0 0;
+  font-style: italic;
+}
+dt {
+  font-weight: bold;
+}
+dd {
+  margin-left: 2rem;
+}
+dd + dt {
+  margin-top: 0.5rem;
+}
+
+/* Navigation: eine ul, per CSS waagerecht und ohne Punkte */
+.menue ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+}
+.menue a {
+  display: inline-block;
+  padding: 0.3rem 0.9rem;
+  border-radius: 4px;
+  background: #193058;
+  color: #fff;
+  text-decoration: none;
+}
+.menue a:hover,
+.menue a:focus-visible {
+  background: #00aadc;
+  color: #193058;
+}
+
+/* Aufzählungszeichen per Werkzeugleiste abgeschaltet */
+.ohne-marker .beispiel ul,
+.ohne-marker .beispiel ol {
+  list-style: none;
+}
+
+/* ------------------------------------------------------------------
+   Strukturansicht (nur zur Veranschaulichung, per Checkbox schaltbar)
+   Die Beschriftung steht im Attribut data-label, das main.js setzt.
+   ------------------------------------------------------------------ */
+.struktur .beispiel ul,
+.struktur .beispiel ol,
+.struktur .beispiel dl {
+  outline: 2px dashed #193058;
+  outline-offset: 2px;
+  margin: 0.75rem 0;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.struktur .beispiel ol {
+  outline-color: #00aadc;
+}
+.struktur .beispiel dl {
+  outline-color: #b6163d;
+  padding-left: 0.5rem;
+}
+.struktur .beispiel li {
+  outline: 1px solid #e0c200;
+  margin: 0.25rem 0;
+}
+.struktur .beispiel [data-label]::before {
+  content: attr(data-label);
+  font: 11px/1.4 ui-monospace, Consolas, monospace;
+  font-weight: normal;
+  font-style: normal;
+  padding: 0 0.35em;
+  margin-right: 0.35em;
+  border-radius: 3px;
+}
+.struktur .beispiel :is(ul, ol, dl)[data-label]::before {
+  display: table;                /* eigene Zeile über den Einträgen */
+  margin: 0 0 0.25rem -1.5rem;
+  color: #fff;
+}
+.struktur .beispiel ul[data-label]::before { background: #193058; }
+.struktur .beispiel .menue ul[data-label]::before { margin-left: 0; }
+.struktur .beispiel ol[data-label]::before { background: #00aadc; color: #193058; }
+.struktur .beispiel dl[data-label]::before { background: #b6163d; margin-left: 0; }
+.struktur .beispiel li[data-label]::before { background: #fff3b0; color: #193058; }
+.struktur .beispiel :is(dt, dd)[data-label]::before { background: #fdecef; color: #b6163d; }
+.struktur .beispiel a[data-label]::before  { background: #e0e0e0; color: #193058; }
+
+/* Treffer eines Selektors (Buttons oben) */
+.treffer {
+  box-shadow: 0 0 0 4px #ff9800;
+}
+
+/* Legende im Kopf */
+.legende {
+  font: 12px ui-monospace, Consolas, monospace;
+  padding: 0 0.4em;
+  border-radius: 3px;
+  color: #fff;
+}
+.legende-ul { background: #193058; }
+.legende-ol { background: #00aadc; color: #193058; }
+.legende-li { background: #fff3b0; color: #193058; }
+.legende-dl { background: #fdecef; color: #b6163d; }
+.legende-a  { background: #e0e0e0; color: #193058; }
