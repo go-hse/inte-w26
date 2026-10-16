@@ -1,0 +1,13 @@
+/* Element-Selektor: alle <p> */
+p      { color: blue; }
+
+/* Klassen-Selektor: alle Elemente mit class="alert" */
+.alert { background-color: #ffd6d6; }
+
+/* ID-Selektor: das eine Element mit id="main" */
+#main  { border: 2px solid black; padding: 0 12px 12px; }
+
+/* Attribut-Selektor: alle <a> mit target="_blank" */
+a[target="_blank"] { font-weight: bold; }
+
+body   { font-family: system-ui, sans-serif; margin: 16px; }

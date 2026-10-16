@@ -1,0 +1,86 @@
+/* Übung 5 – Event-Karten: Box-Modell in der Praxis
+
+   index.html ist fertig und wird nicht verändert. Schreiben Sie unten die Regeln
+   zu den Aufgaben. Benötigt werden nur Eigenschaften aus den Kapiteln Box-Modell,
+   Einheiten (calc) und Selektoren – kein Flexbox, kein Grid.
+
+   Aufgabe 1  box-sizing
+              Alle Elemente verwenden box-sizing: border-box.
+   Aufgabe 2  Container .events
+              - höchstens 60rem breit, horizontal zentriert (margin), 1rem Innenabstand
+              - umschließt die schwebenden Karten (display: flow-root)
+   Aufgabe 3  Karten .event-card nebeneinander
+              - float: left
+              - drei Karten mit je 1rem Abstand dazwischen: width mit calc() berechnen
+              - Abstand rechts 1rem – außer bei der letzten Karte (Pseudo-Klasse)
+              - weißer Hintergrund, Rahmen 1px solid #d0d0d0, Ecken 8px rund
+   Aufgabe 4  Bildbereich .event-cover
+              - Höhe 140px, Bild als Hintergrund, das die Fläche ganz ausfüllt
+                (background-size, background-position)
+              - nur die oberen Ecken 8px rund – border-radius mit vier Werten
+              - die Bilder: .cover-hackathon → img/hackathon.svg,
+                .cover-meetup → img/meetup.svg, .cover-workshop → img/workshop.svg
+   Aufgabe 5  Inhalt .event-content
+              Innenabstand oben 1rem, links und rechts 1.25rem, unten 1.25rem –
+              in einer Deklaration.
+   Aufgabe 6  Texte
+              - .event-title: kein Außenabstand oben, 0.25rem unten
+              - .event-meta: 0.85rem, grau (#666), Großbuchstaben, kein Außenabstand oben
+              - .event-desc: Außenabstand 0.5rem oben, 1rem unten
+   Aufgabe 7  Button .btn
+              - inline-block, Innenabstand 0.5rem 1rem, Ecken 4px rund
+              - Hintergrund #193058, Schrift weiß, nicht unterstrichen
+              - beim Überfahren Hintergrund #00aadc
+   Aufgabe 8  Hervorgehobene Karte .event-card.hervorgehoben
+              Rahmen 3px solid #b6163d. Bleiben alle drei Karten in einer Zeile?
+   Bonus      Ersetzen Sie margin-right aus Aufgabe 3 durch die logische Eigenschaft
+              margin-inline-end. Was ändert sich bei <html dir="rtl">?
+
+   Testen     Kommentieren Sie Aufgabe 1 aus. Was passiert mit der dritten Karte – und
+              warum? Prüfen Sie die Breiten mit den Entwicklerwerkzeugen (F12).
+*/
+
+/* ---------- Basis: fertig, muss nicht verändert werden ---------- */
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: #193058;
+}
+header {
+  text-align: center;
+  padding: 1.5rem 1rem 0.5rem;
+}
+header h1 {
+  margin: 0;
+}
+
+/* ---------- Ihre Lösung ---------- */
+
+/* Aufgabe 1 */
+
+
+/* Aufgabe 2 */
+
+
+/* Aufgabe 3 */
+
+
+/* Aufgabe 4 */
+
+
+/* Aufgabe 5 */
+
+
+/* Aufgabe 6 */
+
+
+/* Aufgabe 7 */
+
+
+/* Aufgabe 8 */
+
+
+/* Bonus */
+

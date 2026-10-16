@@ -1,0 +1,105 @@
+/* Übung 4 – Selektoren
+
+   index.html ist fertig und wird nicht verändert. Schreiben Sie unten für jede
+   Aufgabe Regeln, deren Selektoren genau die beschriebenen Elemente treffen.
+   Verwenden Sie die in der Aufgabe genannte Selektorart.
+
+   Aufgabe 1  Einfache Selektoren (Element, Klasse, ID)
+              - Der Kopfbereich (id kopf): Hintergrund #193058, Schrift weiß, Innenabstand 1rem 2rem.
+              - Alle h2: Farbe #193058, unten eine 2px-Linie in #00aadc.
+              - Der Hinweis (Klasse hinweis): kursiv.
+   Aufgabe 2  Attribut-Selektoren
+              - Links auf PDF-Dateien: Hintergrund #ffe9a8.
+              - Links, deren Adresse mit https beginnt: Farbe green.
+              - Links, deren Adresse mit http: beginnt (unverschlüsselt): Farbe #b6163d, durchgestrichen.
+              - Absätze mit lang="en": Farbe grau, kursiv.
+   Aufgabe 3  Kombinatoren
+              - Nur die Links, die direkte Kinder von nav sind: weiß, nicht unterstrichen,
+                Abstand rechts 1rem.
+              - Der Absatz, der unmittelbar auf eine h2 folgt: fett.
+   Aufgabe 4  Gruppe und Verkettung
+              - h1 und h2 (mit einer Regel): Schriftart Georgia, serif.
+              - Nur Listeneinträge mit der Klasse aktuell: Farbe #b6163d, fett.
+              - Nur Listeneinträge mit der Klasse entfaellt: grau, durchgestrichen.
+   Aufgabe 5  Pseudo-Klassen
+              - Terminliste (Klasse termine): jeder zweite Eintrag Hintergrund #e3eef7.
+              - Alle Einträge der Terminliste außer dem letzten: unten eine 1px-Linie #ccc.
+              - Beim Überfahren mit der Maus: Eintrag der Terminliste Hintergrund #cdeffa.
+              - Ein ungültiges Eingabefeld (leeres Pflichtfeld): Rahmen 2px #b6163d.
+   Aufgabe 6  Pseudo-Elemente
+              - Hinter dem Label mit der Klasse pflicht erscheint ein roter Stern " *".
+              - Der erste Buchstabe jeder h2 ist 1.4-mal so groß und #00aadc.
+   Aufgabe 7  :has()
+              - Der Abschnitt, der einen aktuellen Termin enthält, bekommt einen
+                Rahmen 3px #00aadc.
+   Bonus      Hinter jedem Link mit target="_blank" erscheint " ↗"
+              (ein Attribut-Selektor und ein Pseudo-Element in einem Selektor).
+
+   Testen     Öffnen Sie die Entwicklerwerkzeuge (F12) und untersuchen Sie den Link
+              „Hochschule“ in der Navigation. Er wird von Aufgabe 2 (https) und von
+              Aufgabe 3 (nav > a) getroffen. Welche Farbe gewinnt – und warum?
+*/
+
+/* ---------- Basis: fertig, muss nicht verändert werden ---------- */
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: #222;
+}
+main {
+  max-width: 44rem;
+  margin: 1.5rem auto 3rem;
+  padding: 0 1rem;
+}
+section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 0.5rem 1.5rem 1rem;
+  margin-bottom: 1.25rem;
+}
+ul {
+  padding-left: 0;
+  list-style: none;
+}
+li {
+  padding: 0.25rem 0.5rem;
+}
+label,
+input {
+  display: block;
+  font: inherit;
+}
+input {
+  margin: 0.25rem 0 0.75rem;
+  padding: 0.3rem 0.4rem;
+  border: 2px solid #c8c8c8;
+  border-radius: 4px;
+}
+
+/* ---------- Ihre Lösung ---------- */
+
+/* Aufgabe 1 */
+
+
+/* Aufgabe 2 */
+
+
+/* Aufgabe 3 */
+
+
+/* Aufgabe 4 */
+
+
+/* Aufgabe 5 */
+
+
+/* Aufgabe 6 */
+
+
+/* Aufgabe 7 */
+
+
+/* Bonus */
+

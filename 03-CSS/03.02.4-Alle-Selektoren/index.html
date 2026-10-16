@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo: alle Arten von Selektoren</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header id="kopf">
+    <h1>Internet-Technologien</h1>
+    <nav>
+      <a href="#plan">Plan</a>
+      <a href="skript.pdf">Skript</a>
+      <span><a href="#impressum">Impressum</a></span>
+    </nav>
+  </header>
+
+  <article>
+    <h2>Vorlesungsplan</h2>
+    <p>Diese Woche: Selektoren.</p>
+    <p>Ab nächster Woche: Box-Modell.</p>
+    <ul>
+      <li>HTML5</li>
+      <li class="aktuell">CSS-Selektoren</li>
+      <li>Box-Modell</li>
+      <li>JavaScript</li>
+    </ul>
+    <p class="notiz">Übung am Donnerstag.</p>
+  </article>
+
+  <article>
+    <h2>Anmeldung</h2>
+    <form>
+      <label class="pflicht" for="mail">E-Mail</label>
+      <input id="mail" type="email" required>
+    </form>
+  </article>
+</body>
+</html>

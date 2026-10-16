@@ -1,0 +1,128 @@
+/* 1. Einfache Selektoren */
+* {
+    box-sizing: border-box;
+}
+
+/* Universal */
+body {
+    font-family: system-ui, sans-serif;
+    /* Typ       */
+    margin: 0;
+    background: #f0f0f0;
+    color: #193058;
+}
+
+#kopf {
+    background: #193058;
+    color: white;
+    padding: 12px 24px;
+}
+
+/* ID */
+.notiz {
+    font-style: italic;
+}
+
+/* Klasse    */
+
+/* 2. Attribut-Selektor */
+a[href$=".pdf"] {
+    background: #ffe9a8;
+    color: #193058;
+}
+
+/* 3. Kombinatoren */
+nav a {
+    color: white;
+}
+
+/* Nachfahre */
+nav>a {
+    color: #00aadc;
+    margin-right: 12px;
+}
+
+/* Kind */
+h2+p {
+    font-weight: bold;
+}
+
+/* nächstes Geschwister */
+h2~.notiz {
+    border-left: 4px solid #00aadc;
+    /* allg. Geschwister */
+    padding-left: 8px;
+}
+
+/* 4. Gruppe und Verkettung */
+h1,
+h2 {
+    margin: 0 0 6px;
+}
+
+/* Komma = ODER */
+li.aktuell {
+    color: #b6163d;
+    font-weight: bold;
+}
+
+/* ohne Komma = UND */
+
+/* 5. Pseudo-Klassen */
+li:nth-child(odd) {
+    background: #e3eef7;
+}
+
+li:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+input:invalid {
+    border: 2px solid #b6163d;
+}
+
+/* 6. Pseudo-Elemente */
+.pflicht::after {
+    content: " *";
+    color: #b6163d;
+}
+
+h2::first-letter {
+    color: #00aadc;
+    font-size: 1.3em;
+}
+
+/* 7. Funktionale Pseudo-Klassen */
+article:has(.aktuell) {
+    box-shadow: 0 0 0 3px #00aadc;
+}
+
+/* wählt das <article>-Element aus, 
+aber nur dann, wenn sich irgendwo in seinem Inneren 
+ein Element mit der Klasse .aktuell befindet.*/
+
+:where(ul, ol) {
+    padding-left: 20px;
+    list-style: square;
+}
+
+/* wie ul, ol aber ohne Gewichtung*/
+
+article {
+    background: white;
+    margin: 16px 24px;
+    padding: 12px 20px;
+    border-radius: 8px;
+}
+
+article p {
+    margin: 6px 0;
+}
+
+li {
+    padding: 3px 6px;
+}

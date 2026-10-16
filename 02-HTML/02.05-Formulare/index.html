@@ -35,7 +35,7 @@
       <fieldset>
         <legend>1. label und name</legend>
         <p>Nur Felder <strong>mit name</strong> werden gesendet. Das <strong>label</strong> beschriftet das Feld
-           für Screenreader; ein Klick darauf setzt den Fokus ins Feld. Ein Platzhalter ersetzt kein label.</p>
+          für Screenreader; ein Klick darauf setzt den Fokus ins Feld. Ein Platzhalter ersetzt kein label.</p>
         <div class="beispiel">
           <label for="vorname">Vorname</label>
           <input type="text" id="vorname" name="vorname" value="Erika">
@@ -43,7 +43,7 @@
           <label for="spitzname">Spitzname (ohne name)</label>
           <input type="text" id="spitzname" value="Eri">
 
-          <input type="text" name="ort" placeholder="Ort (nur Platzhalter, kein label)">
+          <input type="text" name="stadt" placeholder="Ort (nur Platzhalter, kein label)">
         </div>
       </fieldset>
 
@@ -73,8 +73,9 @@
 
       <fieldset>
         <legend>3. Auswahl</legend>
-        <p>Zusammengehörige Optionen gruppiert ein eigenes fieldset mit legend. Radio-Buttons mit gleichem name bilden eine Gruppe – gesendet wird nur der gewählte Wert.
-           Checkboxen senden nur, wenn sie angehakt sind; gleicher name ergibt mehrere Werte.</p>
+        <p>Zusammengehörige Optionen gruppiert ein eigenes fieldset mit legend. Radio-Buttons mit gleichem name bilden
+          eine Gruppe – gesendet wird nur der gewählte Wert.
+          Checkboxen senden nur, wenn sie angehakt sind; gleicher name ergibt mehrere Werte.</p>
         <div class="beispiel">
           <fieldset>
             <legend>Anreise</legend>
@@ -85,9 +86,12 @@
 
           <fieldset>
             <legend>Unterlagen</legend>
-            <div><input type="checkbox" id="skript" name="unterlagen" value="skript" checked><label for="skript">Skript</label></div>
-            <div><input type="checkbox" id="folien" name="unterlagen" value="folien" checked><label for="folien">Folien</label></div>
-            <div><input type="checkbox" id="newsletter" name="newsletter" value="ja"><label for="newsletter">Newsletter</label></div>
+            <div><input type="checkbox" id="skript" name="unterlagen" value="skript" checked><label
+                for="skript">Skript</label></div>
+            <div><input type="checkbox" id="folien" name="unterlagen" value="folien" checked><label
+                for="folien">Folien</label></div>
+            <div><input type="checkbox" id="newsletter" name="newsletter" value="ja"><label
+                for="newsletter">Newsletter</label></div>
           </fieldset>
 
           <label for="semester">Semester</label>
@@ -105,7 +109,7 @@
       <fieldset>
         <legend>4. Validierung ohne JavaScript</legend>
         <p>Die Attribute prüft der Browser selbst. Die Werte sind absichtlich falsch –
-           korrigieren Sie sie und beobachten Sie den Status.</p>
+          korrigieren Sie sie und beobachten Sie den Status.</p>
         <div class="beispiel">
           <label for="matrikel">Matrikelnummer (6 Ziffern)</label>
           <input type="text" id="matrikel" name="matrikel" required pattern="[0-9]{6}" value="12345" class="pruefen">
@@ -147,10 +151,13 @@
       <p class="anfrage"><code id="anfrage"></code></p>
       <pre id="rumpf" hidden></pre>
       <p id="warnung" hidden>Achtung: Bei GET steht das Passwort im Klartext in der URL –
-         sichtbar im Verlauf und in Server-Logs. Für solche Daten POST verwenden (und HTTPS).</p>
+        sichtbar im Verlauf und in Server-Logs. Für solche Daten POST verwenden (und HTTPS).</p>
       <table>
         <thead>
-          <tr><th scope="col">name</th><th scope="col">value</th></tr>
+          <tr>
+            <th scope="col">name</th>
+            <th scope="col">value</th>
+          </tr>
         </thead>
         <tbody id="daten"></tbody>
       </table>

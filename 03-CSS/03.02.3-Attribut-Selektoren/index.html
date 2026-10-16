@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Attribut-Selektoren</title>
+  <style>
+    body { font-family: system-ui, sans-serif; color: #193058; margin: 16px 24px; }
+    li, p { margin: 6px 0; }
+
+    a[title]              { border-bottom: 2px dotted; }          /* vorhanden   */
+    a[href^="https"]      { color: green; }                       /* beginnt mit */
+    a[href^="http:"]      { color: #b6163d; }
+    a[href$=".pdf"]       { background: #ffe9a8; }                /* endet mit   */
+    a[href*="esslingen"]  { font-weight: bold; }                  /* enthält     */
+    p[lang="en"]          { font-style: italic; }                 /* exakt       */
+    p[lang|="de"]         { border-left: 4px solid #00aadc;       /* de, de-...  */
+                            padding-left: 8px; }
+    p[data-tags~="wichtig"] { background: #fde2e7; }              /* Wort in Liste */
+  </style>
+</head>
+<body>
+  <ul>
+    <li><a href="skript.pdf" title="Skript als PDF">Skript</a></li>
+    <li><a href="https://www.hs-esslingen.de">Hochschule</a></li>
+    <li><a href="http://example.org">Externer Link (unverschlüsselt)</a></li>
+    <li><a href="uebung.html">Übung</a></li>
+  </ul>
+  <p lang="de">Guten Tag</p>
+  <p lang="de-CH" data-tags="neu wichtig">Grüezi</p>
+  <p lang="en" data-tags="neu">Hello</p>
+</body>
+</html>

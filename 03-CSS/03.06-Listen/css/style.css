@@ -1,0 +1,79 @@
+/* ------------------------------------------------------------------
+   Seitenlayout – die Regeln der Beispiele stehen im <style> von index.html
+   ------------------------------------------------------------------ */
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: #193058;
+}
+header, main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+header {
+  padding-top: 1rem;
+}
+h1 {
+  margin-bottom: 0.25rem;
+}
+section {
+  margin: 2rem 0;
+}
+code {
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+/* Beispiele nebeneinander */
+.raster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+.raster.zwei {
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+}
+.beispiel {
+  background: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+}
+.beispiel > ul, .beispiel > ol {
+  margin: 0.5rem 0;
+}
+
+/* Box der li sichtbar machen (Abschnitte 3 und 4) */
+.umriss li {
+  outline: 1px dashed #00aadc;
+  margin-bottom: 0.25rem;
+}
+
+/* Quelltext unter jedem Beispiel (von main.js erzeugt) */
+.quelltext {
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0.75rem;
+  background: #193058;
+  color: #f0f0f0;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: pre-wrap;         /* lange Zeilen umbrechen statt abschneiden */
+}
+
+/* Spielwiese */
+.werkzeuge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+#spielwiese .beispiel {
+  max-width: 22rem;
+}
+#spielwiese li {
+  outline: 1px dashed #00aadc;
+  margin-bottom: 0.25rem;
+}

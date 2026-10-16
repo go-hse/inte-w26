@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Das Box-Modell: padding, border, margin</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Die Regeln der Beispiele stehen hier, damit main.js sie unter jedem Beispiel anzeigen kann.
+       Das Seitenlayout steht in css/style.css. -->
+  <style id="beispiel-regeln">
+    /* 2. box-sizing */
+    #content-box {
+      box-sizing: content-box;   /* Standard */
+      width: 200px;
+      padding: 20px;
+      border: 5px solid #193058;
+    }
+    #border-box {
+      box-sizing: border-box;
+      width: 200px;
+      padding: 20px;
+      border: 5px solid #193058;
+    }
+
+    /* 3. padding: Kurzschreibweise */
+    #pad-1 {
+      padding: 20px;
+    }
+    #pad-2 {
+      padding: 10px 40px;
+    }
+    #pad-3 {
+      padding: 5px 40px 25px;
+    }
+    #pad-4 {
+      padding: 5px 40px 25px 10px;
+    }
+
+    /* 4. margin */
+    #zentriert {
+      width: 60%;
+      margin: 0 auto;
+    }
+    #negativ {
+      margin-top: -20px;
+      margin-left: 30px;
+    }
+
+    /* 5. border und border-radius */
+    #rand-stile {
+      border-top: 4px solid #193058;
+      border-right: 4px dashed #00aadc;
+      border-bottom: 4px dotted #b6163d;
+      border-left: 8px double #193058;
+    }
+    #radius-1 {
+      border-radius: 12px;
+    }
+    #radius-4 {
+      border-radius: 20px 0 20px 0;
+    }
+    #radius-kreis {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+    }
+
+    /* 6. display */
+    #anzeige .block {
+      display: block;
+      width: 120px;
+    }
+    #anzeige .inline {
+      display: inline;
+      width: 120px;              /* wirkt nicht */
+    }
+    #anzeige .inline-block {
+      display: inline-block;
+      width: 120px;
+    }
+
+    /* 7. float, clear, flow-root */
+    .schwebend {
+      float: left;
+      margin: 0 10px 0 0;
+    }
+    #ohne-flow-root {
+      display: block;            /* Standard */
+    }
+    #mit-flow-root {
+      display: flow-root;        /* umschließt das schwebende Element */
+    }
+
+    /* 8. logische Eigenschaften */
+    #logisch-ltr p, #logisch-rtl p {
+      margin-inline-start: 40px;
+      border-inline-start: 6px solid #00aadc;
+      padding-inline-start: 8px;
+    }
+  </style>
+  <script src="main.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <h1>Das Box-Modell: <code>padding</code>, <code>border</code>, <code>margin</code></h1>
+    <p>Farben in der ganzen Demo: <span class="legende l-margin">margin</span>
+      <span class="legende l-border">border</span> <span class="legende l-padding">padding</span>
+      <span class="legende l-content">content</span>. Unter jedem Beispiel stehen die CSS-Regeln, die es gestalten;
+      Kästchen mit Maßangabe zeigen die tatsächlich gemessene Größe.</p>
+  </header>
+
+  <main>
+    <section id="spielwiese">
+      <h2>Spielwiese</h2>
+      <div class="werkzeuge">
+        <label>width <input type="range" id="sw-width" min="80" max="300" value="200"> <output></output></label>
+        <label>padding <input type="range" id="sw-padding" min="0" max="50" value="20"> <output></output></label>
+        <label>border <input type="range" id="sw-border" min="0" max="30" value="5"> <output></output></label>
+        <label>margin <input type="range" id="sw-margin" min="0" max="50" value="20"> <output></output></label>
+        <label><input type="checkbox" id="sw-border-box"> box-sizing: border-box</label>
+      </div>
+      <div class="sw-flaeche">
+        <div id="sw-box">Inhalt</div>
+      </div>
+      <div class="sw-ergebnis">
+        <div class="schema" aria-hidden="true">
+          <div class="s-margin"><span>margin</span><b id="s-m"></b>
+            <div class="s-border"><span>border</span><b id="s-b"></b>
+              <div class="s-padding"><span>padding</span><b id="s-p"></b>
+                <div class="s-content" id="s-c"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <pre class="quelltext"><code id="sw-css"></code></pre>
+      </div>
+    </section>
+
+    <section id="modell">
+      <h2>1. Vier Schichten von innen nach außen</h2>
+      <p>Jedes Element ist ein Rechteck aus <b>content</b>, <b>padding</b> (Innenabstand, trägt den Hintergrund),
+        <b>border</b> (Rahmen) und <b>margin</b> (Außenabstand, immer durchsichtig). Die Entwicklerwerkzeuge (F12)
+        zeigen für jedes Element genau dieses Schema – wie oben in der Spielwiese.</p>
+    </section>
+
+    <section id="sizing">
+      <h2>2. <code>box-sizing</code>: worauf bezieht sich <code>width</code>?</h2>
+      <p>Beide Boxen haben <code>width: 200px</code>. Bei <code>content-box</code> kommen padding und border
+        noch dazu – die Box wird 250px breit. Bei <code>border-box</code> sind padding und border in den 200px
+        enthalten, der Inhalt schrumpft auf 150px.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#content-box">
+          <div class="buehne"><div id="content-box" class="box" data-messen>content-box</div></div>
+        </div>
+        <div class="beispiel" data-regeln="#border-box">
+          <div class="buehne"><div id="border-box" class="box" data-messen>border-box</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="padding">
+      <h2>3. <code>padding</code>: ein bis vier Werte</h2>
+      <p>Die Werte laufen im Uhrzeigersinn ab oben: <i>oben rechts unten links</i>. Fehlende Werte werden von der
+        Gegenseite übernommen. Grün ist das padding, weiß der Inhalt.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#pad-1"><div class="buehne"><div id="pad-1" class="pad"><span>Inhalt</span></div></div></div>
+        <div class="beispiel" data-regeln="#pad-2"><div class="buehne"><div id="pad-2" class="pad"><span>Inhalt</span></div></div></div>
+        <div class="beispiel" data-regeln="#pad-3"><div class="buehne"><div id="pad-3" class="pad"><span>Inhalt</span></div></div></div>
+        <div class="beispiel" data-regeln="#pad-4"><div class="buehne"><div id="pad-4" class="pad"><span>Inhalt</span></div></div></div>
+      </div>
+    </section>
+
+    <section id="margin">
+      <h2>4. <code>margin</code>: zentrieren und negative Werte</h2>
+      <p><code>margin: 0 auto</code> verteilt den freien Platz links und rechts gleichmäßig – das zentriert ein
+        Block-Element mit fester Breite. Negative Werte ziehen ein Element über seinen Nachbarn.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#zentriert">
+          <div class="buehne"><div id="zentriert" class="box">zentriert</div></div>
+        </div>
+        <div class="beispiel" data-regeln="#negativ">
+          <div class="buehne"><div class="box">erste Box</div><div id="negativ" class="box zweite">zweite Box, nach oben gezogen</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="border">
+      <h2>5. <code>border</code> und <code>border-radius</code></h2>
+      <p>Ein Rahmen hat Breite, Stil und Farbe – für jede Seite einzeln einstellbar. <code>border-radius</code>
+        rundet die Ecken; mehrere Werte laufen im Uhrzeigersinn ab oben links. <code>50%</code> macht aus einem
+        Quadrat einen Kreis.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#rand-stile"><div class="buehne"><div id="rand-stile" class="box">vier Seiten</div></div></div>
+        <div class="beispiel" data-regeln="#radius-1"><div class="buehne"><div id="radius-1" class="box">12px</div></div></div>
+        <div class="beispiel" data-regeln="#radius-4"><div class="buehne"><div id="radius-4" class="box">20px 0 20px 0</div></div></div>
+        <div class="beispiel" data-regeln="#radius-kreis"><div class="buehne"><div id="radius-kreis" class="box">50%</div></div></div>
+      </div>
+    </section>
+
+    <section id="display">
+      <h2>6. Block, Inline und Inline-Block: <code>display</code></h2>
+      <p>Block-Elemente beginnen in einer neuen Zeile und nehmen <code>width</code> an. Inline-Elemente fließen im
+        Text mit und ignorieren <code>width</code> und <code>height</code>. <code>inline-block</code> verbindet
+        beides: im Textfluss, aber mit eigener Breite.</p>
+      <div class="beispiel" id="anzeige" data-regeln="#anzeige .block|#anzeige .inline|#anzeige .inline-block">
+        <div class="buehne">
+          Text davor <span class="block marke" data-messen>block</span> Text danach.
+          Text davor <span class="inline marke" data-messen>inline</span> Text danach.
+          Text davor <span class="inline-block marke" data-messen>inline-block</span> Text danach.
+        </div>
+      </div>
+    </section>
+
+    <section id="float">
+      <h2>7. <code>float</code> und <code>display: flow-root</code></h2>
+      <p>Ein schwebendes Element wird aus dem Fluss genommen; der Text umfließt es. Der Rahmen des Elternelements
+        sieht es nicht mehr und wird zu niedrig (links). <code>display: flow-root</code> lässt das Elternelement das
+        schwebende Kind wieder umschließen (rechts) – der moderne Ersatz für den Clearfix-Hack.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln=".schwebend|#ohne-flow-root">
+          <div class="buehne"><div id="ohne-flow-root" class="eltern">
+            <div class="schwebend">float</div>Kurzer Text neben dem schwebenden Element.
+          </div></div>
+        </div>
+        <div class="beispiel" data-regeln=".schwebend|#mit-flow-root">
+          <div class="buehne"><div id="mit-flow-root" class="eltern">
+            <div class="schwebend">float</div>Kurzer Text neben dem schwebenden Element.
+          </div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="logisch">
+      <h2>8. Logische Eigenschaften: <code>margin-inline-start</code></h2>
+      <p>Statt <i>links</i> und <i>rechts</i> beziehen sich logische Eigenschaften auf die Schreibrichtung.
+        Dieselbe Regel setzt den Abstand bei <code>dir="ltr"</code> links, bei <code>dir="rtl"</code> rechts.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#logisch-ltr p, #logisch-rtl p">
+          <div class="buehne" id="logisch-ltr" dir="ltr"><p>dir="ltr": Abstand und Linie am Zeilenanfang links</p></div>
+        </div>
+        <div class="beispiel" data-regeln="#logisch-ltr p, #logisch-rtl p">
+          <div class="buehne" id="logisch-rtl" dir="rtl"><p>dir="rtl": dieselbe Regel, Zeilenanfang rechts</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+
+</html>

@@ -1,0 +1,172 @@
+/* ------------------------------------------------------------------
+   Seitenlayout – die Regeln der Beispiele stehen im <style> von index.html
+   ------------------------------------------------------------------ */
+:root {
+  --margin: #f9cc9d;    /* Farben wie in den Entwicklerwerkzeugen */
+  --border: #fddd9b;
+  --padding: #c3d08b;
+  --content: #8cb6c0;
+}
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: #193058;
+}
+header, main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+header {
+  padding-top: 1rem;
+}
+h1 {
+  margin-bottom: 0.25rem;
+}
+section {
+  margin: 2rem 0;
+}
+code {
+  font-family: ui-monospace, Consolas, monospace;
+}
+.legende {
+  padding: 0 0.4rem;
+  border-radius: 3px;
+}
+.l-margin  { background: var(--margin); }
+.l-border  { background: var(--border); }
+.l-padding { background: var(--padding); }
+.l-content { background: var(--content); }
+
+/* Beispiele nebeneinander */
+.raster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 1rem;
+}
+.raster.zwei {
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+}
+.beispiel {
+  background: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+}
+.buehne {                        /* Fläche, auf der das Beispiel steht */
+  background: #f7f7f7;
+  padding: 0.75rem;
+  border-radius: 4px;
+}
+
+/* Grundaussehen der Beispiel-Boxen */
+.box {                           /* Inhalt blau, padding grün (Hintergrund nur im content-box-Bereich) */
+  background: linear-gradient(var(--content), var(--content)) content-box, var(--padding);
+  border: 0 solid #193058;
+  padding: 0.5rem;
+}
+.box.zweite {
+  background: #e7b7c3;
+  opacity: 0.9;
+}
+.pad {                           /* padding grün, Inhalt weiß */
+  display: inline-block;
+  background: var(--padding);
+}
+.pad span {
+  display: block;
+  background: white;
+}
+.marke {
+  background: var(--content);
+  height: 40px;
+}
+.eltern {
+  border: 3px solid #193058;
+}
+.schwebend {
+  width: 70px;
+  height: 70px;
+  background: var(--content);
+}
+
+/* gemessene Größe (von main.js erzeugt) */
+.mass {
+  display: inline-block;
+  margin: 0.25rem 0 0 0.25rem;
+  padding: 0 0.4rem;
+  font: 0.75rem ui-monospace, Consolas, monospace;
+  background: #193058;
+  color: white;
+  border-radius: 3px;
+}
+
+/* Quelltext unter jedem Beispiel (von main.js erzeugt) */
+.quelltext {
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0.75rem;
+  background: #193058;
+  color: #f0f0f0;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+}
+
+/* Spielwiese */
+.werkzeuge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.werkzeuge output {
+  display: inline-block;
+  width: 3rem;
+  font-family: ui-monospace, Consolas, monospace;
+}
+.sw-flaeche {                    /* so groß wie Box + margin: die orange Fläche IST der margin */
+  background: var(--margin);
+  display: flow-root;
+  width: fit-content;
+  margin-bottom: 1rem;
+}
+#sw-box {
+  background: linear-gradient(var(--content), var(--content)) content-box, var(--padding);
+  border: 5px solid #d9a520;
+  text-align: center;
+}
+.sw-ergebnis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+/* Schema wie in den Entwicklerwerkzeugen */
+.schema div {
+  position: relative;
+  padding: 1.6rem 2.2rem;
+  border: 1px dashed #333;
+  text-align: center;
+  font: 0.8rem ui-monospace, Consolas, monospace;
+}
+.schema span {
+  position: absolute;
+  top: 0.15rem;
+  left: 0.4rem;
+}
+.schema b {
+  position: absolute;
+  top: 0.15rem;
+  left: 50%;
+}
+.s-margin  { background: var(--margin); }
+.s-border  { background: var(--border); border-style: solid !important; }
+.s-padding { background: var(--padding); }
+.schema .s-content {
+  background: var(--content);
+  padding: 0.5rem;
+}

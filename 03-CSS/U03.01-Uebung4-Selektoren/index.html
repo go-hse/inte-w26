@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Übung 4 – Selektoren</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+<!--
+  Übung 4: CSS-Selektoren
+
+  Diese Datei ist fertig und wird NICHT verändert. Die Aufgaben stehen in
+  css/style.css – dort schreiben Sie Regeln, deren Selektoren genau die
+  beschriebenen Elemente treffen. Klassen, ids und Attribute sind schon da.
+-->
+  <header id="kopf">
+    <h1>Internet-Technologien</h1>
+    <nav>
+      <a href="#termine">Termine</a>
+      <a href="#material">Material</a>
+      <a href="https://www.hs-esslingen.de" target="_blank">Hochschule</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="termine">
+      <h2>Termine</h2>
+      <p>Die Vorlesung findet donnerstags um 9:45 Uhr statt.</p>
+      <ul class="termine">
+        <li>15.10. – HTML-Formulare</li>
+        <li class="aktuell">22.10. – CSS-Selektoren</li>
+        <li>29.10. – Box-Modell</li>
+        <li class="entfaellt">05.11. – entfällt</li>
+        <li>12.11. – Flexbox</li>
+      </ul>
+      <p class="hinweis">Die Übung findet im Labor statt.</p>
+    </section>
+
+    <section id="material">
+      <h2>Material</h2>
+      <p>Alle Unterlagen zur Vorlesung:</p>
+      <ul>
+        <li><a href="folien/css-selektoren.pdf">Folien CSS-Selektoren</a></li>
+        <li><a href="beispiele.zip">Beispiele</a></li>
+        <li><a href="https://developer.mozilla.org/de/docs/Web/CSS" target="_blank">MDN: CSS</a></li>
+        <li><a href="http://example.org/skript-alt.html">Altes Skript</a></li>
+      </ul>
+      <p lang="en">Slides are available in English on request.</p>
+    </section>
+
+    <section id="anmeldung">
+      <h2>Anmeldung</h2>
+      <p>Bitte melden Sie sich für die Laborgruppe an.</p>
+      <form>
+        <label for="mail" class="pflicht">E-Mail</label>
+        <input id="mail" type="email" required>
+        <label for="gruppe">Gruppe</label>
+        <input id="gruppe" type="text">
+      </form>
+    </section>
+  </main>
+</body>
+</html>

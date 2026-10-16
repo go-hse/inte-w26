@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Listen gestalten: list-style und ::marker</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Die Regeln der Beispiele stehen hier, damit main.js sie unter jedem Beispiel anzeigen kann.
+       Das Seitenlayout steht in css/style.css. -->
+  <style id="beispiel-regeln">
+    /* 1. list-style-type */
+    #typ-disc {
+      list-style-type: disc;
+    }
+    #typ-circle {
+      list-style-type: circle;
+    }
+    #typ-square {
+      list-style-type: square;
+    }
+    #typ-none {
+      list-style-type: none;
+    }
+    #typ-decimal {
+      list-style-type: decimal;
+    }
+    #typ-lower-alpha {
+      list-style-type: lower-alpha;
+    }
+    #typ-upper-roman {
+      list-style-type: upper-roman;
+    }
+    #typ-lower-roman {
+      list-style-type: lower-roman;
+    }
+
+    /* 2. list-style-image mit Rückfall */
+    #bild-ok {
+      list-style-type: square;
+      list-style-image: url("img/stern.svg");
+    }
+    #bild-fehlt {
+      list-style-type: square;   /* Rückfall */
+      list-style-image: url("img/gibt-es-nicht.svg");
+    }
+
+    /* 3. list-style-position */
+    #pos-outside li {
+      list-style-position: outside;
+    }
+    #pos-inside li {
+      list-style-position: inside;
+    }
+
+    /* 4. Kurzschreibweise */
+    #kurz {
+      list-style: square inside url("img/stern.svg");
+    }
+
+    /* 5. ::marker */
+    #marker-farbe li::marker {
+      color: #b6163d;
+      font-size: 1.3em;
+    }
+    #marker-pfeil li::marker {
+      content: "\2192  ";
+      color: #00aadc;
+    }
+    #marker-ol li::marker {
+      color: #00aadc;
+      font-weight: bold;
+    }
+
+    /* 6. Praxis: Navigation aus einer Liste */
+    #navigation {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background: #193058;
+    }
+    #navigation li {
+      display: inline-block;
+    }
+    #navigation a {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      color: white;
+      text-decoration: none;
+    }
+    #navigation a:hover {
+      background: #00aadc;
+    }
+  </style>
+  <script src="main.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <h1>Listen gestalten: <code>list-style</code> und <code>::marker</code></h1>
+    <p>Jedes Beispiel zeigt darunter die CSS-Regeln, die es gestalten. Die Spielwiese setzt die drei
+      <code>list-style</code>-Eigenschaften live.</p>
+  </header>
+
+  <main>
+    <section id="spielwiese">
+      <h2>Spielwiese</h2>
+      <div class="werkzeuge">
+        <label>list-style-type
+          <select id="sw-typ">
+            <option>disc</option><option>circle</option><option>square</option><option>none</option>
+            <option>decimal</option><option>decimal-leading-zero</option><option>lower-alpha</option>
+            <option>upper-alpha</option><option>lower-roman</option><option>upper-roman</option>
+            <option>lower-greek</option>
+          </select>
+        </label>
+        <label><input type="radio" name="sw-pos" value="outside" checked> outside</label>
+        <label><input type="radio" name="sw-pos" value="inside"> inside</label>
+        <label><input type="checkbox" id="sw-bild"> list-style-image</label>
+      </div>
+      <div class="beispiel">
+        <ul id="sw-liste">
+          <li>Kurzer Eintrag</li>
+          <li>Ein längerer Eintrag, der in einer schmalen Spalte über mehrere Zeilen umbricht –
+            so wird der Unterschied zwischen inside und outside sichtbar.</li>
+          <li>Noch ein Eintrag</li>
+        </ul>
+      </div>
+      <pre class="quelltext"><code id="sw-css"></code></pre>
+    </section>
+
+    <section id="typ">
+      <h2>1. Form und Nummerierung: <code>list-style-type</code></h2>
+      <p>Bestimmt das Aufzählungszeichen einer <code>ul</code> bzw. die Art der Zählung einer <code>ol</code>.
+        Mit <code>none</code> verschwindet die Markierung – die Liste bleibt für Screenreader trotzdem eine Liste.</p>
+      <div class="raster">
+        <div class="beispiel" data-regeln="#typ-disc"><ul id="typ-disc"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul></div>
+        <div class="beispiel" data-regeln="#typ-circle"><ul id="typ-circle"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul></div>
+        <div class="beispiel" data-regeln="#typ-square"><ul id="typ-square"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul></div>
+        <div class="beispiel" data-regeln="#typ-none"><ul id="typ-none"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul></div>
+        <div class="beispiel" data-regeln="#typ-decimal"><ol id="typ-decimal"><li>Planen</li><li>Bauen</li><li>Testen</li></ol></div>
+        <div class="beispiel" data-regeln="#typ-lower-alpha"><ol id="typ-lower-alpha"><li>Planen</li><li>Bauen</li><li>Testen</li></ol></div>
+        <div class="beispiel" data-regeln="#typ-upper-roman"><ol id="typ-upper-roman"><li>Planen</li><li>Bauen</li><li>Testen</li></ol></div>
+        <div class="beispiel" data-regeln="#typ-lower-roman"><ol id="typ-lower-roman"><li>Planen</li><li>Bauen</li><li>Testen</li></ol></div>
+      </div>
+    </section>
+
+    <section id="bild">
+      <h2>2. Markierung als Bild: <code>list-style-image</code></h2>
+      <p>Ersetzt die Markierung durch ein Bild in dessen eigener Größe – der Browser skaliert es nicht.
+        Fehlt das Bild, greift automatisch <code>list-style-type</code>. Rechts ist der Pfad absichtlich falsch.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#bild-ok"><ul id="bild-ok"><li>Bild gefunden</li><li>Stern als Markierung</li></ul></div>
+        <div class="beispiel" data-regeln="#bild-fehlt"><ul id="bild-fehlt"><li>Bild fehlt</li><li>Rückfall auf square</li></ul></div>
+      </div>
+    </section>
+
+    <section id="position">
+      <h2>3. Position der Markierung: <code>list-style-position</code></h2>
+      <p>Der Unterschied wird erst bei mehrzeiligen Einträgen sichtbar. Die gestrichelte Linie zeigt die Box des
+        <code>li</code>: bei <code>outside</code> steht die Markierung außerhalb, bei <code>inside</code> ist sie
+        Teil des Textes, und die Folgezeilen beginnen unter der Markierung.</p>
+      <div class="raster zwei">
+        <div class="beispiel umriss" data-regeln="#pos-outside li">
+          <ul id="pos-outside">
+            <li>outside (Standard): Die Folgezeilen eines langen Eintrags fluchten unter der ersten Textzeile.</li>
+            <li>Zweiter Eintrag</li>
+          </ul>
+        </div>
+        <div class="beispiel umriss" data-regeln="#pos-inside li">
+          <ul id="pos-inside">
+            <li>inside: Die Markierung gehört zum Text, die Folgezeilen beginnen unter der Markierung.</li>
+            <li>Zweiter Eintrag</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="kurzschreibweise">
+      <h2>4. Kurzschreibweise: <code>list-style</code></h2>
+      <p>Fasst Typ, Position und Bild in einer Deklaration zusammen – in beliebiger Reihenfolge. Nicht genannte
+        Werte werden auf ihren Standard zurückgesetzt.</p>
+      <div class="raster zwei">
+        <div class="beispiel umriss" data-regeln="#kurz">
+          <ul id="kurz"><li>square inside url(stern.svg)</li><li>eine Zeile statt drei</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="marker">
+      <h2>5. Die Markierung selbst gestalten: <code>::marker</code></h2>
+      <p>Das Pseudo-Element <code>::marker</code> erlaubt Farbe, Schrift und <code>content</code> der Markierung.
+        Layout-Eigenschaften wie <code>margin</code>, <code>padding</code> oder <code>background</code> wirken
+        hier nicht.</p>
+      <div class="raster">
+        <div class="beispiel" data-regeln="#marker-farbe li::marker"><ul id="marker-farbe"><li>Farbe</li><li>und Größe</li><li>nur der Markierung</li></ul></div>
+        <div class="beispiel" data-regeln="#marker-pfeil li::marker"><ul id="marker-pfeil"><li>Pfeil statt Punkt</li><li>per content</li><li>ganz ohne Bild</li></ul></div>
+        <div class="beispiel" data-regeln="#marker-ol li::marker"><ol id="marker-ol"><li>Nummern</li><li>farbig</li><li>und fett</li></ol></div>
+      </div>
+    </section>
+
+    <section id="praxis">
+      <h2>6. Praxis: Navigation aus einer Liste</h2>
+      <p>Menüs sind inhaltlich Listen von Links. <code>list-style: none</code> entfernt die Markierung,
+        <code>padding: 0</code> den Einzug, <code>display: inline-block</code> stellt die Einträge nebeneinander.</p>
+      <div class="beispiel" data-regeln="#navigation|#navigation li|#navigation a|#navigation a:hover">
+        <ul id="navigation">
+          <li><a href="#typ">Typ</a></li>
+          <li><a href="#bild">Bild</a></li>
+          <li><a href="#position">Position</a></li>
+          <li><a href="#marker">::marker</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</body>
+
+</html>
