@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Übung 2 – Listen, Tabellen, Bilder (Musterlösung)</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body>
+  <header>
+    <!-- Aufgabe 5: informatives Bild mit aussagekräftigem alt-Text -->
+    <img src="img/logo.png" alt="Logo der Hochschule Esslingen" width="231">
+    <h1>Modul Internet-Technologien</h1>
+  </header>
+
+  <main>
+    <!-- Aufgabe 1: ungeordnete Liste mit verschachtelter Liste -->
+    <h2>Voraussetzungen</h2>
+    <ul>
+      <li>Grundlagen der Programmierung
+        <ul>
+          <li>Variablen und Schleifen</li>
+          <li>Funktionen</li>
+        </ul>
+      </li>
+      <li>Umgang mit einem Texteditor</li>
+      <li>Grundkenntnisse in Rechnernetzen</li>
+    </ul>
+
+    <!-- Aufgabe 6: dekoratives Bild – leeres alt, damit Screenreader es überspringen -->
+    <img src="img/trenner.svg" alt="" class="trenner">
+
+    <!-- Aufgabe 2: geordnete Liste -->
+    <h2>Prüfungsanmeldung in vier Schritten</h2>
+    <ol>
+      <li>Im Studierendenportal anmelden</li>
+      <li>„Prüfungsan- und -abmeldung“ wählen</li>
+      <li>Das Modul Internet-Technologien auswählen</li>
+      <li>Anmeldung bestätigen und die Bestätigungs-E-Mail prüfen</li>
+    </ol>
+
+    <img src="img/trenner.svg" alt="" class="trenner">
+
+    <!-- Aufgabe 7: Bild mit Bildunterschrift -->
+    <h2>Aufbau des Moduls</h2>
+    <figure>
+      <img src="img/modulaufbau.svg" width="600" height="130"
+        alt="Ablauf des Moduls: zuerst HTML (Struktur), dann CSS (Gestaltung), dann JavaScript (Verhalten), zum Schluss Vue.js (Framework)">
+      <figcaption>Abb. 1: Die vier Themenblöcke des Moduls</figcaption>
+    </figure>
+
+    <img src="img/trenner.svg" alt="" class="trenner">
+
+    <!-- Aufgabe 3 und 4: Tabelle mit thead, tbody, tfoot, rowspan und colspan -->
+    <h2>Semesterplan</h2>
+    <table>
+      <caption>Semesterplan Wintersemester 2026/27</caption>
+      <thead>
+        <tr>
+          <th scope="col">Woche</th>
+          <th scope="col">Thema</th>
+          <th scope="col">Form</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Grundlagen: HTTP, URL, DNS</td>
+          <td>Vorlesung</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td rowspan="2">HTML5</td>
+          <td>Vorlesung</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Übung</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>CSS</td>
+          <td>Vorlesung und Übung</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>JavaScript</td>
+          <td>Vorlesung und Übung</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td colspan="2">Projektwoche – keine Lehrveranstaltung</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row" colspan="2">Wochen mit Präsenztermin</th>
+          <td>5</td>
+        </tr>
+      </tfoot>
+    </table>
+  </main>
+</body>
+
+</html>

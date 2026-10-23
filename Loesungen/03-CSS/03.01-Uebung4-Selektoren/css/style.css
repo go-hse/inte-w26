@@ -1,0 +1,122 @@
+/* Übung 4 – Selektoren (Musterlösung)
+   Aufgabenstellung: siehe Grundgerüst 03-CSS/U03.01-Uebung4-Selektoren/css/style.css */
+
+/* ---------- Basis: unverändert ---------- */
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: #222;
+}
+main {
+  max-width: 44rem;
+  margin: 1.5rem auto 3rem;
+  padding: 0 1rem;
+}
+section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 0.5rem 1.5rem 1rem;
+  margin-bottom: 1.25rem;
+}
+ul {
+  padding-left: 0;
+  list-style: none;
+}
+li {
+  padding: 0.25rem 0.5rem;
+}
+label,
+input {
+  display: block;
+  font: inherit;
+}
+input {
+  margin: 0.25rem 0 0.75rem;
+  padding: 0.3rem 0.4rem;
+  border: 2px solid #c8c8c8;
+  border-radius: 4px;
+}
+
+/* ---------- Musterlösung ---------- */
+
+/* Aufgabe 1: einfache Selektoren */
+#kopf {                       /* ID          1-0-0 */
+  background: #193058;
+  color: white;
+  padding: 1rem 2rem;
+}
+h2 {                          /* Element     0-0-1 */
+  color: #193058;
+  border-bottom: 2px solid #00aadc;
+}
+.hinweis {                    /* Klasse      0-1-0 */
+  font-style: italic;
+}
+
+/* Aufgabe 2: Attribut-Selektoren */
+a[href$=".pdf"]  { background: #ffe9a8; }        /* endet mit   */
+a[href^="https"] { color: green; }               /* beginnt mit */
+a[href^="http:"] {                               /* mit Doppelpunkt, sonst träfe es auch https */
+  color: #b6163d;
+  text-decoration: line-through;
+}
+p[lang="en"] {                                   /* exakter Wert */
+  color: gray;
+  font-style: italic;
+}
+
+/* Aufgabe 3: Kombinatoren */
+nav > a {                     /* Kind-Kombinator: nur direkte Kinder von nav */
+  color: white;
+  text-decoration: none;
+  margin-right: 1rem;
+}
+h2 + p {                      /* nächstes Geschwister: nur der Absatz direkt nach h2 */
+  font-weight: bold;
+}
+
+/* Aufgabe 4: Gruppe (Komma = ODER) und Verkettung (ohne Komma = UND) */
+h1, h2 {
+  font-family: Georgia, serif;
+}
+li.aktuell {
+  color: #b6163d;
+  font-weight: bold;
+}
+li.entfaellt {
+  color: gray;
+  text-decoration: line-through;
+}
+
+/* Aufgabe 5: Pseudo-Klassen */
+.termine li:nth-child(even)       { background: #e3eef7; }
+.termine li:not(:last-child)      { border-bottom: 1px solid #ccc; }
+.termine li:hover                 { background: #cdeffa; }
+input:invalid                     { border: 2px solid #b6163d; }
+
+/* Aufgabe 6: Pseudo-Elemente */
+.pflicht::after {
+  content: " *";
+  color: #b6163d;
+}
+h2::first-letter {
+  font-size: 1.4em;
+  color: #00aadc;
+}
+
+/* Aufgabe 7: :has() */
+section:has(.aktuell) {
+  border: 3px solid #00aadc;
+}
+
+/* Bonus: Attribut-Selektor + Pseudo-Element */
+a[target="_blank"]::after {
+  content: " ↗";
+}
+
+/* Testen: Der Link „Hochschule“ wird grün.
+   a[href^="https"] hat die Spezifität 0-1-1 (Attribut + Element),
+   nav > a nur 0-0-2 (zwei Elemente; der Kombinator zählt nicht).
+   Die höhere Spezifität gewinnt – unabhängig von der Reihenfolge im Stylesheet. */

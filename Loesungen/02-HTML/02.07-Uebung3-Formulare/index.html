@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Übung 3 – Formulare (Musterlösung)</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <main>
+    <h1>Anmeldung zur Exkursion</h1>
+    <p>Exkursion zum Rechenzentrum der Hochschule. Mit * markierte Felder sind Pflichtfelder.</p>
+
+    <!-- Aufgabe 1: Ziel und Methode der Übertragung -->
+    <form action="danke.html" method="get">
+
+      <!-- Aufgabe 2: Felder gruppieren -->
+      <fieldset>
+        <legend>Persönliche Angaben</legend>
+
+        <!-- Aufgabe 3: jedes Feld mit label for="id" verknüpft, name für die Übertragung -->
+        <label for="vorname">Vorname</label>
+        <input type="text" id="vorname" name="vorname" required autocomplete="given-name">
+
+        <label for="nachname">Nachname</label>
+        <input type="text" id="nachname" name="nachname" required autocomplete="family-name">
+
+        <!-- Aufgabe 4: passende Eingabetypen -->
+        <label for="email">E-Mail</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+
+        <!-- Aufgabe 5: Validierung mit pattern -->
+        <label for="matrikel">Matrikelnummer</label>
+        <input type="text" id="matrikel" name="matrikel" required pattern="[0-9]{6}"
+               inputmode="numeric" aria-describedby="matrikel-hilfe">
+        <p class="hilfe" id="matrikel-hilfe">Genau 6 Ziffern</p>
+
+        <label for="telefon">Telefon (optional, für Rückfragen)</label>
+        <input type="tel" id="telefon" name="telefon" autocomplete="tel">
+      </fieldset>
+
+      <fieldset>
+        <legend>Exkursion</legend>
+
+        <!-- Aufgabe 6: Auswahlliste -->
+        <label for="termin">Termin</label>
+        <select id="termin" name="termin" required>
+          <option value="">– bitte wählen –</option>
+          <option value="2026-11-13">Freitag, 13.11.2026</option>
+          <option value="2026-11-20">Freitag, 20.11.2026</option>
+        </select>
+
+        <label for="begleitung">Begleitpersonen</label>
+        <input type="number" id="begleitung" name="begleitung" min="0" max="2" value="0">
+      </fieldset>
+
+      <!-- Aufgabe 7: Radio-Buttons – gleiche name-Werte bilden eine Gruppe -->
+      <fieldset>
+        <legend>Anreise</legend>
+        <input type="radio" id="bahn" name="anreise" value="bahn" checked><label for="bahn">Bahn</label>
+        <input type="radio" id="bus" name="anreise" value="bus"><label for="bus">Bus</label>
+        <input type="radio" id="rad" name="anreise" value="rad"><label for="rad">Fahrrad</label>
+      </fieldset>
+
+      <!-- Aufgabe 8: Checkboxen – mehrere Werte möglich -->
+      <fieldset>
+        <legend>Verpflegung</legend>
+        <input type="checkbox" id="vegetarisch" name="verpflegung" value="vegetarisch"><label for="vegetarisch">vegetarisch</label>
+        <input type="checkbox" id="vegan" name="verpflegung" value="vegan"><label for="vegan">vegan</label>
+      </fieldset>
+
+      <!-- Aufgabe 9: mehrzeiliger Text -->
+      <label for="bemerkung">Bemerkungen (höchstens 300 Zeichen)</label>
+      <textarea id="bemerkung" name="bemerkung" rows="4" maxlength="300"></textarea>
+
+      <p>
+        <input type="checkbox" id="datenschutz" name="datenschutz" value="ja" required>
+        <label for="datenschutz">Ich bin mit der Speicherung meiner Daten für die Exkursion einverstanden (Pflichtfeld).</label>
+      </p>
+
+      <!-- Aufgabe 10: versteckter Wert, Absenden und Zurücksetzen -->
+      <input type="hidden" name="kurs" value="inte-w26">
+      <div class="knoepfe">
+        <button type="submit">Anmelden</button>
+        <button type="reset">Zurücksetzen</button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

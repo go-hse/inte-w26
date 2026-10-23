@@ -1,0 +1,65 @@
+/* Übung 1 – Textstruktur
+   Dieses Stylesheet ist fertig. Es greift nur, wenn Sie die Elemente,
+   ids und Klassen genau wie in der Aufgabe benennen. */
+
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: #193058;
+}
+
+header {
+  background: #193058;
+  color: #fff;
+  padding: 1rem 2rem;
+}
+header h1 {
+  margin: 0;
+}
+header p {
+  margin: 0;
+  color: #00aadc;
+}
+
+#inhalt {
+  max-width: 50rem;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+article {
+  background: #fff;
+  border-radius: 6px;
+  padding: 0.5rem 1.5rem 1rem;
+  margin-bottom: 1.5rem;
+  border-top: 4px solid #00aadc;
+}
+
+.datum,
+.autor {
+  font-size: 0.85rem;
+  color: #666;
+}
+.autor {
+  font-style: italic;
+}
+
+.begriff {
+  background: #e0f4fb;
+  border-bottom: 2px solid #00aadc;
+  padding: 0 0.15em;
+}
+
+.hinweis {
+  background: #fff3b0;
+  border-left: 6px solid #b6163d;
+  padding: 0.5rem 1rem;
+}
+
+.ebenen {
+  background: #fff;
+  border: 1px dashed #193058;
+  padding: 0 1rem;
+}
