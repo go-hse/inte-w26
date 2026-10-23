@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flexbox 1: Container, Haupt- und Querachse</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Die Regeln der Beispiele stehen hier, damit main.js sie unter jedem Beispiel anzeigen kann.
+       Das Seitenlayout (Farben, Rahmen, Größen) steht in css/style.css. -->
+  <style id="beispiel-regeln">
+    /* 1. display: flex */
+    #ohne-flex {
+      display: block;
+      /* Standard für div */
+    }
+
+    #mit-flex {
+      display: flex;
+      /* nur die direkten Kinder werden Flex-Items */
+    }
+
+    /* 2. flex-direction */
+    #dir-row {
+      display: flex;
+      flex-direction: row;
+      /* Standard */
+    }
+
+    #dir-row-reverse {
+      display: flex;
+      flex-direction: row-reverse;
+    }
+
+    #dir-column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #dir-column-reverse {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+
+    /* 3. Gleiche Regel, andere Achse */
+    #achse-row {
+      display: flex;
+      justify-content: center;
+      /* Hauptachse = waagerecht */
+    }
+
+    #achse-column {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      /* Hauptachse = senkrecht */
+    }
+
+    /* 4. justify-content */
+    #jc-flex-start {
+      display: flex;
+      justify-content: flex-start;
+      /* Standard */
+    }
+
+    #jc-flex-end {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    #jc-center {
+      display: flex;
+      justify-content: center;
+    }
+
+    #jc-space-between {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #jc-space-around {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    #jc-space-evenly {
+      display: flex;
+      justify-content: space-evenly;
+    }
+
+    /* 5. align-items */
+    #ai-stretch {
+      display: flex;
+      align-items: stretch;
+      /* Standard */
+    }
+
+    #ai-flex-start {
+      display: flex;
+      align-items: flex-start;
+    }
+
+    #ai-center {
+      display: flex;
+      align-items: center;
+    }
+
+    #ai-flex-end {
+      display: flex;
+      align-items: flex-end;
+    }
+
+    #ai-baseline {
+      display: flex;
+      align-items: baseline;
+      /* Textgrundlinien fluchten */
+    }
+
+    /* 6. Abstände: margin oder gap */
+    #mit-margin {
+      display: flex;
+    }
+
+    #mit-margin .i {
+      margin: 8px;
+      /* auch am Containerrand */
+    }
+
+    #mit-gap {
+      display: flex;
+      gap: 8px;
+      /* nur zwischen den Items */
+    }
+
+    /* 7. In beide Richtungen zentrieren */
+    #zentrieren {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+  <script src="main.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <h1>Flexbox 1: Container, <span class="haupt">Hauptachse</span> und <span class="quer">Querachse</span></h1>
+    <p>Gestrichelt umrandet ist immer der <b>Flex-Container</b>, farbig sind die <b>Flex-Items</b>. Unter jedem
+      Beispiel stehen die CSS-Regeln, die es gestalten. In dieser Demo bekommt nur der Container Regeln – die
+      Items selbst bleiben unverändert.</p>
+  </header>
+
+  <main>
+    <section id="spielwiese">
+      <h2>Spielwiese</h2>
+      <div class="werkzeuge">
+        <label>flex-direction
+          <select id="sw-direction">
+            <option>row</option>
+            <option>row-reverse</option>
+            <option>column</option>
+            <option>column-reverse</option>
+          </select></label>
+        <label><span class="haupt">justify-content</span>
+          <select id="sw-justify">
+            <option>flex-start</option>
+            <option>flex-end</option>
+            <option>center</option>
+            <option>space-between</option>
+            <option>space-around</option>
+            <option>space-evenly</option>
+          </select></label>
+        <label><span class="quer">align-items</span>
+          <select id="sw-align">
+            <option>stretch</option>
+            <option>flex-start</option>
+            <option>center</option>
+            <option>flex-end</option>
+            <option>baseline</option>
+          </select></label>
+        <label>gap <input type="range" id="sw-gap" min="0" max="40" value="8"> <output></output></label>
+        <label>Items <input type="range" id="sw-anzahl" min="1" max="6" value="4"> <output></output></label>
+      </div>
+      <div class="sw-ergebnis">
+        <div class="sw-rahmen" id="sw-rahmen">
+          <div class="achse achse-oben"></div>
+          <div class="achse achse-links"></div>
+          <div id="sw-container" class="c"></div>
+        </div>
+        <pre class="quelltext"><code id="sw-css"></code></pre>
+      </div>
+      <p class="merke">Die farbigen Pfeile zeigen, in welche Richtung die <span class="haupt">Hauptachse</span> und
+        die <span class="quer">Querachse</span> gerade laufen. Stellen Sie <code>flex-direction</code> auf
+        <code>column</code> und beobachten Sie, wie <code>justify-content</code> plötzlich senkrecht wirkt.
+      </p>
+    </section>
+
+    <section id="display">
+      <h2>1. <code>display: flex</code> macht die Kinder zu Flex-Items</h2>
+      <p>Ohne Flexbox stehen die drei <code>div</code>-Elemente als Block-Elemente untereinander. Mit
+        <code>display: flex</code> am Container stehen sie nebeneinander und sind nur so breit wie ihr Inhalt.
+        Das gilt nur für die <b>direkten</b> Kinder: Die beiden <code>span</code> in Item 3 sind Enkel und fließen
+        weiter ganz normal als Text.
+      </p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#ohne-flex">
+          <div id="ohne-flex" class="c">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3 <span>a</span> <span>b</span></div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#mit-flex">
+          <div id="mit-flex" class="c">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3 <span>a</span> <span>b</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="direction">
+      <h2>2. <code>flex-direction</code> legt die Hauptachse fest</h2>
+      <p>Die Items tragen Nummern in Quelltext-Reihenfolge. Bei <code>-reverse</code> dreht sich nur die
+        Darstellung um – das HTML bleibt gleich.</p>
+      <div class="raster">
+        <div class="beispiel" data-regeln="#dir-row">
+          <div id="dir-row" class="c hoch">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#dir-row-reverse">
+          <div id="dir-row-reverse" class="c hoch">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#dir-column">
+          <div id="dir-column" class="c hoch">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#dir-column-reverse">
+          <div id="dir-column-reverse" class="c hoch">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="achsen">
+      <h2>3. Gleiche Regel, andere Achse</h2>
+      <p>Beide Container haben <code>justify-content: center</code>. Links läuft die
+        <span class="haupt">Hauptachse</span> waagerecht – die Items rücken in die Mitte der Zeile. Rechts läuft
+        sie wegen <code>column</code> senkrecht – dieselbe Regel zentriert jetzt vertikal. Zusätzlich werden die
+        Items rechts auf volle Breite gestreckt: Das ist <code>align-items: stretch</code> auf der
+        <span class="quer">Querachse</span>, die jetzt waagerecht liegt.
+      </p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#achse-row">
+          <div id="achse-row" class="c sehr-hoch">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#achse-column">
+          <div id="achse-column" class="c sehr-hoch">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+      </div>
+      <p class="merke"><b>Merkregel:</b> <code>justify-…</code> wirkt auf der <span class="haupt">Hauptachse</span>,
+        <code>align-…</code> auf der <span class="quer">Querachse</span>. Ob das waagerecht oder senkrecht ist,
+        entscheidet allein <code>flex-direction</code>.
+      </p>
+    </section>
+
+    <section id="justify">
+      <h2>4. <code>justify-content</code>: freien Platz auf der Hauptachse verteilen</h2>
+      <p>Die Items sind schmaler als der Container. <code>justify-content</code> entscheidet, wo der übrig
+        gebliebene Platz landet: davor, dahinter, beidseitig oder zwischen den Items.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#jc-flex-start">
+          <div id="jc-flex-start" class="c">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#jc-flex-end">
+          <div id="jc-flex-end" class="c">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#jc-center">
+          <div id="jc-center" class="c">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#jc-space-between">
+          <div id="jc-space-between" class="c">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#jc-space-around">
+          <div id="jc-space-around" class="c">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#jc-space-evenly">
+          <div id="jc-space-evenly" class="c">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+      </div>
+      <p><code>space-around</code> gibt jedem Item links und rechts gleich viel Platz – am Rand ist der Abstand
+        deshalb nur halb so groß wie zwischen zwei Items. <code>space-evenly</code> macht alle Abstände gleich.</p>
+    </section>
+
+    <section id="align">
+      <h2>5. <code>align-items</code>: Ausrichtung auf der Querachse</h2>
+      <p>Die Items haben unterschiedlich große Schrift. Ohne eigene Höhe werden sie standardmäßig auf die volle
+        Containerhöhe gestreckt (<code>stretch</code>). <code>baseline</code> richtet sie so aus, dass die
+        Textgrundlinien auf einer Linie liegen – praktisch für Beschriftungen unterschiedlicher Größe.</p>
+      <div class="raster">
+        <div class="beispiel" data-regeln="#ai-stretch">
+          <div id="ai-stretch" class="c hoch gross-klein">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#ai-flex-start">
+          <div id="ai-flex-start" class="c hoch gross-klein">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#ai-center">
+          <div id="ai-center" class="c hoch gross-klein">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#ai-flex-end">
+          <div id="ai-flex-end" class="c hoch gross-klein">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#ai-baseline">
+          <div id="ai-baseline" class="c hoch gross-klein grundlinie">
+            <div class="i">Ag</div>
+            <div class="i">Ag</div>
+            <div class="i">Ag</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gap">
+      <h2>6. Abstände: <code>margin</code> an den Items oder <code>gap</code> am Container</h2>
+      <p>Mit <code>margin</code> entsteht der Abstand auch zwischen Item und Containerrand – und zwischen zwei Items
+        addieren sich die Außenabstände (8px + 8px), denn in Flexbox fallen margins nicht zusammen. <code>gap</code>
+        setzt den Abstand nur <b>zwischen</b> die Items, eine Regel am Container genügt.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#mit-margin|#mit-margin .i">
+          <div id="mit-margin" class="c">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#mit-gap">
+          <div id="mit-gap" class="c">
+            <div class="i">1</div>
+            <div class="i">2</div>
+            <div class="i">3</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="zentrum">
+      <h2>7. Der Klassiker: in beide Richtungen zentrieren</h2>
+      <p>Früher ein berüchtigtes CSS-Problem, mit Flexbox zwei Zeilen: <code>justify-content</code> zentriert auf
+        der Hauptachse, <code>align-items</code> auf der Querachse.</p>
+      <div class="beispiel" data-regeln="#zentrieren">
+        <div id="zentrieren" class="c sehr-hoch">
+          <div class="i">genau in der Mitte</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="selbsttest">
+      <h2>Selbsttest</h2>
+      <details>
+        <summary>Ein Container hat <code>flex-direction: column</code>. Welche Eigenschaft zentriert die Items
+          waagerecht?</summary>
+        <p><code>align-items: center</code>. Bei <code>column</code> ist die Hauptachse senkrecht, die Querachse
+          also waagerecht – und die Querachse steuert <code>align-items</code>.</p>
+      </details>
+      <details>
+        <summary>Sie setzen <code>display: flex</code> auf ein <code>&lt;ul&gt;</code>. Werden die
+          <code>&lt;a&gt;</code>-Links in den <code>&lt;li&gt;</code> zu Flex-Items?
+        </summary>
+        <p>Nein. Nur die direkten Kinder – die <code>&lt;li&gt;</code> – werden Flex-Items. Die Links darin sind
+          Enkel und bleiben normale Inline-Elemente.</p>
+      </details>
+      <details>
+        <summary>Warum sind die Items bei <code>align-items: stretch</code> genauso hoch wie der Container, bei
+          <code>center</code> aber nicht?
+        </summary>
+        <p><code>stretch</code> ist der Standardwert und streckt Items ohne eigene <code>height</code> über die
+          ganze Querachse. Jeder andere Wert lässt ihnen ihre natürliche Höhe und verschiebt sie nur.</p>
+      </details>
+    </section>
+  </main>
+</body>
+
+</html>

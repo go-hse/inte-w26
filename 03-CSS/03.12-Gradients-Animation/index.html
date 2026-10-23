@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gradients, Schatten und Animation</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Die Regeln der Beispiele stehen hier, damit main.js sie unter jedem Beispiel anzeigen kann.
+       Größen, Rahmen und Seitenlayout stehen in css/style.css. -->
+  <style id="beispiel-regeln">
+    /* 1. linear-gradient */
+    #lin-richtung {
+      background: linear-gradient(to right, #f00, #ff0);
+    }
+    #lin-winkel {
+      background: linear-gradient(135deg, #8a2be2, #00bcd4);  /* 0deg = nach oben */
+    }
+    #lin-stopps {
+      background: linear-gradient(to right, #111 0%, #444 40%, #ddd 60%, #fff 100%);
+    }
+
+    /* 2. radial-gradient */
+    #rad-kreis {
+      background: radial-gradient(circle, steelblue, white);
+    }
+    #rad-ellipse {
+      background: radial-gradient(ellipse at 30% 40%, #ff6b6b 0%, #feca57 50%, #1dd1a1 100%);
+    }
+    #rad-glanz {
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.8) 0% 20%, rgba(255, 255, 255, 0) 40%),
+        #193058;  /* Hintergrundfarbe unter dem Glanzlicht */
+    }
+
+    /* 3. conic-gradient */
+    #kon-farbrad {
+      background: conic-gradient(from 0deg, red, yellow, green, blue, red);  /* Start bei 12 Uhr */
+    }
+    #kon-torte {
+      background: conic-gradient(at 50% 50%, #f44336 0% 25%, #ff9800 25% 45%, #ffeb3b 45% 70%, #4caf50 70% 100%);
+    }
+    #kon-spinner {
+      background: conic-gradient(from -90deg, rgba(0, 0, 0, 0) 0% 85%, rgba(0, 0, 0, 0.25) 85% 100%);
+      animation: spin 1s linear infinite;
+    }
+
+    /* 4. Farbstopps und Transparenz */
+    #ueber-bild {
+      background:
+        linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 60%),  /* oberste Ebene */
+        url("img/landschaft.svg") center / cover no-repeat;  /* darunter das Bild */
+    }
+    #ohne-verlauf {
+      background: url("img/landschaft.svg") center / cover no-repeat;
+    }
+    #band-linear {
+      background: linear-gradient(to right, #000 0%, #fff 100%);
+    }
+    #band-geclustert {
+      background: linear-gradient(to right, #000 0%, #000 10%, #555 30%, #aaa 70%, #fff 100%);
+    }
+
+    /* 5. repeating-*-gradient */
+    #streifen {
+      background: repeating-linear-gradient(45deg, #222 0 10px, #eee 10px 20px);
+    }
+    #ringe {
+      background: repeating-radial-gradient(circle at center, #0af 0 8px, #fff 8px 16px);
+    }
+    #striche {
+      background:
+        repeating-conic-gradient(from 0deg, #000 0 2deg, #0000 2deg 10deg),
+        #fff;
+    }
+
+    /* 6. box-shadow */
+    #schatten-dezent {
+      box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    #schatten-mehrfach {
+      box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.2),  /* kurz und scharf */
+        0 8px 24px rgba(0, 0, 0, 0.15);  /* lang und weich */
+    }
+    #schatten-innen {
+      box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.35);  /* nach innen: wirkt eingedrückt */
+    }
+    #schatten-leuchten {
+      box-shadow: 0 0 0 4px #00aadc, 0 0 20px 6px rgba(0, 170, 220, 0.6);  /* Rand + Leuchten */
+    }
+
+    /* 7. transition */
+    #knopf {
+      background: gray;
+      color: white;
+      transition: background 0.5s, transform 0.3s;
+    }
+    #knopf:hover,
+    #knopf:focus-visible {
+      background: black;
+      transform: scale(1.1);
+    }
+    .rennen .kugel {
+      transition: transform 2s;
+    }
+    .rennen.los .kugel {
+      transform: translateX(calc(100cqi - 2rem));  /* bis zum rechten Rand der Bahn */
+    }
+    .rennen .t-linear      { transition-timing-function: linear; }
+    .rennen .t-ease        { transition-timing-function: ease; }
+    .rennen .t-ease-in     { transition-timing-function: ease-in; }
+    .rennen .t-ease-out    { transition-timing-function: ease-out; }
+    .rennen .t-ease-in-out { transition-timing-function: ease-in-out; }
+    .rennen .t-steps       { transition-timing-function: steps(5); }
+
+    /* 8. @keyframes und animation */
+    @keyframes pulse {
+      0%   { background-color: red; }
+      50%  { background-color: yellow; }
+      100% { background-color: red; }
+    }
+    @keyframes zoom {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+    @keyframes spin {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes shake {
+      0%   { transform: translateX(0); }
+      25%  { transform: translateX(-5px); }
+      75%  { transform: translateX(5px); }
+      100% { transform: translateX(0); }
+    }
+    @keyframes combo {
+      0%   { background-color: red;    transform: scale(1) rotate(0deg) translateX(0); }
+      25%  { background-color: orange; transform: scale(1.2) rotate(90deg) translateX(-5px); }
+      50%  { background-color: yellow; transform: scale(1.3) rotate(180deg) translateX(5px); }
+      75%  { background-color: orange; transform: scale(1.2) rotate(270deg) translateX(-5px); }
+      100% { background-color: red;    transform: scale(1) rotate(360deg) translateX(0); }
+    }
+    #anim-pulse {
+      animation: pulse 2s infinite;
+    }
+    #anim-zoom {
+      animation: zoom 2s ease-in-out infinite;
+    }
+    #anim-spin {
+      animation: spin 3s linear infinite;
+    }
+    #anim-shake {
+      animation: shake 0.4s infinite;
+    }
+    #anim-combo {
+      animation: combo 4s infinite linear;
+    }
+    .angehalten .figur {
+      animation-play-state: paused;  /* Animation einfrieren, nicht zurücksetzen */
+    }
+
+    /* 9. @property: typisierte Custom Property */
+    @property --winkel {
+      syntax: "<angle>";
+      inherits: false;
+      initial-value: 0deg;
+    }
+    .dreh-mit {
+      background: conic-gradient(from var(--winkel), #8a2be2, #00bcd4, #ffeb3b, #8a2be2);
+      transition: --winkel 2s ease-in-out;
+    }
+    .dreh-mit:hover,
+    .dreh-mit:focus-visible {
+      --winkel: 180deg;
+    }
+    .dreh-ohne {
+      --winkel-text: 0deg;  /* nicht registriert: nur Text */
+      background: conic-gradient(from var(--winkel-text), #8a2be2, #00bcd4, #ffeb3b, #8a2be2);
+      transition: --winkel-text 2s ease-in-out;
+    }
+    .dreh-ohne:hover,
+    .dreh-ohne:focus-visible {
+      --winkel-text: 180deg;  /* springt sofort */
+    }
+
+    /* 10. Scroll-Driven Animations */
+    @keyframes fortschritt {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+    .lesefortschritt {
+      transform-origin: left;
+      transform: scaleX(0);  /* ohne Unterstützung: unsichtbar */
+      animation: fortschritt linear;
+      animation-timeline: scroll(root);  /* Zeitachse = Scrollposition der Seite */
+    }
+    @keyframes einblenden {
+      from { opacity: 0; transform: translateY(2rem) scale(0.95); }
+      to   { opacity: 1; transform: none; }
+    }
+    .einblenden {
+      animation: einblenden linear both;
+      animation-timeline: view();  /* Zeitachse = Sichtbarkeit im Scrollbereich */
+      animation-range: entry 0% cover 40%;
+    }
+
+    /* 11. Bewegung reduzieren */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+    body.bewegung-aus *,
+    body.bewegung-aus *::before,
+    body.bewegung-aus *::after {
+      animation-duration: 0.01ms !important;  /* Simulation der Systemeinstellung */
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  </style>
+  <script src="main.js" defer></script>
+</head>
+
+<body>
+  <div class="fortschritt-spur" aria-hidden="true"><div class="lesefortschritt" id="lesefortschritt"></div></div>
+
+  <header>
+    <h1>Gradients, Schatten und Animation</h1>
+    <p>Farbverläufe sind vom Browser erzeugte <b>Bilder</b>: Sie brauchen keine Bilddatei und stehen in
+      <code>background</code> wie ein <code>url(…)</code>. Danach folgen Schatten, Übergänge und Animationen.
+      Unter jedem Beispiel stehen die CSS-Regeln, die es gestalten.</p>
+    <p class="werkzeuge"><label><input type="checkbox" id="bewegung-aus"> Bewegung reduzieren (simuliert die
+      Systemeinstellung, siehe Abschnitt 11)</label></p>
+  </header>
+
+  <main>
+    <section id="spielwiese">
+      <h2>Spielwiese: Verläufe bauen</h2>
+      <div class="werkzeuge">
+        <label>Typ
+          <select id="g-typ">
+            <option value="linear">linear-gradient</option>
+            <option value="radial">radial-gradient</option>
+            <option value="conic">conic-gradient</option>
+          </select></label>
+        <label><input type="checkbox" id="g-wiederholen"> repeating-</label>
+        <label data-fuer="linear conic"><span id="g-winkel-name">Winkel</span> <input type="range" id="g-winkel" min="0" max="360" value="135"> <output></output></label>
+        <label data-fuer="radial">Form
+          <select id="g-form"><option>circle</option><option>ellipse</option></select></label>
+        <label data-fuer="radial conic">at x <input type="range" id="g-x" min="0" max="100" value="50"> <output></output></label>
+        <label data-fuer="radial conic">at y <input type="range" id="g-y" min="0" max="100" value="50"> <output></output></label>
+      </div>
+      <div class="werkzeuge stopps">
+        <span><b>Farbstopps</b></span>
+        <label><input type="color" value="#8a2be2" data-stopp="farbe"> <input type="range" min="0" max="100" value="0" data-stopp="pos"> <output></output></label>
+        <label><input type="color" value="#00bcd4" data-stopp="farbe"> <input type="range" min="0" max="100" value="50" data-stopp="pos"> <output></output></label>
+        <label><input type="color" value="#ffeb3b" data-stopp="farbe"> <input type="range" min="0" max="100" value="100" data-stopp="pos"> <output></output></label>
+      </div>
+      <div class="sw-ergebnis">
+        <div class="flaeche gross" id="g-vorschau"></div>
+        <div>
+          <pre class="quelltext"><code id="g-css"></code></pre>
+          <p class="merke" id="g-tipp"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="linear">
+      <h2>1. <code>linear-gradient</code>: entlang einer Linie</h2>
+      <p>Die Richtung gibt man als Schlüsselwort (<code>to right</code>) oder als Winkel an. <code>0deg</code> zeigt
+        nach oben, <code>90deg</code> nach rechts – im Uhrzeigersinn. Ohne Positionen verteilt der Browser die
+        Farben gleichmäßig; mit Positionen bestimmen Sie, wo welche Farbe erreicht ist.</p>
+      <div class="raster">
+        <div class="beispiel" data-regeln="#lin-richtung"><div class="flaeche" id="lin-richtung"></div></div>
+        <div class="beispiel" data-regeln="#lin-winkel"><div class="flaeche" id="lin-winkel"></div></div>
+        <div class="beispiel" data-regeln="#lin-stopps"><div class="flaeche" id="lin-stopps"></div></div>
+      </div>
+      <p>Im dritten Beispiel liegt zwischen 40&nbsp;% und 60&nbsp;% nur ein kurzer Übergang von dunkel zu hell –
+        der Verlauf wirkt in der Mitte steiler.</p>
+    </section>
+
+    <section id="radial">
+      <h2>2. <code>radial-gradient</code>: vom Mittelpunkt nach außen</h2>
+      <p>Die Form ist <code>circle</code> oder <code>ellipse</code> (Standard), das Zentrum setzt
+        <code>at x y</code>. Im dritten Beispiel liegt ein halbtransparenter Kreis als Glanzlicht über einer
+        Hintergrundfarbe – zwei Werte in <code>background</code>, durch Komma getrennt.</p>
+      <div class="raster">
+        <div class="beispiel" data-regeln="#rad-kreis"><div class="flaeche" id="rad-kreis"></div></div>
+        <div class="beispiel" data-regeln="#rad-ellipse"><div class="flaeche" id="rad-ellipse"></div></div>
+        <div class="beispiel" data-regeln="#rad-glanz"><div class="flaeche" id="rad-glanz"></div></div>
+      </div>
+    </section>
+
+    <section id="conic">
+      <h2>3. <code>conic-gradient</code>: einmal im Kreis herum</h2>
+      <p>Die Farben laufen wie ein Uhrzeiger um das Zentrum, Start ist 12 Uhr. <code>from</code> dreht den
+        Startpunkt, <code>at</code> verschiebt das Zentrum. Zwei Stopps mit derselben Position erzeugen eine
+        <b>harte Kante</b> statt eines Verlaufs – so entsteht ein Tortendiagramm. Das dritte Beispiel dreht sich
+        mit einer Animation aus Abschnitt 8.</p>
+      <div class="raster">
+        <div class="beispiel" data-regeln="#kon-farbrad"><div class="flaeche rund" id="kon-farbrad"></div></div>
+        <div class="beispiel" data-regeln="#kon-torte"><div class="flaeche rund" id="kon-torte"></div></div>
+        <div class="beispiel" data-regeln="#kon-spinner"><div class="flaeche rund spinner-ring" id="kon-spinner"></div></div>
+      </div>
+    </section>
+
+    <section id="stopps">
+      <h2>4. Transparenz und Ebenen: Verlauf über einem Bild</h2>
+      <p>Mehrere Hintergründe werden durch Kommas getrennt, der <b>erste liegt oben</b>. Ein Verlauf von
+        halbtransparentem Schwarz zu durchsichtig dunkelt das Bild nur unten ab – der weiße Text wird lesbar,
+        oben bleibt das Bild unverändert.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#ohne-verlauf">
+          <div class="flaeche bild" id="ohne-verlauf"><p>Sommerakademie 2026</p></div>
+        </div>
+        <div class="beispiel" data-regeln="#ueber-bild">
+          <div class="flaeche bild" id="ueber-bild"><p>Sommerakademie 2026</p></div>
+        </div>
+      </div>
+      <p>CSS-Verläufe kennen keine Easing-Funktion – sie laufen zwischen zwei Stopps immer linear. Mit
+        <b>geclusterten Stopps</b> lässt sich ein ungleichmäßiger Verlauf nachbilden: links bleibt es länger
+        dunkel und wird in der Mitte schnell heller.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#band-linear"><div class="flaeche flach" id="band-linear"></div></div>
+        <div class="beispiel" data-regeln="#band-geclustert"><div class="flaeche flach" id="band-geclustert"></div></div>
+      </div>
+    </section>
+
+    <section id="muster">
+      <h2>5. <code>repeating-…-gradient</code>: Muster ohne Bilddatei</h2>
+      <p>Die Stopps beschreiben <b>eine Kachel</b>, die sich wiederholt. <code>#222 0 10px, #eee 10px 20px</code>
+        heißt: 10px dunkel, dann 10px hell, dann von vorn. Weil die Grenzen genau aufeinander liegen, entstehen
+        harte Streifen. <code>#0000</code> ist die Kurzform für durchsichtiges Schwarz.</p>
+      <div class="raster">
+        <div class="beispiel" data-regeln="#streifen"><div class="flaeche" id="streifen"></div></div>
+        <div class="beispiel" data-regeln="#ringe"><div class="flaeche" id="ringe"></div></div>
+        <div class="beispiel" data-regeln="#striche"><div class="flaeche rund" id="striche"></div></div>
+      </div>
+    </section>
+
+    <section id="schatten">
+      <h2>6. <code>box-shadow</code>: Tiefe für flache Elemente</h2>
+      <p>Die Werte sind: horizontaler Versatz, vertikaler Versatz, Weichzeichnung, optional Ausdehnung
+        (<i>spread</i>), Farbe. Probieren Sie es aus:</p>
+      <div class="beispiel">
+        <div class="werkzeuge">
+          <label>x <input type="range" id="s-x" min="-30" max="30" value="4"> <output></output></label>
+          <label>y <input type="range" id="s-y" min="-30" max="30" value="4"> <output></output></label>
+          <label>blur <input type="range" id="s-blur" min="0" max="60" value="8"> <output></output></label>
+          <label>spread <input type="range" id="s-spread" min="-20" max="20" value="0"> <output></output></label>
+          <label>Deckkraft <input type="range" id="s-alpha" min="0" max="100" value="30"> <output></output></label>
+          <label><input type="checkbox" id="s-inset"> inset</label>
+        </div>
+        <div class="schatten-buehne"><div class="karte" id="s-karte">Karte</div></div>
+        <pre class="quelltext"><code id="s-css"></code></pre>
+      </div>
+      <p>Typische Einsätze: ein dezenter Schatten, zwei Schatten übereinander (wirkt natürlicher als einer),
+        ein Innenschatten für eingedrückte Felder und ein Leuchtrand – etwa als Fokusmarkierung.</p>
+      <div class="raster">
+        <div class="beispiel" data-regeln="#schatten-dezent"><div class="schatten-buehne"><div class="karte" id="schatten-dezent">dezent</div></div></div>
+        <div class="beispiel" data-regeln="#schatten-mehrfach"><div class="schatten-buehne"><div class="karte" id="schatten-mehrfach">mehrfach</div></div></div>
+        <div class="beispiel" data-regeln="#schatten-innen"><div class="schatten-buehne"><div class="karte" id="schatten-innen">inset</div></div></div>
+        <div class="beispiel" data-regeln="#schatten-leuchten"><div class="schatten-buehne"><div class="karte" id="schatten-leuchten">leuchten</div></div></div>
+      </div>
+    </section>
+
+    <section id="transition">
+      <h2>7. <code>transition</code>: sanft von Zustand zu Zustand</h2>
+      <p>Ohne <code>transition</code> springt ein Element beim <code>:hover</code> sofort in den neuen Zustand. Mit
+        <code>transition</code> legen Sie fest, <b>welche</b> Eigenschaften <b>wie lange</b> brauchen – hier die
+        Farbe 0,5&nbsp;s und die Vergrößerung 0,3&nbsp;s. Fahren Sie mit der Maus über den Knopf oder springen Sie
+        mit <kbd>Tab</kbd> darauf.</p>
+      <div class="beispiel" data-regeln="#knopf|#knopf:hover,">
+        <div class="schatten-buehne"><button type="button" id="knopf">Fahren Sie über mich</button></div>
+      </div>
+      <p>Die <b>Timing-Funktion</b> bestimmt, wie die Zeit verteilt wird: gleichmäßig (<code>linear</code>),
+        langsam anfangen (<code>ease-in</code>), langsam aufhören (<code>ease-out</code>) oder in Sprüngen
+        (<code>steps()</code>). Alle Kugeln brauchen gleich lange – aber nicht gleich schnell.</p>
+      <div class="beispiel" data-regeln=".rennen .kugel|.rennen.los .kugel|.rennen .t-ease-in|.rennen .t-steps">
+        <p class="werkzeuge"><button type="button" id="rennen-start">Start / zurück</button></p>
+        <div class="rennen" id="rennen">
+          <div class="bahn"><span>linear</span><div class="kugel t-linear"></div></div>
+          <div class="bahn"><span>ease (Standard)</span><div class="kugel t-ease"></div></div>
+          <div class="bahn"><span>ease-in</span><div class="kugel t-ease-in"></div></div>
+          <div class="bahn"><span>ease-out</span><div class="kugel t-ease-out"></div></div>
+          <div class="bahn"><span>ease-in-out</span><div class="kugel t-ease-in-out"></div></div>
+          <div class="bahn"><span>steps(5)</span><div class="kugel t-steps"></div></div>
+        </div>
+      </div>
+      <p class="merke warnung"><b>Stolperstein:</b> Die Kurzschreibweise <code>transition: transform 2s</code> setzt
+        alle nicht genannten Teile auf ihren Standard zurück – also auch die Timing-Funktion auf <code>ease</code>.
+        Deshalb stehen die Regeln für die einzelnen Kugeln mit <code>.rennen</code> davor: Sie brauchen mindestens
+        dieselbe Spezifität, sonst gewinnt die Kurzschreibweise und alle Kugeln laufen gleich.</p>
+      <p class="merke">Am flüssigsten laufen Übergänge von <code>transform</code> und <code>opacity</code>: Der
+        Browser muss dafür das Layout nicht neu berechnen. <code>width</code>, <code>top</code> oder
+        <code>margin</code> zu animieren ist deutlich aufwendiger.</p>
+    </section>
+
+    <section id="keyframes">
+      <h2>8. <code>@keyframes</code> und <code>animation</code></h2>
+      <p>Eine <code>transition</code> braucht einen Auslöser und kennt nur Anfang und Ende. Eine Animation läuft
+        von selbst und kann beliebig viele <b>Phasen</b> haben: <code>@keyframes</code> beschreibt sie in Prozent
+        der Laufzeit, der Browser rechnet die Zwischenschritte aus. <code>animation</code> bindet die Phasen an
+        ein Element.</p>
+      <p class="werkzeuge"><label><input type="checkbox" id="anhalten"> <code>animation-play-state: paused</code>
+        für alle fünf</label></p>
+      <div class="raster" id="figuren">
+        <div class="beispiel" data-regeln="@keyframes pulse|#anim-pulse"><div class="figur-buehne"><div class="figur" id="anim-pulse">pulse</div></div></div>
+        <div class="beispiel" data-regeln="@keyframes zoom|#anim-zoom"><div class="figur-buehne"><div class="figur" id="anim-zoom">zoom</div></div></div>
+        <div class="beispiel" data-regeln="@keyframes spin|#anim-spin"><div class="figur-buehne"><div class="figur" id="anim-spin">spin</div></div></div>
+        <div class="beispiel" data-regeln="@keyframes shake|#anim-shake"><div class="figur-buehne"><div class="figur" id="anim-shake">shake</div></div></div>
+        <div class="beispiel" data-regeln="@keyframes combo|#anim-combo"><div class="figur-buehne"><div class="figur" id="anim-combo">combo</div></div></div>
+      </div>
+      <p><code>combo</code> ändert in jeder Phase Farbe <i>und</i> <code>transform</code> gleichzeitig. Mehrere
+        Transform-Funktionen stehen dabei in <b>einem</b> <code>transform</code>-Wert.</p>
+
+      <h3>Die Teile der Kurzschreibweise</h3>
+      <p><code>animation</code> fasst bis zu acht Eigenschaften zusammen. Die wichtigsten zum Ausprobieren:</p>
+      <div class="beispiel">
+        <div class="werkzeuge">
+          <label>name <select id="a-name"><option>combo</option><option>pulse</option><option>zoom</option><option>spin</option><option>shake</option></select></label>
+          <label>duration <input type="range" id="a-dauer" min="0.5" max="6" step="0.5" value="3"> <output></output></label>
+          <label>timing <select id="a-timing"><option>linear</option><option>ease</option><option>ease-in-out</option><option>steps(4)</option></select></label>
+          <label>iteration-count <select id="a-anzahl"><option>infinite</option><option>1</option><option>3</option></select></label>
+          <label>direction <select id="a-richtung"><option>normal</option><option>reverse</option><option>alternate</option></select></label>
+          <label>fill-mode <select id="a-fill"><option>none</option><option>forwards</option><option>backwards</option><option>both</option></select></label>
+          <button type="button" id="a-neu">neu starten</button>
+        </div>
+        <div class="figur-buehne breit"><div class="figur" id="a-figur">Figur</div></div>
+        <pre class="quelltext"><code id="a-css"></code></pre>
+        <p class="merke" id="a-tipp"></p>
+      </div>
+    </section>
+
+    <section id="property">
+      <h2>9. Neu: <code>@property</code> – animierbare Custom Properties</h2>
+      <p>Eine normale Custom Property ist für den Browser nur <b>Text</b>. Zwischen den Texten „0deg“ und „180deg“
+        kann er nicht rechnen – der Wert springt. <code>@property</code> registriert die Variable mit einem
+        <b>Typ</b> (hier <code>&lt;angle&gt;</code>). Jetzt weiß der Browser, dass es ein Winkel ist, und
+        interpoliert sauber. Fahren Sie über beide Flächen oder springen Sie mit <kbd>Tab</kbd> darauf:</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="@property --winkel|.dreh-mit|.dreh-mit:hover,">
+          <h3>mit <code>@property</code></h3>
+          <div class="flaeche rund dreh-mit" tabindex="0" aria-label="Verlauf mit registrierter Property"></div>
+        </div>
+        <div class="beispiel" data-regeln=".dreh-ohne|.dreh-ohne:hover,">
+          <h3>ohne <code>@property</code></h3>
+          <div class="flaeche rund dreh-ohne" tabindex="0" aria-label="Verlauf mit nicht registrierter Property"></div>
+        </div>
+      </div>
+      <p><code>@property</code> ist seit Juli 2024 in allen großen Browsern verfügbar (Baseline). Ohne diese Regel
+        lassen sich Verläufe gar nicht weich animieren: <code>background-image</code> selbst ist nicht
+        interpolierbar.</p>
+    </section>
+
+    <section id="scroll">
+      <h2>10. Neu: Scroll-Driven Animations</h2>
+      <p>Normale Animationen laufen nach der <b>Zeit</b>. Mit <code>animation-timeline</code> läuft dieselbe
+        <code>@keyframes</code>-Animation stattdessen nach der <b>Scrollposition</b>. Ganz oben am Fensterrand
+        liegt eine graue Spur. Der farbige Balken darin zeigt, wie weit Sie die Seite gelesen haben: ganz oben ist er
+        leer, ganz unten voll. Er wächst, während Sie scrollen – ganz ohne JavaScript.</p>
+      <div class="beispiel" data-regeln="@keyframes fortschritt|.lesefortschritt"></div>
+      <p><code>view()</code> koppelt die Animation an die Sichtbarkeit eines Elements: Die Karten in der Fläche
+        unten blenden ein, während sie hineinscrollen. <code>animation-range</code> legt fest, in welchem
+        Abschnitt das passiert – hier vom ersten Auftauchen bis 40&nbsp;% der Strecke.</p>
+      <div class="beispiel" data-regeln="@keyframes einblenden|.einblenden">
+        <div class="scroll-box">
+          <p>Scrollen Sie in dieser Fläche nach unten.</p>
+          <div class="karte einblenden">Karte 1</div>
+          <div class="karte einblenden">Karte 2</div>
+          <div class="karte einblenden">Karte 3</div>
+          <div class="karte einblenden">Karte 4</div>
+          <div class="karte einblenden">Karte 5</div>
+        </div>
+      </div>
+      <p class="merke warnung"><b>Noch nicht Baseline:</b> Chrome, Edge und Safari unterstützen Scroll-Driven
+        Animations; in Firefox ist die Funktion im stabilen Kanal (Stand Juni 2026, Version 152) noch hinter einem
+        Schalter versteckt. Ohne Unterstützung geht auf dieser Seite nichts kaputt: Die Karten sind sofort ganz zu
+        sehen, und den Balken führt ein kleines Skript nach (JavaScript-Fallback in <code>main.js</code>). Das Skript
+        läuft nur, wenn der Browser <code>animation-timeline</code> nicht kennt – geprüft mit
+        <code>CSS.supports()</code>.</p>
+      <p class="merke" id="scroll-status"></p>
+    </section>
+
+    <section id="bewegung">
+      <h2>11. Rücksicht: <code>prefers-reduced-motion</code></h2>
+      <p>Manchen Menschen wird bei viel Bewegung auf dem Bildschirm schwindlig oder übel. Betriebssysteme haben
+        dafür die Einstellung „Bewegung reduzieren“, CSS fragt sie mit der Media Query
+        <code>prefers-reduced-motion</code> ab. Die folgende Regel setzt dann alle Animationen und Übergänge auf
+        praktisch null – sie springen direkt ans Ende, statt sich zu bewegen.</p>
+      <div class="beispiel" data-regeln="@media (prefers-reduced-motion: reduce)"></div>
+      <p>Da sich die Systemeinstellung nicht aus der Seite heraus umschalten lässt, simuliert der Schalter ganz
+        oben dieselben Regeln über eine Klasse am <code>body</code>:</p>
+      <div class="beispiel" data-regeln="body.bewegung-aus *,"></div>
+      <p class="merke" id="bewegung-status"></p>
+    </section>
+
+    <section id="selbsttest">
+      <h2>Selbsttest</h2>
+      <details>
+        <summary>Warum funktioniert <code>background-color: linear-gradient(…)</code> nicht?</summary>
+        <p>Ein Verlauf ist ein <b>Bild</b>, keine Farbe. Er gehört in <code>background-image</code> oder die
+          Kurzschreibweise <code>background</code>.</p>
+      </details>
+      <details>
+        <summary>Wie bekommt man in einem Verlauf eine harte Kante statt eines weichen Übergangs?</summary>
+        <p>Zwei Farbstopps an dieselbe Position legen, z. B. <code>red 50%, blue 50%</code> – oder kurz
+          <code>red 0 50%, blue 50% 100%</code>.</p>
+      </details>
+      <details>
+        <summary>Wann <code>transition</code>, wann <code>@keyframes</code>?</summary>
+        <p><code>transition</code> für den Wechsel zwischen zwei Zuständen, die etwas auslöst (Hover, Fokus, Klasse).
+          <code>@keyframes</code> für Bewegungen mit mehreren Phasen oder solche, die von selbst bzw. endlos laufen.</p>
+      </details>
+      <details>
+        <summary>Eine Animation mit <code>iteration-count: 1</code> springt am Ende auf den Ausgangszustand zurück.
+          Wie bleibt sie am Ende stehen?</summary>
+        <p>Mit <code>animation-fill-mode: forwards</code> (oder <code>both</code>). Probieren Sie es oben im
+          Abschnitt 8 aus.</p>
+      </details>
+    </section>
+  </main>
+</body>
+
+</html>

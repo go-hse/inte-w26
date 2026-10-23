@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Positioning: static, relative, absolute, fixed, sticky</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Die Regeln der Beispiele stehen hier, damit main.js sie unter jedem Beispiel anzeigen kann.
+       Farben, Rahmen und Größen der Bausteine stehen in css/style.css. -->
+  <style id="beispiel-regeln">
+    /* 1. static und relative */
+    #static .ziel {
+      position: static;  /* Standard */
+      top: 20px;  /* wirkungslos */
+      left: 20px;  /* wirkungslos */
+    }
+    #relative .ziel {
+      position: relative;
+      top: 20px;
+      left: 20px;
+    }
+
+    /* 2. absolute und der Bezugsrahmen */
+    #mit-anker .eltern {
+      position: relative;  /* wird zum Bezugsrahmen */
+    }
+    #mit-anker .ziel {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    #ohne-anker .ziel {
+      position: absolute;  /* Eltern sind static: sucht weiter oben */
+      top: 10px;
+      right: 10px;
+    }
+
+    /* 3. inset */
+    #inset-0 .ziel {
+      position: absolute;
+      inset: 0;  /* = top: 0; right: 0; bottom: 0; left: 0 */
+    }
+    #inset-2 .ziel {
+      position: absolute;
+      inset: 10px 40px;  /* oben/unten 10px, links/rechts 40px */
+    }
+    #inset-mitte .ziel {
+      position: absolute;
+      inset: 0;
+      width: 8rem;
+      height: 3rem;
+      margin: auto;  /* zentriert in beide Richtungen */
+    }
+
+    /* 4. Badge an einer Karte */
+    .karte {
+      position: relative;
+    }
+    .badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+    }
+
+    /* 5. fixed: Header im Viewport (läuft in einem eigenen Mini-Fenster) */
+    header.site {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+    main.ohne-abstand {
+      margin-top: 0;  /* Header verdeckt den Anfang */
+    }
+    main.mit-abstand {
+      margin-top: 3rem;  /* so hoch wie der Header */
+    }
+    .overlay {
+      position: fixed;
+      inset: 0;  /* bedeckt das ganze Fenster */
+      z-index: 1000;
+      background: rgba(25, 48, 88, 0.6);
+    }
+
+    /* 6. sticky */
+    .liste h4 {
+      position: sticky;
+      top: 0;  /* heftet sich an, sobald die Überschrift oben ankommt */
+    }
+    .tabelle thead th {
+      position: sticky;
+      top: 0;
+    }
+
+    /* 7. z-index und Stacking Context */
+    #stapel .kachel {
+      position: absolute;  /* z-index wirkt nur bei positionierten Elementen */
+    }
+    #stapel .rot {
+      z-index: 3;
+    }
+    #stapel .gruen {
+      z-index: 1;
+    }
+    #stapel .blau {
+      z-index: 2;
+    }
+    #kontext .eltern-a {
+      position: relative;
+      z-index: 1;  /* eigener Stacking Context */
+    }
+    #kontext .kind {
+      position: absolute;
+      z-index: 9999;  /* zählt nur innerhalb von .eltern-a */
+    }
+    #kontext .eltern-b {
+      position: relative;
+      z-index: 2;
+    }
+    #kontext.ohne-kontext .eltern-a {
+      z-index: auto;  /* kein eigener Stacking Context mehr */
+    }
+
+    /* 8. Anchor Positioning */
+    .ausloeser {
+      anchor-name: --hilfe;
+    }
+    .tooltip {
+      position: absolute;
+      position-anchor: --hilfe;
+      inset: auto;  /* Standardposition des Popovers aufheben */
+      top: anchor(bottom);  /* Oberkante an der Unterkante des Ankers */
+      left: anchor(left);
+      margin: 6px 0 0;
+    }
+  </style>
+  <script src="main.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <h1>Positioning: <code>static</code>, <code>relative</code>, <code>absolute</code>, <code>fixed</code>, <code>sticky</code></h1>
+    <p>Das <span class="legende l-ziel">positionierte Element</span> ist immer orange. Gestrichelt umrandet ist
+      der <span class="legende l-anker">Bezugsrahmen</span> (containing block), an dem sich <code>top</code>,
+      <code>right</code>, <code>bottom</code> und <code>left</code> ausrichten. Unter jedem Beispiel stehen die
+      CSS-Regeln, die es gestalten.</p>
+  </header>
+
+  <main>
+    <section id="spielwiese">
+      <h2>Spielwiese</h2>
+      <div class="werkzeuge">
+        <label>position
+          <select id="sw-position">
+            <option>static</option><option selected>relative</option><option>absolute</option>
+            <option>fixed</option><option>sticky</option>
+          </select></label>
+        <label>top <input type="range" id="sw-top" min="0" max="80" value="20"> <output></output></label>
+        <label>left <input type="range" id="sw-left" min="0" max="120" value="40"> <output></output></label>
+        <label><input type="checkbox" id="sw-anker" checked> <code>.eltern { position: relative }</code></label>
+      </div>
+      <div class="sw-ergebnis">
+        <div class="sw-buehne" id="sw-buehne">
+          <p>Diese Fläche scrollt. Scrollen Sie bei <code>sticky</code> und <code>fixed</code> nach unten.</p>
+          <div class="eltern" id="sw-eltern">
+            <span class="eltern-name">.eltern</span>
+            <p>Absatz davor im Elternelement.</p>
+            <div class="platz" id="sw-platz"><div class="ziel" id="sw-box">.box</div></div>
+            <p>Absatz danach. Er rückt nach oben, sobald die Box den Fluss verlässt.</p>
+            <p>Noch mehr Inhalt, damit es etwas zu scrollen gibt.</p>
+            <p>Und noch ein Absatz im Elternelement.</p>
+            <p>Hier endet das Elternelement – und damit auch der Bereich, in dem <code>sticky</code> haften kann.</p>
+          </div>
+          <p>Inhalt nach dem Elternelement.</p>
+          <p>Noch mehr Inhalt nach dem Elternelement.</p>
+        </div>
+        <div>
+          <pre class="quelltext"><code id="sw-css"></code></pre>
+          <p class="merke" id="sw-erklaerung" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="ueberblick">
+      <h2>Die fünf Werte im Überblick</h2>
+      <table class="vergleich">
+        <thead><tr><th><code>position</code></th><th>im Dokumentfluss?</th><th>Bezugspunkt für die Offsets</th></tr></thead>
+        <tbody>
+          <tr><td><code>static</code> (Standard)</td><td>ja</td><td>keiner – Offsets wirken nicht</td></tr>
+          <tr><td><code>relative</code></td><td>ja, der Platz bleibt reserviert</td><td>die eigene ursprüngliche Position</td></tr>
+          <tr><td><code>absolute</code></td><td>nein</td><td>der nächste <i>positionierte</i> Vorfahre</td></tr>
+          <tr><td><code>fixed</code></td><td>nein</td><td>das Browserfenster (Viewport)</td></tr>
+          <tr><td><code>sticky</code></td><td>ja</td><td>wie <code>relative</code>, bis der Schwellenwert erreicht ist; danach haftet es – aber nur innerhalb des Elternelements</td></tr>
+        </tbody>
+      </table>
+      <p>„Positioniert“ heißt: <code>position</code> hat einen anderen Wert als <code>static</code>.</p>
+    </section>
+
+    <section id="static-relative">
+      <h2>1. <code>static</code> und <code>relative</code>: verschieben, ohne den Platz aufzugeben</h2>
+      <p>Bei <code>static</code> ignoriert der Browser die Offsets. Bei <code>relative</code> wird die Box um 20px
+        nach unten und rechts verschoben – der gestrichelte Rahmen zeigt, wo sie eigentlich stünde. Die Nachbarn
+        merken davon nichts: Der Platz bleibt reserviert, die Box überlappt sie notfalls.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#static .ziel">
+          <div class="buehne" id="static"><div class="nachbar">Nachbar</div><div class="platz"><div class="ziel">.ziel</div></div><div class="nachbar">Nachbar</div></div>
+        </div>
+        <div class="beispiel" data-regeln="#relative .ziel">
+          <div class="buehne" id="relative"><div class="nachbar">Nachbar</div><div class="platz"><div class="ziel">.ziel</div></div><div class="nachbar">Nachbar</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="absolute-abschnitt">
+      <h2>2. <code>absolute</code>: aus dem Fluss – und wohin?</h2>
+      <p>Ein absolut positioniertes Element verlässt den Dokumentfluss: Die Nachbarn rücken zusammen, als gäbe es
+        die Box nicht. Seine Offsets beziehen sich auf den <b>nächsten positionierten Vorfahren</b>. Links ist das
+        Elternelement mit <code>position: relative</code> der Bezugsrahmen. Rechts fehlt diese Zeile – der Browser
+        sucht weiter nach oben und findet hier die weiße Karte (sie hat <code>position: relative</code> aus
+        <code>style.css</code>). Ohne jeden positionierten Vorfahren wäre es die ganze Seite.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#mit-anker .eltern|#mit-anker .ziel">
+          <div class="buehne" id="mit-anker"><div class="eltern anker"><span class="eltern-name">.eltern</span><div class="nachbar">Nachbar</div><div class="ziel">.ziel</div><div class="nachbar">Nachbar</div></div></div>
+        </div>
+        <div class="beispiel anker-karte" data-regeln="#ohne-anker .ziel">
+          <div class="buehne" id="ohne-anker"><div class="eltern"><span class="eltern-name">.eltern</span><div class="nachbar">Nachbar</div><div class="ziel">.ziel</div><div class="nachbar">Nachbar</div></div></div>
+        </div>
+      </div>
+      <p class="merke warnung"><b>Typischer Fehler:</b> Ein absolut positioniertes Element „springt“ an eine ganz
+        andere Stelle der Seite. Fast immer fehlt <code>position: relative</code> am gewünschten Elternelement.</p>
+    </section>
+
+    <section id="inset">
+      <h2>3. <code>inset</code>: alle vier Offsets auf einmal</h2>
+      <p><code>inset</code> fasst <code>top</code>, <code>right</code>, <code>bottom</code> und <code>left</code>
+        zusammen – mit ein bis vier Werten wie bei <code>margin</code>. Sind gegenüberliegende Offsets gesetzt,
+        wird ein absolut positioniertes Element dazwischen aufgespannt. Mit fester Größe und
+        <code>margin: auto</code> landet es genau in der Mitte.</p>
+      <div class="raster">
+        <div class="beispiel" data-regeln="#inset-0 .ziel">
+          <div class="buehne"><div class="eltern anker hoch" id="inset-0"><div class="ziel">inset: 0</div></div></div>
+        </div>
+        <div class="beispiel" data-regeln="#inset-2 .ziel">
+          <div class="buehne"><div class="eltern anker hoch" id="inset-2"><div class="ziel">10px 40px</div></div></div>
+        </div>
+        <div class="beispiel" data-regeln="#inset-mitte .ziel">
+          <div class="buehne"><div class="eltern anker hoch" id="inset-mitte"><div class="ziel">Mitte</div></div></div>
+        </div>
+      </div>
+      <p>Die gestrichelten Elternelemente haben <code>position: relative</code> aus <code>style.css</code>
+        (Klasse <code>.anker</code>).</p>
+    </section>
+
+    <section id="badge">
+      <h2>4. Muster: Badge an einer Karte</h2>
+      <p>Das häufigste Paar in der Praxis: Das Elternelement wird mit <code>position: relative</code> zum Anker,
+        das Kind mit <code>position: absolute</code> an eine Ecke gesetzt. Negative Offsets schieben es über den
+        Rand hinaus.</p>
+      <div class="beispiel" data-regeln=".karte|.badge">
+        <div class="buehne karten">
+          <div class="karte"><b>Posteingang</b><span class="badge">3</span></div>
+          <div class="karte"><b>Aufgaben</b><span class="badge">12</span></div>
+          <div class="karte"><b>Termine</b><span class="badge">neu</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="fixed">
+      <h2>5. <code>fixed</code>: am Browserfenster festgemacht</h2>
+      <p><code>fixed</code> bezieht sich auf den Viewport und scrollt nicht mit. Damit Sie das ohne Wirkung auf
+        diese Seite sehen, laufen die beiden Beispiele in je einem kleinen eigenen Fenster (<code>iframe</code>) –
+        scrollen Sie darin. Weil der Header den Fluss verlässt, „weiß“ der Inhalt nichts von ihm: Links verdeckt
+        er die erste Zeile. Rechts schafft <code>margin-top</code> den nötigen Abstand.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="header.site|main.ohne-abstand">
+          <iframe class="mini-fenster" data-mini="ohne-abstand" title="Fester Header ohne Abstand"></iframe>
+        </div>
+        <div class="beispiel" data-regeln="header.site|main.mit-abstand">
+          <iframe class="mini-fenster" data-mini="mit-abstand" title="Fester Header mit Abstand"></iframe>
+        </div>
+      </div>
+      <h3>Overlay für einen Dialog</h3>
+      <p>Mit <code>inset: 0</code> bedeckt ein <code>fixed</code>-Element das ganze Fenster, ein hoher
+        <code>z-index</code> legt es über alles andere. Diese Regel wirkt auf der echten Seite.</p>
+      <div class="beispiel" data-regeln=".overlay">
+        <p class="werkzeuge"><button type="button" id="overlay-auf">Overlay öffnen</button></p>
+      </div>
+      <div class="overlay" id="overlay" hidden>
+        <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-titel">
+          <h3 id="dialog-titel">Ich liege über allem</h3>
+          <p>Scrollen ist egal: Das Overlay bleibt am Fenster. Klicken Sie irgendwo oder drücken Sie
+            <kbd>Esc</kbd>.</p>
+          <button type="button" id="overlay-zu">Schließen</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="sticky">
+      <h2>6. <code>sticky</code>: haften beim Scrollen</h2>
+      <p><code>sticky</code> verhält sich wie <code>relative</code>, bis die Überschrift beim Scrollen den
+        Schwellenwert <code>top: 0</code> erreicht – dann bleibt sie stehen. Aber nur, solange ihr Elternelement
+        sichtbar ist: Am Ende des Abschnitts schiebt die nächste Überschrift die vorige hinaus. Scrollen Sie in
+        beiden Listen.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln=".liste h4">
+          <div class="scroll-flaeche liste">
+            <div><h4>A</h4><p>Ahmed</p><p>Anna</p><p>Arne</p></div>
+            <div><h4>B</h4><p>Ben</p><p>Berit</p><p>Bora</p></div>
+            <div><h4>C</h4><p>Carla</p><p>Cem</p><p>Chiara</p></div>
+            <div><h4>D</h4><p>Daniel</p><p>Derya</p><p>Dora</p></div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln=".tabelle thead th">
+          <div class="scroll-flaeche">
+            <table class="tabelle">
+              <thead><tr><th>Woche</th><th>Thema</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Einführung</td></tr><tr><td>2</td><td>HTML</td></tr><tr><td>3</td><td>Formulare</td></tr>
+                <tr><td>4</td><td>Selektoren</td></tr><tr><td>5</td><td>Box-Modell</td></tr><tr><td>6</td><td>Flexbox</td></tr>
+                <tr><td>7</td><td>Positioning</td></tr><tr><td>8</td><td>Grid</td></tr><tr><td>9</td><td>Media Queries</td></tr>
+                <tr><td>10</td><td>JavaScript</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <p class="merke warnung"><b>Wenn sticky nicht klebt:</b> (1) Es fehlt ein Schwellenwert wie <code>top</code>.
+        (2) Das Elternelement ist nicht höher als das sticky-Element – dann ist kein Platz zum Haften. Das zeigt
+        die Spielwiese oben: Die Box haftet nur, bis <code>.eltern</code> endet. (3) Ein Vorfahre hat
+        <code>overflow: hidden</code>.</p>
+    </section>
+
+    <section id="z-index">
+      <h2>7. <code>z-index</code> und der Stacking Context</h2>
+      <p>Überlappen sich positionierte Elemente, liegt ohne <code>z-index</code> das spätere im HTML oben.
+        <code>z-index</code> ändert die Reihenfolge: Hier liegt Rot (3) über Blau (2) über Grün (1), obwohl Blau
+        im HTML zuletzt kommt.</p>
+      <div class="beispiel" data-regeln="#stapel .kachel|#stapel .rot|#stapel .gruen|#stapel .blau">
+        <div class="buehne anker hoch" id="stapel">
+          <div class="kachel rot">rot · 3</div><div class="kachel gruen">grün · 1</div><div class="kachel blau">blau · 2</div>
+        </div>
+      </div>
+      <p>Die Falle: <code>z-index</code>-Werte werden nur <b>innerhalb desselben Stacking Context</b> verglichen.
+        <code>.eltern-a</code> bildet mit <code>z-index: 1</code> einen eigenen Kontext. Sein Kind kann
+        <code>z-index: 9999</code> haben – es bleibt trotzdem unter <code>.eltern-b</code> (2), weil im
+        übergeordneten Kontext nur 1 gegen 2 verglichen wird.</p>
+      <div class="beispiel" data-regeln="#kontext .eltern-a|#kontext .kind|#kontext .eltern-b|#kontext.ohne-kontext .eltern-a">
+        <p class="werkzeuge"><label><input type="checkbox" id="kontext-schalter"> <code>.ohne-kontext</code>:
+          <code>.eltern-a</code> bekommt <code>z-index: auto</code></label></p>
+        <div class="buehne hoch" id="kontext">
+          <div class="eltern-a">.eltern-a · 1<div class="kind">.kind · 9999</div></div>
+          <div class="eltern-b">.eltern-b · 2</div>
+        </div>
+      </div>
+      <p>Ohne eigenen Kontext nimmt das Kind am Vergleich auf der oberen Ebene teil – 9999 gewinnt gegen 2.
+        Neue Stacking Contexts entstehen nicht nur durch <code>z-index</code>, sondern z. B. auch durch
+        <code>opacity</code> unter 1 und <code>transform</code>.</p>
+    </section>
+
+    <section id="anchor">
+      <h2>8. Neu: CSS Anchor Positioning</h2>
+      <p>Bisher konnte ein Element nur relativ zu seinem Bezugsrahmen positioniert werden. Für Tooltips oder
+        Dropdowns, die an einem <i>anderen</i> Element hängen sollen, brauchte man JavaScript. Mit
+        <code>anchor-name</code> und <code>anchor()</code> geht das in CSS: Der Tooltip hängt an der Unterkante
+        des Buttons. Seit Januar 2026 ist das in allen großen Browsern verfügbar (Baseline <i>Newly
+        available</i>).</p>
+      <div class="beispiel" data-regeln=".ausloeser|.tooltip">
+        <div class="buehne anker-flaeche">
+          <p>Text davor, <button type="button" class="ausloeser" popovertarget="tipp">Was ist das?</button> Text danach.</p>
+          <div class="tooltip" id="tipp" popover>Ich hänge per <code>anchor()</code> am Button.</div>
+        </div>
+        <p id="anchor-hinweis" class="merke warnung" hidden>Ihr Browser unterstützt Anchor Positioning noch nicht –
+          der Tooltip erscheint deshalb an der Standardposition.</p>
+      </div>
+    </section>
+
+    <section id="selbsttest">
+      <h2>Selbsttest</h2>
+      <details>
+        <summary>Sie setzen <code>top: 30px</code> auf ein Element, aber nichts passiert. Woran liegt es?</summary>
+        <p>Das Element ist <code>static</code> (Standard). Offsets wirken erst ab <code>relative</code>,
+          <code>absolute</code>, <code>fixed</code> oder <code>sticky</code>.</p>
+      </details>
+      <details>
+        <summary>Was ist der Unterschied zwischen <code>relative</code> mit <code>top: 20px</code> und
+          <code>margin-top: 20px</code>?</summary>
+        <p><code>margin-top</code> schiebt das Element und alle folgenden Elemente nach unten. <code>relative</code>
+          verschiebt nur die Darstellung des Elements; sein Platz im Fluss bleibt, die Nachbarn bewegen sich nicht.</p>
+      </details>
+      <details>
+        <summary>Ein Dropdown mit <code>z-index: 9999</code> verschwindet hinter dem Seitenkopf mit
+          <code>z-index: 10</code>. Wie kann das sein?</summary>
+        <p>Ein Vorfahre des Dropdowns bildet einen eigenen Stacking Context mit kleinerem Rang (z. B.
+          <code>z-index: 1</code>, <code>opacity</code> oder <code>transform</code>). Die 9999 zählt nur darin.</p>
+      </details>
+      <details>
+        <summary>Eine Sidebar mit <code>position: sticky; top: 1rem</code> haftet nicht. Ihr Elternelement ist genau
+          so hoch wie sie selbst. Warum?</summary>
+        <p>sticky haftet nur innerhalb seines Elternelements. Ist dort kein zusätzlicher Platz, gibt es nichts zu
+          haften. In einem Flex- oder Grid-Layout hilft <code>align-self: start</code>, damit die Sidebar nicht
+          auf volle Höhe gestreckt wird.</p>
+      </details>
+    </section>
+  </main>
+</body>
+
+</html>

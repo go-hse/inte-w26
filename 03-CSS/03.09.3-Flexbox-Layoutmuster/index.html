@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flexbox 3: Layoutmuster aus der Praxis</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Die Layout-Regeln der Beispiele stehen hier, damit main.js sie unter jedem Beispiel anzeigen kann.
+       Farben, Schrift und Rahmen der Bausteine stehen in css/style.css. -->
+  <style id="beispiel-regeln">
+    /* 1. Navigationsleiste */
+    #nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 1.5rem;
+    }
+    #nav .menue {
+      display: flex;  /* verschachtelt: die Liste ist selbst ein Flex-Container */
+      flex-wrap: wrap;
+      gap: 0.25rem 1rem;
+    }
+    #nav .anmelden {
+      margin-left: auto;  /* schluckt den ganzen freien Platz davor */
+    }
+
+    /* 2. Eingabezeile */
+    #suche {
+      display: flex;
+      gap: 0.5rem;
+    }
+    #suche input {
+      flex: 1;  /* nimmt den Rest der Zeile */
+      min-width: 0;  /* darf schmaler werden als seine Standardbreite */
+    }
+    #suche button {
+      flex: none;  /* bleibt so breit wie seine Beschriftung */
+    }
+
+    /* 3. Media-Objekt */
+    #kommentar {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    #kommentar .avatar {
+      flex: 0 0 3rem;  /* fest 3rem, wächst nicht, schrumpft nicht */
+    }
+    #kommentar .text {
+      flex: 1;
+      min-width: 0;
+    }
+    #kommentar .kopf {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0 1rem;
+    }
+
+    /* 4. Footer am unteren Rand */
+    #seite-ohne {
+      display: block;
+      min-height: 14rem;  /* auf einer echten Seite: 100vh */
+    }
+    #seite-mit {
+      display: flex;
+      flex-direction: column;
+      min-height: 14rem;  /* auf einer echten Seite: 100vh */
+    }
+    #seite-mit .inhalt {
+      flex: 1;  /* drückt den Footer nach unten */
+    }
+
+    /* 5. Zwei Spalten, die ohne Media Query umbrechen */
+    #spalten {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    #spalten .seitenleiste {
+      flex: 1 1 10rem;
+    }
+    #spalten .hauptteil {
+      flex: 999 1 18rem;  /* bekommt fast den ganzen freien Platz */
+    }
+
+    /* 6. Flexbox oder Grid? */
+    #karten-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    #karten-flex .karte {
+      flex: 1 1 8rem;
+    }
+    #karten-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+      gap: 0.5rem;
+    }
+  </style>
+  <script src="main.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <h1>Flexbox 3: Layoutmuster aus der Praxis</h1>
+    <p>Hier kommen die Eigenschaften aus Demo 1 und 2 zusammen. Jede Bühne lässt sich an der Ecke rechts unten
+      <b>schmaler ziehen</b> – so sehen Sie, wie sich die Layouts bei wenig Platz verhalten, ganz ohne Media
+      Queries.</p>
+    <p class="werkzeuge">
+      <label><input type="checkbox" id="debug"> Flex-Container <span class="dbg-legende dbg-c">gestrichelt</span>
+        und Flex-Items <span class="dbg-legende dbg-i">umrandet</span> anzeigen</label>
+    </p>
+  </header>
+
+  <main>
+    <section id="navigation">
+      <h2>1. Navigationsleiste: <code>margin-left: auto</code> und verschachtelte Container</h2>
+      <p>Logo, Menü und Anmelde-Link stehen in einer Zeile. Ein <code>auto</code>-margin auf der Hauptachse
+        nimmt den gesamten freien Platz auf und schiebt den Anmelde-Link an den rechten Rand – das kann
+        <code>justify-content</code> für ein einzelnes Item nicht. Das Menü ist selbst wieder ein Flex-Container.
+        Ziehen Sie die Bühne schmal: Dank <code>flex-wrap</code> rutscht der Rest in eine zweite Zeile.</p>
+      <div class="beispiel" data-regeln="#nav|#nav .menue|#nav .anmelden">
+        <div class="buehne">
+          <nav id="nav" class="muster-nav">
+            <a class="logo" href="#">◆ Campus</a>
+            <ul class="menue">
+              <li><a href="#">Studium</a></li>
+              <li><a href="#">Forschung</a></li>
+              <li><a href="#">Kontakt</a></li>
+            </ul>
+            <a class="anmelden" href="#">Anmelden</a>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <section id="eingabe">
+      <h2>2. Eingabezeile: ein Item wächst, eines bleibt fest</h2>
+      <p>Das Eingabefeld nimmt mit <code>flex: 1</code> den Rest der Zeile, der Button behält mit
+        <code>flex: none</code> seine Breite. Wichtig ist <code>min-width: 0</code>: Formularfelder haben eine
+        eingebaute Mindestbreite, unter die Flex-Items standardmäßig nicht schrumpfen (<code>min-width: auto</code>).
+        Ohne diese Zeile läuft das Feld bei wenig Platz aus dem Container.</p>
+      <div class="beispiel" data-regeln="#suche|#suche input|#suche button">
+        <div class="buehne">
+          <form id="suche" class="muster-suche" onsubmit="return false">
+            <input type="search" placeholder="Vorlesung, Raum oder Person suchen" aria-label="Suchbegriff">
+            <button>Suchen</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="media">
+      <h2>3. Media-Objekt: Bild links, Text rechts</h2>
+      <p>Das Muster für Kommentare, Chat-Nachrichten und Listen mit Vorschaubild. Der Avatar ist mit
+        <code>flex: 0 0 3rem</code> fest – er wird weder gestreckt noch gestaucht. Der Text nimmt den Rest.
+        Die Kopfzeile ist ein eigener Flex-Container mit <code>space-between</code>: Name links, Datum rechts,
+        bei wenig Platz untereinander.</p>
+      <div class="beispiel" data-regeln="#kommentar|#kommentar .avatar|#kommentar .text|#kommentar .kopf">
+        <div class="buehne">
+          <article id="kommentar" class="muster-kommentar">
+            <div class="avatar" aria-hidden="true">LM</div>
+            <div class="text">
+              <div class="kopf"><b>Lena M.</b> <time datetime="2026-10-22">22.10.2026</time></div>
+              <p>Endlich verstehe ich, warum <code>justify-content</code> bei <code>column</code> plötzlich
+                senkrecht wirkt. Die Achsen sind der Schlüssel!</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="footer">
+      <h2>4. Footer am unteren Rand</h2>
+      <p>Beide Seiten haben eine Mindesthöhe (anfangs 14rem). Bei wenig Inhalt rutscht der Footer normalerweise nach oben
+        (links), darunter bleibt eine Lücke. Rechts ist die Seite eine <b>Spalte</b>, und der Inhaltsbereich nimmt
+        mit <code>flex: 1</code> den restlichen Platz – der Footer sitzt am unteren Rand. Auf einer echten Seite
+        steht dort <code>min-height: 100vh</code>, also mindestens so hoch wie das Browserfenster.</p>
+      <p>Der Regler ändert die Mindesthöhe beider Seiten, so wie ein höheres oder niedrigeres Browserfenster.
+        Links wächst nur die Lücke unter dem Footer, rechts bleibt der Footer am unteren Rand.</p>
+      <p>Fügen Sie dann Inhalt ein, bis er höher ist als die Mindesthöhe. Ab diesem Punkt verhalten sich
+        <b>beide Seiten gleich</b>, und das ist richtig so: <code>flex: 1</code> verteilt nur <i>freien</i> Platz.
+        Ist keiner mehr da, ist die Seite einfach so hoch wie ihr Inhalt, und der Footer folgt direkt dahinter.
+        Das Muster wirkt also nur bei Seiten mit wenig Inhalt. Wichtig ist <code>min-height</code> statt
+        <code>height</code>: Mit einer festen Höhe würde langer Inhalt über den Footer hinauslaufen oder müsste
+        scrollen.</p>
+      <p class="werkzeuge">
+        <label>min-height (Fensterhöhe) <input type="range" id="seite-hoehe" min="8" max="30" value="14"> <output></output></label>
+        <button id="mehr-text" type="button">Mehr Inhalt einfügen</button>
+        <button id="weniger-text" type="button">Zurücksetzen</button>
+      </p>
+      <p class="merke" id="seite-status" aria-live="polite"></p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#seite-ohne">
+          <div id="seite-ohne" class="muster-seite">
+            <header>Kopfzeile</header>
+            <div class="inhalt"><p>Kurzer Inhalt.</p></div>
+            <footer>Footer</footer>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#seite-mit|#seite-mit .inhalt">
+          <div id="seite-mit" class="muster-seite">
+            <header>Kopfzeile</header>
+            <div class="inhalt"><p>Kurzer Inhalt.</p></div>
+            <footer>Footer</footer>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="spalten-abschnitt">
+      <h2>5. Zwei Spalten, die von selbst umbrechen</h2>
+      <p>Seitenleiste und Hauptteil stehen nebeneinander, solange beide Basiswerte (10rem + 18rem) hineinpassen.
+        Den freien Platz bekommt durch <code>flex-grow: 999</code> fast vollständig der Hauptteil – die
+        Seitenleiste bleibt schmal. Wird die Bühne zu eng, bricht die Seitenleiste um, und jedes Item füllt seine
+        eigene Zeile. Ein responsives Layout ganz ohne Media Query.</p>
+      <div class="beispiel" data-regeln="#spalten|#spalten .seitenleiste|#spalten .hauptteil">
+        <div class="buehne">
+          <div id="spalten" class="muster-spalten">
+            <aside class="seitenleiste"><b>Seitenleiste</b><br>Filter, Navigation</aside>
+            <div class="hauptteil"><b>Hauptteil</b><br>Hier steht der eigentliche Inhalt der Seite. Er bekommt
+              den Platz, den die Seitenleiste nicht braucht.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="flex-grid">
+      <h2>6. Flexbox oder Grid?</h2>
+      <p>Beide Bühnen zeigen dieselben fünf Karten mit derselben Mindestbreite. Flexbox denkt in <b>einer</b>
+        Dimension: Jede Zeile verteilt ihren Platz für sich – die Karten der letzten Zeile werden breiter und
+        fluchten nicht mit denen darüber. Grid legt <b>Zeilen und Spalten</b> gemeinsam fest, alle Karten bleiben
+        im Raster. Ziehen Sie beide Bühnen auf unterschiedliche Breiten.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#karten-flex|#karten-flex .karte">
+          <h3>Flexbox</h3>
+          <div class="buehne">
+            <div id="karten-flex" class="muster-karten">
+              <div class="karte">1</div><div class="karte">2</div><div class="karte">3</div><div class="karte">4</div><div class="karte">5</div>
+            </div>
+          </div>
+        </div>
+        <div class="beispiel" data-regeln="#karten-grid">
+          <h3>Grid</h3>
+          <div class="buehne">
+            <div id="karten-grid" class="muster-karten">
+              <div class="karte">1</div><div class="karte">2</div><div class="karte">3</div><div class="karte">4</div><div class="karte">5</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="vergleich">
+        <thead><tr><th></th><th>Flexbox</th><th>Grid</th></tr></thead>
+        <tbody>
+          <tr><th>Dimensionen</th><td>eine: Zeile <i>oder</i> Spalte</td><td>zwei: Zeilen <i>und</i> Spalten</td></tr>
+          <tr><th>Ausgangspunkt</th><td>der Inhalt bestimmt die Größen</td><td>das Raster wird vorgegeben, der Inhalt füllt es</td></tr>
+          <tr><th>Typisch</th><td>Navigation, Button-Gruppe, Formularzeile, Zentrieren, Media-Objekt</td><td>Seitenraster, Galerie, Dashboard, Karten in festen Spalten</td></tr>
+        </tbody>
+      </table>
+      <p class="merke">Beide Modelle werden kombiniert: Grid für das Gerüst der Seite, Flexbox für die Anordnung
+        <i>innerhalb</i> einer Zelle. Schalten Sie oben die Markierung ein – in dieser Seite stecken
+        Flex-Container in Flex-Containern.</p>
+    </section>
+
+    <section id="selbsttest">
+      <h2>Selbsttest</h2>
+      <details>
+        <summary>In einer Toolbar sollen die ersten drei Buttons links stehen, der letzte ganz rechts. Wie geht das
+          mit einer einzigen Regel am letzten Button?</summary>
+        <p><code>margin-left: auto</code> am letzten Button. Ein <code>auto</code>-margin nimmt auf der Hauptachse
+          den gesamten freien Platz auf.</p>
+      </details>
+      <details>
+        <summary>Ein <code>&lt;input&gt;</code> mit <code>flex: 1</code> läuft bei schmalem Bildschirm aus dem
+          Container. Woran liegt es?</summary>
+        <p>Flex-Items haben standardmäßig <code>min-width: auto</code> und schrumpfen nicht unter ihre
+          Mindest-Inhaltsbreite – bei Formularfeldern ist die recht groß. <code>min-width: 0</code> hebt das auf.</p>
+      </details>
+      <details>
+        <summary>Eine Bildergalerie soll in allen Zeilen exakt gleich breite Spalten haben, auch in der letzten.
+          Flexbox oder Grid?</summary>
+        <p>Grid. Die Anforderung betrifft Zeilen <i>und</i> Spalten gleichzeitig, also zwei Dimensionen.</p>
+      </details>
+    </section>
+  </main>
+</body>
+
+</html>

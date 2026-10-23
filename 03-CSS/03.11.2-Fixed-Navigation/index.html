@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>position: fixed – Navigationsleiste und Footer</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Diese Regeln gestalten die echte Seite – Kopfleiste und Footer sind das Beispiel.
+       main.js zeigt sie in den Abschnitten an. Farben und Abstände stehen in css/style.css. -->
+  <style id="beispiel-regeln">
+    :root {
+      --kopf: 3.5rem;  /* Höhe der Navigationsleiste, main.js misst nach */
+      --fuss: 3rem;  /* Höhe des Footers, main.js misst nach */
+    }
+
+    /* Navigationsleiste und Footer am Fenster festmachen */
+    .kopf {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;  /* über dem positionierten Inhalt */
+    }
+    .fuss {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+
+    /* Platz freihalten: Inhalt beginnt unter der Leiste und endet über dem Footer */
+    body {
+      padding-top: var(--kopf);
+      padding-bottom: var(--fuss);
+    }
+
+    /* Sprungmarken landen unterhalb der Leiste */
+    html {
+      scroll-padding-top: calc(var(--kopf) + 1rem);
+    }
+
+    /* Schalter der Steuerung: Varianten zum Vergleichen */
+    body.ohne-abstand {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    html.ohne-scroll-padding {
+      scroll-padding-top: 0;
+    }
+    body.ohne-z-index .kopf {
+      z-index: auto;
+    }
+    body.als-sticky .kopf {
+      position: sticky;  /* bleibt im Fluss, haftet oben */
+    }
+    body.als-sticky .fuss {
+      position: sticky;  /* haftet unten, solange body sichtbar ist */
+    }
+    body.als-sticky {
+      padding-top: 0;  /* sticky braucht keinen freigehaltenen Platz */
+      padding-bottom: 0;
+    }
+    body.als-static .kopf {
+      position: static;  /* scrollt ganz normal weg */
+    }
+    body.als-static .fuss {
+      position: static;
+    }
+    body.als-static {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    /* Unternavigation in Abschnitt 5: sticky innerhalb ihres Elternelements */
+    .unternav {
+      position: sticky;
+      top: calc(var(--kopf) + 0.5rem);  /* unterhalb der Hauptleiste haften */
+    }
+    body.als-static .unternav {
+      top: 0.5rem;  /* ohne feste Hauptleiste: direkt oben */
+    }
+
+    /* 7. Anchor Positioning: Menü hängt am Knopf in der Leiste */
+    .mehr-knopf {
+      anchor-name: --mehr;  /* macht den Knopf zum Anker */
+    }
+    #mehr-menue {
+      position-anchor: --mehr;  /* an diesem Anker ausrichten */
+      position-area: bottom span-right;  /* unter dem Knopf, nach rechts ausgedehnt */
+      inset: auto;  /* Standardposition des Popovers aufheben */
+      margin: 0.4rem 0 0;
+    }
+
+    /* 7. Tooltip mit wählbarer Position und automatischem Umklappen */
+    .tipp-knopf {
+      anchor-name: --tipp;
+    }
+    #tipp {
+      position-anchor: --tipp;
+      position-area: top;  /* main.js setzt den gewählten Wert */
+      inset: auto;
+      margin: 0.4rem;
+    }
+    #tipp.mit-fallback {
+      position-try-fallbacks: flip-block, flip-inline;  /* umklappen, wenn kein Platz */
+    }
+  </style>
+  <script src="main.js" defer></script>
+</head>
+
+<body>
+  <a class="sprunglink" href="#inhalt">Zum Inhalt springen</a>
+
+  <nav class="kopf" aria-label="Hauptnavigation">
+    <a class="logo" href="#start">◆ Fixed-Demo</a>
+    <ul>
+      <li><a href="#regeln">Regeln</a></li>
+      <li><a href="#abstand">Abstand</a></li>
+      <li><a href="#sprungmarken">Sprungmarken</a></li>
+      <li><a href="#stapel">z-index</a></li>
+      <li><a href="#vergleich">fixed oder sticky?</a></li>
+      <li><a href="#hoehe">Höhe</a></li>
+      <li><a href="#anker">Anchor</a></li>
+      <li><button type="button" class="mehr-knopf" popovertarget="mehr-menue">Mehr ▾</button></li>
+    </ul>
+  </nav>
+  <ul id="mehr-menue" class="menue" popover aria-label="Weitere Abschnitte">
+    <li><a href="#anker">Anchor Positioning</a></li>
+    <li><a href="#selbsttest">Selbsttest</a></li>
+    <li><a href="#start">Zum Seitenanfang</a></li>
+  </ul>
+
+  <main id="inhalt">
+    <section id="start">
+      <h1><code>position: fixed</code>: Navigationsleiste und Footer</h1>
+      <p>Diese ganze Seite ist das Beispiel. Die dunkle <b>Navigationsleiste</b> oben und der <b>Footer</b> unten
+        hängen am Browserfenster und bleiben stehen, während Sie scrollen. Mit den Schaltern in der <b>Steuerung</b> rechts unten schalten
+        Sie einzelne Regeln ab und sehen sofort, wozu sie da sind.</p>
+      <p class="merke">Scrollen Sie zuerst einmal langsam durch die Seite und beobachten Sie Kopf und Fuß. Die
+        Links in der Leiste springen zu den Abschnitten; der gerade sichtbare Abschnitt ist hervorgehoben.</p>
+    </section>
+
+    <section id="regeln">
+      <h2>1. Die Regeln für Kopf und Fuß</h2>
+      <p><code>position: fixed</code> nimmt die Leiste aus dem Dokumentfluss und bezieht ihre Offsets auf den
+        <b>Viewport</b>. <code>top: 0</code> klebt sie an die Oberkante, <code>left: 0</code> und
+        <code>right: 0</code> spannen sie auf die volle Fensterbreite – ohne diese beiden Werte wäre sie nur so
+        breit wie ihr Inhalt. Der Footer macht dasselbe mit <code>bottom: 0</code>.</p>
+      <div class="beispiel" data-regeln=".kopf|.fuss"></div>
+      <p>Die Höhen stehen als Custom Properties <code>--kopf</code> und <code>--fuss</code> an einer Stelle, weil
+        mehrere Regeln sie brauchen:</p>
+      <div class="beispiel" data-regeln=":root"></div>
+      <p class="fuellung">Nach diesem Abschnitt folgt etwas Fülltext, damit es genug zu scrollen gibt. Achten Sie
+        darauf, dass er unter der Leiste hindurchläuft: Die Leiste liegt über dem Inhalt, sie schiebt ihn nicht
+        zur Seite.</p>
+    </section>
+
+    <section id="abstand">
+      <h2>2. Platz freihalten: <code>padding</code> am <code>body</code></h2>
+      <p>Weil Kopf und Fuß den Fluss verlassen haben, „weiß“ der übrige Inhalt nichts von ihnen. Ohne Gegenmaßnahme
+        beginnt die Seite <i>unter</i> der Leiste – die Überschrift ganz oben wäre verdeckt, ebenso die letzte
+        Zeile ganz unten. Deshalb bekommt der <code>body</code> oben und unten genau so viel Innenabstand, wie
+        Kopf und Fuß hoch sind.</p>
+      <div class="beispiel" data-regeln="body|body.ohne-abstand"></div>
+      <p class="merke"><b>Ausprobieren:</b> Schalten Sie in der Steuerung <i>Abstand</i> aus und scrollen Sie ganz nach
+        oben: Die Hauptüberschrift verschwindet hinter der Leiste. Scrollen Sie ganz nach unten: Der letzte Absatz
+        liegt hinter dem Footer.</p>
+    </section>
+
+    <section id="sprungmarken">
+      <h2>3. Sprungmarken: <code>scroll-padding-top</code></h2>
+      <p>Ein Klick auf einen Link wie <code>href="#stapel"</code> scrollt das Ziel an die Oberkante des Fensters –
+        also genau hinter die feste Leiste. Die Überschrift des Abschnitts wäre verdeckt.
+        <code>scroll-padding-top</code> am <code>html</code>-Element sagt dem Browser: Beim Scrollen zu einem Ziel
+        oben diesen Bereich frei lassen.</p>
+      <div class="beispiel" data-regeln="html|html.ohne-scroll-padding"></div>
+      <p class="merke"><b>Ausprobieren:</b> Schalten Sie in der Steuerung <i>scroll-padding</i> aus und klicken Sie oben
+        auf <a href="#stapel">z-index</a> oder <a href="#hoehe">Höhe</a>. Die Überschrift landet unter der Leiste.
+        Mit eingeschaltetem <i>scroll-padding</i> steht sie sauber darunter.</p>
+    </section>
+
+    <section id="stapel">
+      <h2>4. <code>z-index</code>: Die Leiste muss oben liegen</h2>
+      <p>Diese Karte ist <code>position: relative</code> – wie jede Karte mit einem Badge. Ohne
+        <code>z-index</code> gilt bei positionierten Elementen die Reihenfolge im HTML: Die Karte kommt nach der
+        Navigationsleiste und läge deshalb beim Scrollen <i>über</i> ihr. <code>z-index: 100</code> an der Leiste
+        dreht das um.</p>
+      <div class="karte">
+        <b>Ich bin positioniert</b>
+        <span class="badge">relative</span>
+        <p>Schalten Sie in der Steuerung <i>z-index</i> aus und scrollen Sie diese Karte langsam unter die Leiste.</p>
+      </div>
+      <div class="beispiel" data-regeln="body.ohne-z-index .kopf"></div>
+    </section>
+
+    <section id="vergleich">
+      <h2>5. <code>fixed</code>, <code>sticky</code> oder <code>static</code>?</h2>
+      <nav class="unternav" aria-label="Unternavigation Abschnitt 5">
+        <b>Abschnitt 5:</b>
+        <a href="#v-tabelle">Vergleich</a>
+        <a href="#v-regeln">Regeln</a>
+        <a href="#v-sichtbar">Sichtbar gemacht</a>
+        <a href="#v-empfehlung">Empfehlung</a>
+      </nav>
+      <p>Mit dem Schalter <i>Modus</i> in der Steuerung wechseln Kopf und Fuß zwischen drei Varianten:</p>
+      <table class="vergleich" id="v-tabelle">
+        <thead><tr><th></th><th><code>fixed</code></th><th><code>sticky</code></th><th><code>static</code></th></tr></thead>
+        <tbody>
+          <tr><th>im Fluss?</th><td>nein</td><td>ja</td><td>ja</td></tr>
+          <tr><th>beim Scrollen</th><td>immer sichtbar</td><td>haftet, solange das Elternelement (hier <code>body</code>) sichtbar ist</td><td>scrollt weg</td></tr>
+          <tr><th>Platz freihalten?</th><td>ja, per <code>padding</code></td><td>nein, der Platz ist reserviert</td><td>nein</td></tr>
+          <tr><th>Bezug</th><td>Viewport</td><td>nächster scrollender Vorfahre</td><td>–</td></tr>
+        </tbody>
+      </table>
+      <h3 id="v-regeln">Die Regeln für den Modus sticky</h3>
+      <div class="beispiel" data-regeln="body.als-sticky .kopf|body.als-sticky .fuss|body.als-sticky"></div>
+      <p>Schalten Sie zwischen <i>fixed</i> und <i>sticky</i> um: Kopf und Fuß sehen auf dieser Seite in beiden
+        Modi gleich aus. Ihr Elternelement ist der <code>body</code>, und der ist so hoch wie die ganze Seite –
+        die Leiste kommt nie an ein Ende, an dem sie loslassen müsste. Der Unterschied steckt nur in den Regeln:
+        Bei <code>sticky</code> ist kein <code>padding</code> nötig.</p>
+
+      <h3 id="v-sichtbar">Der Unterschied sichtbar gemacht</h3>
+      <p>Die hellblaue Leiste unter der Überschrift dieses Abschnitts ist ebenfalls <code>sticky</code>. Ihr
+        Elternelement ist aber nur dieser Abschnitt. Scrollen Sie weiter: Solange Abschnitt 5 im Fenster ist,
+        haftet sie unter der Hauptleiste. Am Ende des Abschnitts wird sie mitgenommen und scrollt weg. Ein
+        <code>fixed</code>-Element würde dagegen immer stehen bleiben, egal wo es im HTML steht.</p>
+      <div class="beispiel" data-regeln=".unternav|body.als-static .unternav"></div>
+
+      <h3 id="v-empfehlung">Empfehlung</h3>
+      <p>Für eine Kopfleiste ist <code>sticky</code> heute oft die einfachere Wahl: Sie braucht kein
+        <code>padding</code> und kein Nachmessen der Höhe. <code>fixed</code> bleibt sinnvoll, wenn das Element
+        unabhängig von jedem Elternelement immer sichtbar sein soll – z. B. eine untere Tab-Leiste in einer
+        mobilen Web-App, ein Chat-Button oder ein Cookie-Hinweis.</p>
+      <p class="merke">Hier endet Abschnitt 5. Scrollen Sie langsam weiter und beobachten Sie die hellblaue
+        Unternavigation: Sie verlässt jetzt das Fenster, die Hauptleiste bleibt.</p>
+    </section>
+
+    <section id="hoehe">
+      <h2>6. Wenn die Höhe nicht feststeht</h2>
+      <p>Das <code>padding</code> stimmt nur, wenn es genau so groß ist wie Kopf und Fuß. Bei schmalem Fenster
+        brechen die Links der Leiste und die Einträge im Footer aber in eine zweite Zeile um – beide werden höher.
+        Diese Demo misst deshalb mit einem <code>ResizeObserver</code> nach und schreibt die echten Höhen in
+        <code>--kopf</code> und <code>--fuss</code>:</p>
+      <p class="messung" id="messung" aria-live="polite"></p>
+      <p class="merke"><b>Ausprobieren:</b> Machen Sie das Browserfenster schmal. Die Werte oben ändern sich, und
+        der Inhalt rutscht trotzdem nie unter Kopf oder Fuß. Ohne Nachmessen müsste man eine feste Höhe
+        vorgeben – oder gleich <code>sticky</code> verwenden.</p>
+      <p class="merke warnung"><b>Auf dem Smartphone:</b> Feste Leisten nehmen auf kleinen Bildschirmen und bei
+        starkem Zoom viel Platz weg. Halten Sie sie flach, zeigen Sie unten nur das Nötigste – und prüfen Sie die
+        Seite bei 200&nbsp;% und 400&nbsp;% Zoom. Der Link „Zum Inhalt springen“ (sichtbar mit <kbd>Tab</kbd> ganz
+        oben) hilft Tastaturnutzern, die Navigation zu überspringen.</p>
+    </section>
+
+    <section id="anker">
+      <h2>7. CSS Anchor Positioning: Menüs und Tooltips an der Leiste</h2>
+      <p>Öffnen Sie in der Navigationsleiste das Menü <b>Mehr ▾</b> und scrollen Sie dann. Das Menü hängt am Knopf –
+        auch wenn Sie in der Steuerung auf <i>static</i> schalten und die Leiste wegscrollt, wandert es mit.
+        Früher brauchte man dafür JavaScript, das bei jedem Scrollen und jeder Größenänderung die Position des
+        Knopfs neu berechnet. Mit Anchor Positioning beschreibt CSS die Beziehung direkt:</p>
+      <ol>
+        <li><code>anchor-name: --mehr</code> macht den Knopf zum <b>Anker</b>. Der Name beginnt wie eine Custom
+          Property mit zwei Bindestrichen.</li>
+        <li><code>position-anchor: --mehr</code> verbindet das Menü mit diesem Anker.</li>
+        <li><code>position-area</code> legt fest, auf welcher Seite des Ankers das Menü erscheint.</li>
+      </ol>
+      <div class="beispiel" data-regeln=".mehr-knopf|#mehr-menue"></div>
+      <p>Das Menü ist ein <code>popover</code>-Element: Der Knopf öffnet es per <code>popovertarget</code>, ein
+        Klick daneben oder <kbd>Esc</kbd> schließt es – ganz ohne JavaScript. Ein Popover liegt in der obersten
+        Ebene der Seite (<i>top layer</i>), über allem anderen, auch über der festen Leiste, unabhängig von
+        <code>z-index</code>. Deshalb muss <code>inset: auto</code> seine Standardposition (mittig im Fenster)
+        aufheben.</p>
+
+      <h3><code>position-area</code>: ein 3×3-Raster um den Anker</h3>
+      <p>Man kann sich um den Anker ein Raster aus neun Feldern denken – der Anker selbst ist das mittlere Feld.
+        Zwei Schlüsselwörter wählen Zeile und Spalte: <code>top left</code> ist das Feld links oben,
+        <code>right center</code> das Feld rechts neben dem Anker. <code>span-…</code> dehnt die Fläche über zwei
+        Felder aus. Ein einzelnes Wort meint die ganze Zeile oder Spalte: <code>top</code> ist die gesamte
+        obere Zeile, der Tooltip wird darin über dem Anker zentriert. Wählen Sie eine Position und öffnen Sie den
+        Tooltip:</p>
+      <div class="beispiel">
+        <div class="werkzeuge">
+          <label>position-area
+            <select id="tipp-area">
+              <option>top</option><option>bottom</option><option>left center</option><option>right center</option>
+              <option>top left</option><option>top right</option><option>bottom left</option><option>bottom right</option>
+              <option>top span-right</option><option>bottom span-left</option>
+            </select></label>
+          <label><input type="checkbox" id="tipp-fallback" checked> <code>position-try-fallbacks</code></label>
+        </div>
+        <div class="tipp-buehne">
+          <button type="button" class="tipp-knopf" popovertarget="tipp">Tooltip öffnen</button>
+        </div>
+        <div id="tipp" class="tooltip" popover="manual">Ich hänge am Knopf.
+          <button type="button" class="tipp-zu" popovertarget="tipp" popovertargetaction="hide" aria-label="Tooltip schließen">×</button></div>
+        <pre class="quelltext"><code id="tipp-css"></code></pre>
+      </div>
+      <p class="merke"><b>Umklappen ausprobieren:</b> Öffnen Sie den Tooltip mit <code>top</code> und scrollen Sie,
+        bis der Knopf direkt unter der Navigationsleiste ankommt und oben kein Platz mehr ist. Mit
+        <code>position-try-fallbacks: flip-block</code> klappt der Tooltip nach unten um. Ohne die Regel ragt er
+        aus dem Fenster. Der Tooltip bleibt offen, bis Sie ihn mit × schließen. Er klappt allerdings erst am
+        Fensterrand um – die feste Leiste kennt der Browser dabei nicht, der Tooltip kann also kurz hinter ihr
+        verschwinden.</p>
+      <div class="beispiel" data-regeln=".tipp-knopf|#tipp|#tipp.mit-fallback"></div>
+
+      <h3>Unterstützung</h3>
+      <p>Anchor Positioning ist seit Januar 2026 in Chrome, Edge, Safari und Firefox verfügbar (Baseline
+        <i>Newly available</i>). In älteren Browsern erscheinen die Popovers trotzdem – nur eben in der Mitte des
+        Fensters statt am Knopf. Das ist ein brauchbarer Rückfall: Die Seite bleibt bedienbar.</p>
+      <p class="merke warnung" id="anker-hinweis" hidden>Ihr Browser unterstützt Anchor Positioning nicht. Menü und
+        Tooltip erscheinen deshalb mittig im Fenster.</p>
+    </section>
+
+    <section id="selbsttest">
+      <h2>Selbsttest</h2>
+      <details>
+        <summary>Die feste Leiste ist nur so breit wie ihr Text. Was fehlt?</summary>
+        <p><code>left: 0</code> und <code>right: 0</code> (oder <code>width: 100%</code>). Ein
+          <code>fixed</code>-Element verhält sich wie ein absolut positioniertes und schrumpft auf seinen Inhalt.</p>
+      </details>
+      <details>
+        <summary>Nach einem Klick auf einen Link im Inhaltsverzeichnis ist die Überschrift des Ziels verdeckt. Welche
+          Eigenschaft hilft?</summary>
+        <p><code>scroll-padding-top</code> am scrollenden Element – für die ganze Seite also am
+          <code>html</code>-Element – mit der Höhe der Leiste.</p>
+      </details>
+      <details>
+        <summary>Warum braucht ein <code>sticky</code>-Header kein <code>padding-top</code> am <code>body</code>?</summary>
+        <p>Er bleibt im Dokumentfluss. Sein Platz ist reserviert, der Inhalt beginnt automatisch darunter.</p>
+      </details>
+      <details>
+        <summary>Ein Dropdown an einer festen Leiste soll beim Scrollen am Knopf hängen bleiben. Welche drei
+          Eigenschaften brauchen Sie dafür in CSS?</summary>
+        <p><code>anchor-name</code> am Knopf, <code>position-anchor</code> am Menü und <code>position-area</code>
+          (oder <code>top: anchor(bottom)</code> usw.) für die Seite, auf der das Menü erscheint.</p>
+      </details>
+    </section>
+
+    <p class="ende">Ende der Seite. Ist dieser Satz vollständig zu sehen? Dann stimmt <code>padding-bottom</code>.</p>
+  </main>
+
+  <footer class="fuss">
+    <span>© 2026 Internet-Technologien</span>
+    <a href="#start">Impressum</a>
+    <a href="#start">Kontakt</a>
+    <a class="nach-oben" href="#start">↑ nach oben</a>
+  </footer>
+
+  <!-- Steuerung der Demo – gehört NICHT zum Beispiel. Sie bleibt in jedem Modus sichtbar. -->
+  <aside class="steuerung" aria-label="Steuerung der Demo">
+    <details open>
+      <summary>Steuerung</summary>
+      <fieldset class="schalter">
+        <legend>Modus von Kopf und Fuß</legend>
+        <label><input type="radio" name="modus" value="fixed" checked> fixed</label>
+        <label><input type="radio" name="modus" value="sticky"> sticky</label>
+        <label><input type="radio" name="modus" value="static"> static</label>
+      </fieldset>
+      <fieldset class="schalter">
+        <legend>Regeln bei fixed</legend>
+        <label><input type="checkbox" id="s-abstand" checked> Abstand</label>
+        <label><input type="checkbox" id="s-scroll-padding" checked> scroll-padding</label>
+        <label><input type="checkbox" id="s-z-index" checked> z-index</label>
+      </fieldset>
+    </details>
+  </aside>
+</body>
+
+</html>

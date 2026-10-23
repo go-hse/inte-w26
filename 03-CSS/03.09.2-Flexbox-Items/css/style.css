@@ -1,0 +1,215 @@
+/* ------------------------------------------------------------------
+   Seitenlayout – die Regeln der Beispiele stehen im <style> von index.html
+   ------------------------------------------------------------------ */
+:root {
+  --navy: #193058;
+  --cyan: #00aadc;      /* Querachse */
+  --rot: #b6163d;       /* Hauptachse */
+  --item-1: #8cb6c0;
+  --item-2: #c3d08b;
+  --item-3: #f9cc9d;
+  --item-4: #e7b7c3;
+  --container: #e3e9f2;
+}
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: var(--navy);
+}
+body > header, body > main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+body > header {
+  padding-top: 1rem;
+}
+h1 {
+  margin-bottom: 0.25rem;
+}
+section {
+  margin: 2rem 0;
+}
+code {
+  font-family: ui-monospace, Consolas, monospace;
+}
+.haupt { color: var(--rot); font-weight: 600; }
+.quer  { color: var(--cyan); font-weight: 600; }
+
+/* Beispiele nebeneinander */
+.raster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1rem;
+}
+.raster.zwei {
+  grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+}
+.beispiel {
+  background: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  min-width: 0;
+}
+.beispiel h3 {
+  margin: 0.25rem 0 0.5rem;
+  font-size: 0.95rem;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+/* Grundaussehen: Container gestrichelt, Items farbig.
+   display, Richtung und Ausrichtung kommen aus den Beispiel-Regeln. */
+.c {
+  background: var(--container);
+  border: 2px dashed var(--navy);
+  padding: 4px;
+}
+.i {
+  padding: 0.35rem 0.7rem;
+  border-radius: 4px;
+  font: 600 0.9rem ui-monospace, Consolas, monospace;
+  background: var(--item-1);
+}
+.i:nth-child(4n + 2) { background: var(--item-2); }
+.i:nth-child(4n + 3) { background: var(--item-3); }
+.i:nth-child(4n + 4) { background: var(--item-4); }
+
+/* Quelltext unter jedem Beispiel (von main.js erzeugt) */
+.quelltext {
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0.75rem;
+  background: var(--navy);
+  color: #f0f0f0;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+}
+
+/* Werkzeugleiste der Spielwiese */
+.werkzeuge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.werkzeuge output {
+  display: inline-block;
+  width: 3.5rem;
+  font-family: ui-monospace, Consolas, monospace;
+}
+.werkzeuge select {
+  font: 0.9rem ui-monospace, Consolas, monospace;
+}
+.sw-ergebnis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+/* Merkkasten und Selbsttest */
+.merke {
+  border-left: 5px solid var(--cyan);
+  background: white;
+  padding: 0.5rem 1rem;
+}
+.warnung {
+  border-left-color: var(--rot);
+}
+details {
+  background: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+}
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Größen der Beispiel-Container */
+.schmal { width: 15rem; max-width: 100%; }
+.hoch   { height: 10rem; }
+.i {
+  position: relative;          /* Bezugspunkt für das Maß-Kästchen */
+  box-sizing: border-box;      /* Basis und Breite schließen padding ein: Maß = Regelwert */
+}
+button.i {
+  border: 0;
+  color: var(--navy);
+  cursor: pointer;
+}
+button.i:focus-visible {
+  outline: 3px solid var(--rot);
+  outline-offset: 2px;
+}
+
+/* gemessene Größe: main.js schreibt sie in data-mass, ::after zeigt sie unter dem Item an.
+   Absolut positioniert, damit das Kästchen die Flex-Berechnung nicht verändert. */
+[data-mass]::after {
+  content: attr(data-mass);
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  padding: 0 0.3rem;
+  font: 0.7rem ui-monospace, Consolas, monospace;
+  white-space: nowrap;
+  background: var(--navy);
+  color: white;
+  border-radius: 3px;
+}
+.c:has([data-mass]) {
+  margin-bottom: 1.6rem;
+}
+.mass-rechts [data-mass]::after {
+  top: 50%;
+  left: calc(100% + 6px);
+  translate: 0 -50%;
+}
+.mass-rechts {
+  margin-bottom: 0 !important;
+}
+
+/* Spielwiese */
+.sw-items fieldset {
+  background: white;
+  border: 1px solid #ccd;
+  border-radius: 6px;
+  display: grid;
+  gap: 0.2rem;
+}
+.sw-items legend {
+  font-weight: 600;
+}
+.sw-items output {
+  display: inline-block;
+  width: 3.5rem;
+  font-family: ui-monospace, Consolas, monospace;
+}
+.sw-items input {
+  vertical-align: middle;
+}
+.sw-flaeche {
+  overflow-x: auto;
+  padding: 1rem 0 1.8rem;
+}
+#sw-container {
+  display: flex;
+  box-sizing: content-box;     /* width = Innenbreite, so rechnet die Spielwiese */
+}
+#sw-container .i {
+  box-sizing: border-box;
+  min-width: 0;                /* Items dürfen bis 0 schrumpfen */
+  padding: 0.5rem 0;
+  text-align: center;
+  overflow: hidden;
+  overflow: clip;
+  overflow-clip-margin: 2rem;  /* Maß-Kästchen bleibt sichtbar */
+}
+.rechnung {
+  background: #2b3f63;
+}

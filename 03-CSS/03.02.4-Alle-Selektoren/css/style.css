@@ -12,18 +12,18 @@ body {
     color: #193058;
 }
 
+/* ID */
 #kopf {
     background: #193058;
     color: white;
     padding: 12px 24px;
 }
 
-/* ID */
+/* Klasse    */
 .notiz {
     font-style: italic;
 }
 
-/* Klasse    */
 
 /* 2. Attribut-Selektor */
 a[href$=".pdf"] {
@@ -32,41 +32,42 @@ a[href$=".pdf"] {
 }
 
 /* 3. Kombinatoren */
+
+/* Nachfahre */
 nav a {
     color: white;
 }
 
-/* Nachfahre */
+/* Kind */
 nav>a {
     color: #00aadc;
     margin-right: 12px;
 }
 
-/* Kind */
+/* nächstes Geschwister */
 h2+p {
     font-weight: bold;
 }
 
-/* nächstes Geschwister */
+/* allg. Geschwister */
 h2~.notiz {
     border-left: 4px solid #00aadc;
-    /* allg. Geschwister */
     padding-left: 8px;
 }
 
 /* 4. Gruppe und Verkettung */
+
+/* Komma = ODER */
 h1,
 h2 {
     margin: 0 0 6px;
 }
 
-/* Komma = ODER */
+/* ohne Komma = UND */
 li.aktuell {
     color: #b6163d;
     font-weight: bold;
 }
-
-/* ohne Komma = UND */
 
 /* 5. Pseudo-Klassen */
 li:nth-child(odd) {
@@ -77,6 +78,8 @@ li:not(:last-child) {
     border-bottom: 1px solid #ccc;
 }
 
+
+/* ?? */
 a:hover {
     text-decoration: underline;
 }
@@ -97,20 +100,21 @@ h2::first-letter {
 }
 
 /* 7. Funktionale Pseudo-Klassen */
-article:has(.aktuell) {
-    box-shadow: 0 0 0 3px #00aadc;
-}
 
 /* wählt das <article>-Element aus, 
 aber nur dann, wenn sich irgendwo in seinem Inneren 
 ein Element mit der Klasse .aktuell befindet.*/
 
+article:has(.aktuell) {
+    box-shadow: 0 0 0 3px #00aadc;
+}
+
+
+/* wie ul, ol aber ohne Gewichtung*/
 :where(ul, ol) {
     padding-left: 20px;
     list-style: square;
 }
-
-/* wie ul, ol aber ohne Gewichtung*/
 
 article {
     background: white;

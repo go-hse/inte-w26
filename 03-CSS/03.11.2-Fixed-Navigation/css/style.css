@@ -1,0 +1,400 @@
+/* ------------------------------------------------------------------
+   Seitenlayout – die Regeln der Beispiele stehen im <style> von index.html
+   ------------------------------------------------------------------ */
+:root {
+  --navy: #193058;
+  --cyan: #00aadc;      /* Querachse */
+  --rot: #b6163d;       /* Hauptachse */
+  --item-1: #8cb6c0;
+  --item-2: #c3d08b;
+  --item-3: #f9cc9d;
+  --item-4: #e7b7c3;
+  --container: #e3e9f2;
+}
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: var(--navy);
+}
+body > header, body > main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+body > header {
+  padding-top: 1rem;
+}
+h1 {
+  margin-bottom: 0.25rem;
+}
+section {
+  margin: 2rem 0;
+}
+code {
+  font-family: ui-monospace, Consolas, monospace;
+}
+.haupt { color: var(--rot); font-weight: 600; }
+.quer  { color: var(--cyan); font-weight: 600; }
+
+/* Beispiele nebeneinander */
+.raster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1rem;
+}
+.raster.zwei {
+  grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+}
+.beispiel {
+  background: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  min-width: 0;
+}
+.beispiel h3 {
+  margin: 0.25rem 0 0.5rem;
+  font-size: 0.95rem;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+/* Grundaussehen: Container gestrichelt, Items farbig.
+   display, Richtung und Ausrichtung kommen aus den Beispiel-Regeln. */
+.c {
+  background: var(--container);
+  border: 2px dashed var(--navy);
+  padding: 4px;
+}
+.i {
+  padding: 0.35rem 0.7rem;
+  border-radius: 4px;
+  font: 600 0.9rem ui-monospace, Consolas, monospace;
+  background: var(--item-1);
+}
+.i:nth-child(4n + 2) { background: var(--item-2); }
+.i:nth-child(4n + 3) { background: var(--item-3); }
+.i:nth-child(4n + 4) { background: var(--item-4); }
+
+/* Quelltext unter jedem Beispiel (von main.js erzeugt) */
+.quelltext {
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0.75rem;
+  background: var(--navy);
+  color: #f0f0f0;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+}
+
+/* Werkzeugleiste der Spielwiese */
+.werkzeuge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.werkzeuge output {
+  display: inline-block;
+  width: 3.5rem;
+  font-family: ui-monospace, Consolas, monospace;
+}
+.werkzeuge select {
+  font: 0.9rem ui-monospace, Consolas, monospace;
+}
+.sw-ergebnis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+/* Merkkasten und Selbsttest */
+.merke {
+  border-left: 5px solid var(--cyan);
+  background: white;
+  padding: 0.5rem 1rem;
+}
+.warnung {
+  border-left-color: var(--rot);
+}
+details {
+  background: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+}
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------------
+   Aussehen von Kopfleiste, Footer und Inhalt.
+   Die Positionierung steht in <style id="beispiel-regeln"> in index.html.
+   ------------------------------------------------------------------ */
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+body {
+  box-sizing: border-box;
+}
+body > main {
+  padding-bottom: 1rem;
+}
+
+/* Kopfleiste */
+.kopf {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1.5rem;
+  min-height: 3.5rem;
+  box-sizing: border-box;
+  padding: 0.5rem 1.5rem;
+  background: var(--navy);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+.kopf a {
+  color: white;
+  text-decoration: none;
+}
+.kopf .logo {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.kopf ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kopf ul a {
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+.kopf ul a:hover,
+.kopf ul a:focus-visible {
+  background: rgba(255, 255, 255, 0.15);
+}
+.kopf ul a.aktiv {
+  background: var(--cyan);
+}
+
+/* Footer */
+.fuss {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1.5rem;
+  min-height: 3rem;
+  box-sizing: border-box;
+  padding: 0.35rem 1.5rem;
+  background: #eef2f8;
+  border-top: 3px solid var(--navy);
+  font-size: 0.9rem;
+}
+
+/* Steuerung der Demo: eigenes Bedienfeld, nicht Teil des Beispiels.
+   Steht über dem Footer und bleibt auch bei sticky und static sichtbar. */
+.steuerung {
+  position: fixed;
+  right: 1rem;
+  bottom: calc(var(--fuss) + 1rem);
+  z-index: 300;
+  max-width: calc(100vw - 2rem);
+  background: white;
+  border: 2px solid var(--rot);
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  font-size: 0.9rem;
+}
+body.als-static .steuerung {
+  bottom: 1rem;                   /* Footer ist weggescrollt */
+}
+.steuerung details {
+  padding: 0.4rem 0.8rem;
+  margin: 0;
+}
+.steuerung summary {
+  color: var(--rot);
+}
+.schalter {
+  display: grid;
+  gap: 0.1rem;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  border: 0;
+}
+.schalter legend {
+  padding: 0;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+.schalter label:has(input:disabled) {
+  opacity: 0.5;
+}
+.nach-oben {
+  margin-left: auto;
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* Inhalt */
+.fuellung {
+  margin-bottom: 12rem;
+}
+section {
+  margin: 2rem 0 4rem;
+}
+.karte {
+  position: relative;             /* positioniert – deshalb relevant für z-index */
+  margin: 1.5rem 0 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--item-3);
+  border: 2px solid #d9822b;
+  border-radius: 6px;
+}
+.karte p {
+  margin: 0.5rem 0 0;
+}
+.badge {
+  position: absolute;
+  top: -10px;
+  right: 12px;
+  padding: 0.05rem 0.5rem;
+  background: var(--rot);
+  color: white;
+  border-radius: 999px;
+  font: 700 0.75rem ui-monospace, Consolas, monospace;
+}
+.messung {
+  font: 0.95rem ui-monospace, Consolas, monospace;
+  background: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+}
+.ende {
+  padding: 0.75rem 1rem;
+  background: var(--item-2);
+  border-radius: 6px;
+  font-weight: 600;
+}
+.vergleich {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-size: 0.95rem;
+}
+.vergleich th,
+.vergleich td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid #dde;
+}
+
+/* Sprunglink: unsichtbar, bis er per Tab den Fokus bekommt */
+.sprunglink {
+  position: absolute;
+  left: -999rem;
+}
+.sprunglink:focus {
+  left: 1rem;
+  top: 0.5rem;
+  z-index: 200;
+  padding: 0.4rem 0.8rem;
+  background: white;
+  color: var(--navy);
+  border: 2px solid var(--rot);
+}
+
+/* Unternavigation in Abschnitt 5 (Positionierung in index.html) */
+.unternav {
+  z-index: 50;                    /* über dem Inhalt, unter der Hauptleiste */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin: 0 0 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--item-1);
+  border: 2px solid var(--navy);
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.unternav a {
+  color: var(--navy);
+}
+#vergleich [id] {
+  scroll-margin-top: 4rem;        /* Sprungziele nicht unter der Unternavigation verstecken */
+}
+
+/* 7. Anchor Positioning (Positionierung in index.html) */
+.mehr-knopf {
+  font: inherit;
+  color: white;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  padding: 0.1rem 0.5rem;
+  cursor: pointer;
+}
+.mehr-knopf:hover,
+.mehr-knopf:focus-visible {
+  background: rgba(255, 255, 255, 0.15);
+}
+.menue {
+  list-style: none;
+  padding: 0.3rem 0;
+  min-width: 12rem;
+  background: white;
+  border: 2px solid var(--navy);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+.menue a {
+  display: block;
+  padding: 0.35rem 1rem;
+  color: var(--navy);
+  text-decoration: none;
+}
+.menue a:hover,
+.menue a:focus-visible {
+  background: var(--container);
+}
+.tipp-buehne {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 1rem;
+  background: #f7f7f7;
+  border-radius: 4px;
+}
+.tipp-knopf {
+  font: inherit;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+}
+.tooltip {
+  padding: 0.4rem 0.4rem 0.4rem 0.8rem;
+  background: var(--navy);
+  color: white;
+  border: 0;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+.tipp-zu {
+  margin-left: 0.4rem;
+  background: none;
+  border: 0;
+  color: white;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}

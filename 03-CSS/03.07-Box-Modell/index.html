@@ -82,6 +82,13 @@
     }
 
     /* 7. float, clear, flow-root */
+    #clear-demo img {
+      float: right;
+      margin: 10px;
+    }
+    #clear-demo.mit-clear .danach {
+      clear: both;               /* erst unterhalb aller floats beginnen */
+    }
     .schwebend {
       float: left;
       margin: 0 10px 0 0;
@@ -215,10 +222,26 @@
     </section>
 
     <section id="float">
-      <h2>7. <code>float</code> und <code>display: flow-root</code></h2>
-      <p>Ein schwebendes Element wird aus dem Fluss genommen; der Text umfließt es. Der Rahmen des Elternelements
-        sieht es nicht mehr und wird zu niedrig (links). <code>display: flow-root</code> lässt das Elternelement das
-        schwebende Kind wieder umschließen (rechts) – der moderne Ersatz für den Clearfix-Hack.</p>
+      <h2>7. <code>float</code>, <code>clear</code> und <code>display: flow-root</code></h2>
+      <p>Ein schwebendes Element wird aus dem Fluss genommen und an den linken oder rechten Rand geschoben; der
+        nachfolgende Text umfließt es. Mit <code>clear</code> beginnt ein Element erst unterhalb der schwebenden
+        Elemente: <code>left</code>, <code>right</code> oder <code>both</code> legt fest, welche floats es
+        „freiräumt“.</p>
+      <div class="beispiel" data-regeln="#clear-demo img|#clear-demo.mit-clear .danach">
+        <div class="werkzeuge">
+          <label><input type="checkbox" id="clear-schalter"> <code>clear: both</code> für den zweiten Absatz</label>
+        </div>
+        <div class="buehne" id="clear-demo">
+          <p><img src="img/bild.svg" width="120" height="90" alt="Beispielbild">
+            <b>Erster Absatz.</b> Das Bild schwebt rechts, dieser Text umfließt es.</p>
+          <p class="danach"><b>Zweiter Absatz: neues Thema.</b> Ohne <code>clear</code> läuft auch dieser Absatz
+            noch neben dem Bild weiter. Mit <code>clear: both</code> beginnt er erst unterhalb des Bildes.</p>
+        </div>
+      </div>
+      <p>Ein zweites Problem: Der Rahmen des Elternelements sieht ein schwebendes Kind nicht mehr und wird zu niedrig
+        (links). <code>display: flow-root</code> lässt das Elternelement das schwebende Kind wieder umschließen
+        (rechts) – der moderne Ersatz für den Clearfix-Hack, der früher mit <code>clear: both</code> in einem
+        Pseudo-Element gebaut wurde.</p>
       <div class="raster zwei">
         <div class="beispiel" data-regeln=".schwebend|#ohne-flow-root">
           <div class="buehne"><div id="ohne-flow-root" class="eltern">

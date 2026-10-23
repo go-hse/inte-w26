@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flexbox 2: Umbrechen, Wachsen, Schrumpfen</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Die Regeln der Beispiele stehen hier, damit main.js sie unter jedem Beispiel anzeigen kann.
+       Das Seitenlayout (Farben, Rahmen, Größen) steht in css/style.css. -->
+  <style id="beispiel-regeln">
+    /* Container mit der Klasse .flex (Abschnitte 4 bis 6) */
+    .flex {
+      display: flex;
+    }
+
+    /* 1. flex-wrap */
+    #wrap-nowrap {
+      display: flex;
+      flex-wrap: nowrap;  /* Standard */
+    }
+    #wrap-wrap {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    #wrap-wrap-reverse {
+      display: flex;
+      flex-wrap: wrap-reverse;
+    }
+    .breit {
+      width: 90px;  /* 6 × 90px passen nicht in eine Zeile */
+    }
+
+    /* 2. align-content */
+    .drei-pro-zeile {
+      width: 70px;  /* nur 3 passen in eine Zeile */
+    }
+    #ac-stretch {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: stretch;  /* Standard: Zeilen teilen sich die Höhe */
+    }
+    #ac-flex-start {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+    }
+    #ac-center {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+    }
+    #ac-space-between {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: space-between;
+    }
+    #ac-eine-zeile {
+      display: flex;
+      flex-wrap: nowrap;
+      align-content: center;  /* wirkungslos: nur eine Zeile */
+    }
+
+    /* 3. flex-basis */
+    #basis-row {
+      display: flex;
+    }
+    #basis-column {
+      display: flex;
+      flex-direction: column;
+    }
+    .basis-120 {
+      width: 60px;
+      flex-basis: 120px;  /* gewinnt auf der Hauptachse gegen width */
+    }
+
+    /* 3b. flex-basis: auto oder content */
+    #basis-auto {
+      display: flex;
+    }
+    #basis-auto .i {
+      width: 150px;
+      flex-basis: auto;  /* Standard: nimm width, falls gesetzt */
+    }
+    #basis-content {
+      display: flex;
+    }
+    #basis-content .i {
+      width: 150px;
+      flex-basis: content;  /* ignoriert width, misst den Inhalt */
+    }
+    #basis-ohne-width {
+      display: flex;
+    }
+    #basis-ohne-width .i {
+      flex-basis: auto;  /* keine width gesetzt: wie content */
+    }
+
+    /* 4. flex-grow */
+    #grow-1-1-1 .i {
+      flex-grow: 1;
+    }
+    #grow-1-2-1 .i {
+      flex-grow: 1;
+    }
+    #grow-1-2-1 .i:nth-child(2) {
+      flex-grow: 2;  /* bekommt doppelt so viel vom freien Platz */
+    }
+    #grow-0-1-0 .i:nth-child(2) {
+      flex-grow: 1;  /* nur Item 2 wächst */
+    }
+
+    /* 5. flex-shrink */
+    #shrink-1 .i {
+      flex-basis: 200px;
+      flex-shrink: 1;  /* Standard */
+    }
+    #shrink-0 .i {
+      flex-basis: 200px;
+    }
+    #shrink-0 .i:first-child {
+      flex-shrink: 0;  /* bleibt 200px breit, die anderen geben nach */
+    }
+
+    /* 6. Kurzschreibweise flex */
+    #flex-initial .i {
+      flex: initial;  /* = 0 1 auto (Standard) */
+    }
+    #flex-auto .i {
+      flex: auto;  /* = 1 1 auto */
+    }
+    #flex-1 .i {
+      flex: 1;  /* = 1 1 0% */
+    }
+    #flex-none .i {
+      flex: none;  /* = 0 0 auto */
+    }
+
+    /* 7. order und align-self */
+    #reihenfolge {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    #reihenfolge .i:nth-child(3) {
+      order: -1;  /* Standard ist 0: kleinere Werte zuerst */
+    }
+    #reihenfolge .i:nth-child(4) {
+      align-self: flex-end;  /* überschreibt align-items für dieses Item */
+    }
+  </style>
+  <script src="main.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <h1>Flexbox 2: Umbrechen, Wachsen, Schrumpfen</h1>
+    <p>In Demo 1 hat nur der Container Regeln bekommen. Jetzt geht es um die <b>Items</b>: Wie groß wird jedes
+      Item, wenn der Platz nicht genau passt? Gestrichelt ist der Container, farbig sind die Items, das dunkle
+      Kästchen unter einem Item zeigt seine gemessene Breite.</p>
+  </header>
+
+  <main>
+    <section id="spielwiese">
+      <h2>Spielwiese: wie der Platz verteilt wird</h2>
+      <div class="werkzeuge">
+        <label>Container-Breite <input type="range" id="sw-breite" min="150" max="700" value="560"> <output></output></label>
+        <label>gap <input type="range" id="sw-gap" min="0" max="30" value="10"> <output></output></label>
+      </div>
+      <div class="raster sw-items">
+        <fieldset data-item="0">
+          <legend>Item A</legend>
+          <label>grow <input type="range" min="0" max="3" value="1" data-feld="grow"> <output></output></label>
+          <label>shrink <input type="range" min="0" max="3" value="1" data-feld="shrink"> <output></output></label>
+          <label>basis <input type="range" min="0" max="300" step="10" value="100" data-feld="basis"> <output></output></label>
+        </fieldset>
+        <fieldset data-item="1">
+          <legend>Item B</legend>
+          <label>grow <input type="range" min="0" max="3" value="2" data-feld="grow"> <output></output></label>
+          <label>shrink <input type="range" min="0" max="3" value="1" data-feld="shrink"> <output></output></label>
+          <label>basis <input type="range" min="0" max="300" step="10" value="100" data-feld="basis"> <output></output></label>
+        </fieldset>
+        <fieldset data-item="2">
+          <legend>Item C</legend>
+          <label>grow <input type="range" min="0" max="3" value="0" data-feld="grow"> <output></output></label>
+          <label>shrink <input type="range" min="0" max="3" value="0" data-feld="shrink"> <output></output></label>
+          <label>basis <input type="range" min="0" max="300" step="10" value="150" data-feld="basis"> <output></output></label>
+        </fieldset>
+      </div>
+      <div class="sw-flaeche">
+        <div id="sw-container" class="c">
+          <div class="i item-a">A</div><div class="i item-b">B</div><div class="i item-c">C</div>
+        </div>
+      </div>
+      <div class="sw-ergebnis">
+        <pre class="quelltext"><code id="sw-css"></code></pre>
+        <pre class="quelltext rechnung"><code id="sw-rechnung"></code></pre>
+      </div>
+      <p class="merke">Zuerst bekommt jedes Item seine <code>flex-basis</code>. Was danach übrig bleibt (oder fehlt),
+        ist der <b>freie Platz</b>. Ist er positiv, wird er im Verhältnis der <code>flex-grow</code>-Werte verteilt.
+        Ist er negativ, schrumpfen die Items im Verhältnis <code>flex-shrink × flex-basis</code> – große Items
+        geben also mehr ab als kleine.</p>
+    </section>
+
+    <section id="wrap">
+      <h2>1. <code>flex-wrap</code>: in eine neue Zeile umbrechen</h2>
+      <p>Sechs Items mit je 90px Breite passen nicht in den Container. Standardmäßig (<code>nowrap</code>) bleiben
+        alle in einer Zeile und werden dafür schmaler gestaucht. Mit <code>wrap</code> entstehen neue
+        <b>Flex-Zeilen</b>, bei <code>wrap-reverse</code> stapeln sie sich von unten nach oben.</p>
+      <div class="raster">
+        <div class="beispiel" data-regeln="#wrap-nowrap|.breit">
+          <div id="wrap-nowrap" class="c schmal"><div class="i breit" data-messen>1</div><div class="i breit">2</div><div class="i breit">3</div><div class="i breit">4</div><div class="i breit">5</div><div class="i breit">6</div></div>
+        </div>
+        <div class="beispiel" data-regeln="#wrap-wrap|.breit">
+          <div id="wrap-wrap" class="c schmal"><div class="i breit">1</div><div class="i breit">2</div><div class="i breit">3</div><div class="i breit">4</div><div class="i breit">5</div><div class="i breit">6</div></div>
+        </div>
+        <div class="beispiel" data-regeln="#wrap-wrap-reverse|.breit">
+          <div id="wrap-wrap-reverse" class="c schmal"><div class="i breit">1</div><div class="i breit">2</div><div class="i breit">3</div><div class="i breit">4</div><div class="i breit">5</div><div class="i breit">6</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="align-content">
+      <h2>2. <code>align-content</code>: mehrere Flex-Zeilen verteilen</h2>
+      <p><code>align-items</code> richtet die Items <i>innerhalb</i> ihrer Zeile aus. <code>align-content</code>
+        verteilt die <i>Zeilen selbst</i> auf der Querachse – mit denselben Werten wie
+        <code>justify-content</code>. Die Items sind 70px breit, es passen drei in eine Zeile – sieben Items ergeben
+        also drei Flex-Zeilen. Das letzte Beispiel hat nur drei Items und damit nur eine Zeile: Dort bewirkt
+        <code>align-content</code> nichts.</p>
+      <div class="raster">
+        <div class="beispiel" data-regeln="#ac-stretch|.drei-pro-zeile"><div id="ac-stretch" class="c schmal hoch"><div class="i drei-pro-zeile">1</div><div class="i drei-pro-zeile">2</div><div class="i drei-pro-zeile">3</div><div class="i drei-pro-zeile">4</div><div class="i drei-pro-zeile">5</div><div class="i drei-pro-zeile">6</div><div class="i drei-pro-zeile">7</div></div></div>
+        <div class="beispiel" data-regeln="#ac-flex-start|.drei-pro-zeile"><div id="ac-flex-start" class="c schmal hoch"><div class="i drei-pro-zeile">1</div><div class="i drei-pro-zeile">2</div><div class="i drei-pro-zeile">3</div><div class="i drei-pro-zeile">4</div><div class="i drei-pro-zeile">5</div><div class="i drei-pro-zeile">6</div><div class="i drei-pro-zeile">7</div></div></div>
+        <div class="beispiel" data-regeln="#ac-center|.drei-pro-zeile"><div id="ac-center" class="c schmal hoch"><div class="i drei-pro-zeile">1</div><div class="i drei-pro-zeile">2</div><div class="i drei-pro-zeile">3</div><div class="i drei-pro-zeile">4</div><div class="i drei-pro-zeile">5</div><div class="i drei-pro-zeile">6</div><div class="i drei-pro-zeile">7</div></div></div>
+        <div class="beispiel" data-regeln="#ac-space-between|.drei-pro-zeile"><div id="ac-space-between" class="c schmal hoch"><div class="i drei-pro-zeile">1</div><div class="i drei-pro-zeile">2</div><div class="i drei-pro-zeile">3</div><div class="i drei-pro-zeile">4</div><div class="i drei-pro-zeile">5</div><div class="i drei-pro-zeile">6</div><div class="i drei-pro-zeile">7</div></div></div>
+        <div class="beispiel" data-regeln="#ac-eine-zeile|.drei-pro-zeile"><div id="ac-eine-zeile" class="c schmal hoch"><div class="i drei-pro-zeile">1</div><div class="i drei-pro-zeile">2</div><div class="i drei-pro-zeile">3</div></div></div>
+      </div>
+    </section>
+
+    <section id="basis">
+      <h2>3. <code>flex-basis</code>: die Ausgangsgröße auf der Hauptachse</h2>
+      <p>Item 2 hat <code>width: 60px</code> und <code>flex-basis: 120px</code>. In der Zeile gewinnt
+        <code>flex-basis</code>: das Item wird 120px breit. In der Spalte bezieht sich <code>flex-basis</code> auf
+        die <i>Höhe</i> – dort wirkt wieder <code>width</code>. Die Basis gilt also immer entlang der
+        <span class="haupt">Hauptachse</span>.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#basis-row|.basis-120">
+          <div id="basis-row" class="c"><div class="i">1</div><div class="i basis-120" data-messen>2</div><div class="i">3</div></div>
+        </div>
+        <div class="beispiel" data-regeln="#basis-column|.basis-120">
+          <div id="basis-column" class="c mass-rechts"><div class="i">1</div><div class="i basis-120" data-messen>2</div><div class="i">3</div></div>
+        </div>
+      </div>
+
+      <h3><code>flex-basis: auto</code> oder <code>content</code>?</h3>
+      <p>Beide Schlüsselwörter bedeuten „keine feste Basis“, unterscheiden sich aber in einem Punkt:</p>
+      <ul>
+        <li><code>auto</code> (Standard) schaut zuerst auf die Größe in Richtung der Hauptachse, also auf
+          <code>width</code> in einer Zeile. Ist sie gesetzt, wird sie zur Basis. Erst wenn
+          <code>width</code> selbst <code>auto</code> ist, misst der Browser den Inhalt.</li>
+        <li><code>content</code> misst <b>immer</b> den Inhalt und ignoriert <code>width</code> als Basis.</li>
+      </ul>
+      <p>Beide Items haben jeweils <code>width: 150px</code>. Mit <code>auto</code> werden sie 150px breit,
+        der lange Text bricht um. Mit <code>content</code> wird jedes Item so breit wie sein Text in einer
+        Zeile. Ohne <code>width</code> (drittes Beispiel) liefert <code>auto</code> dasselbe Ergebnis wie
+        <code>content</code>. Deshalb sieht man den Unterschied im Alltag selten.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#basis-auto|#basis-auto .i">
+          <div id="basis-auto" class="c"><div class="i" data-messen>kurz</div><div class="i" data-messen>ein deutlich längerer Text</div></div>
+        </div>
+        <div class="beispiel" data-regeln="#basis-content|#basis-content .i">
+          <div id="basis-content" class="c"><div class="i" data-messen>kurz</div><div class="i" data-messen>ein deutlich längerer Text</div></div>
+        </div>
+        <div class="beispiel" data-regeln="#basis-ohne-width|#basis-ohne-width .i">
+          <div id="basis-ohne-width" class="c"><div class="i" data-messen>kurz</div><div class="i" data-messen>ein deutlich längerer Text</div></div>
+        </div>
+      </div>
+      <p class="merke"><code>flex: auto</code> und <code>flex: none</code> aus Abschnitt 6 verwenden
+        <code>flex-basis: auto</code>, nicht <code>content</code>. Eine gesetzte <code>width</code> wirkt dort also
+        weiter als Ausgangsgröße.</p>
+    </section>
+
+    <section id="grow">
+      <h2>4. <code>flex-grow</code>: freien Platz aufteilen</h2>
+      <p><code>flex-grow</code> ist eine Verhältniszahl, kein Pixelwert. Verteilt wird nur der <b>freie</b> Platz:
+        Bei 1 : 2 : 1 bekommt Item 2 doppelt so viel <i>zusätzlichen</i> Platz – es wird aber nicht doppelt so
+        breit, weil alle mit ihrer Inhaltsbreite starten. Standard ist <code>0</code>: nicht wachsen.
+        Die Container in den Abschnitten 4 bis 6 haben die Klasse <code>.flex</code>, also
+        <code>display: flex</code>.</p>
+      <div class="raster">
+        <div class="beispiel" data-regeln="#grow-1-1-1 .i">
+          <div id="grow-1-1-1" class="c flex"><div class="i" data-messen>1</div><div class="i" data-messen>2</div><div class="i" data-messen>3</div></div>
+        </div>
+        <div class="beispiel" data-regeln="#grow-1-2-1 .i|#grow-1-2-1 .i:nth-child(2)">
+          <div id="grow-1-2-1" class="c flex"><div class="i" data-messen>1</div><div class="i" data-messen>2</div><div class="i" data-messen>3</div></div>
+        </div>
+        <div class="beispiel" data-regeln="#grow-0-1-0 .i:nth-child(2)">
+          <div id="grow-0-1-0" class="c flex"><div class="i" data-messen>1</div><div class="i" data-messen>2</div><div class="i" data-messen>3</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="shrink">
+      <h2>5. <code>flex-shrink</code>: wer gibt nach, wenn es eng wird?</h2>
+      <p>Drei Items mit je 200px Basis passen nicht in den Container. Standardmäßig schrumpfen alle gleich.
+        <code>flex-shrink: 0</code> schützt ein Item – typisch für Icons, Bilder oder Buttons, die nicht gestaucht
+        werden dürfen.</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#shrink-1 .i">
+          <div id="shrink-1" class="c flex"><div class="i" data-messen>1</div><div class="i" data-messen>2</div><div class="i" data-messen>3</div></div>
+        </div>
+        <div class="beispiel" data-regeln="#shrink-0 .i|#shrink-0 .i:first-child">
+          <div id="shrink-0" class="c flex"><div class="i" data-messen>1</div><div class="i" data-messen>2</div><div class="i" data-messen>3</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="kurz">
+      <h2>6. Die Kurzschreibweise <code>flex</code></h2>
+      <p>In der Praxis schreibt man selten alle drei Eigenschaften einzeln, sondern <code>flex: grow shrink basis</code>.
+        Die vier häufigsten Werte im Vergleich – die Items haben unterschiedlich viel Text:</p>
+      <div class="raster zwei">
+        <div class="beispiel" data-regeln="#flex-initial .i">
+          <div id="flex-initial" class="c flex"><div class="i" data-messen>kurz</div><div class="i" data-messen>etwas länger</div><div class="i" data-messen>ganz besonders lang</div></div>
+        </div>
+        <div class="beispiel" data-regeln="#flex-auto .i">
+          <div id="flex-auto" class="c flex"><div class="i" data-messen>kurz</div><div class="i" data-messen>etwas länger</div><div class="i" data-messen>ganz besonders lang</div></div>
+        </div>
+        <div class="beispiel" data-regeln="#flex-1 .i">
+          <div id="flex-1" class="c flex"><div class="i" data-messen>kurz</div><div class="i" data-messen>etwas länger</div><div class="i" data-messen>ganz besonders lang</div></div>
+        </div>
+        <div class="beispiel" data-regeln="#flex-none .i">
+          <div id="flex-none" class="c flex"><div class="i" data-messen>kurz</div><div class="i" data-messen>etwas länger</div><div class="i" data-messen>ganz besonders lang</div></div>
+        </div>
+      </div>
+      <p class="merke"><code>flex: auto</code> startet bei der Inhaltsbreite und verteilt nur den Rest – längere Items
+        bleiben länger. <code>flex: 1</code> startet bei Basis <code>0</code> und verteilt <i>den ganzen</i> Platz:
+        Alle Items werden gleich breit, solange der Inhalt hineinpasst.</p>
+    </section>
+
+    <section id="order">
+      <h2>7. <code>order</code> und <code>align-self</code>: einzelne Items abweichen lassen</h2>
+      <p>Item 3 steht durch <code>order: -1</code> vorne, Item 4 sitzt durch <code>align-self</code> als einziges
+        unten. Die Items sind hier Buttons: Klicken Sie in den Container und drücken Sie mehrmals
+        <kbd>Tab</kbd>.</p>
+      <div class="beispiel" data-regeln="#reihenfolge|#reihenfolge .i:nth-child(3)|#reihenfolge .i:nth-child(4)">
+        <div id="reihenfolge" class="c hoch">
+          <button class="i">1</button><button class="i">2</button><button class="i">3</button><button class="i">4</button><button class="i">5</button>
+        </div>
+      </div>
+      <p class="merke warnung"><b>Vorsicht:</b> <code>order</code> ändert nur die Darstellung. Tastatur-Fokus und
+        Screenreader folgen weiter der Reihenfolge im HTML (1, 2, 3, 4, 5) – der Fokus springt also sichtbar hin
+        und her. Ist die Reihenfolge inhaltlich wichtig, gehört sie ins HTML.</p>
+    </section>
+
+    <section id="selbsttest">
+      <h2>Selbsttest</h2>
+      <details>
+        <summary>Container 600px, drei Items mit <code>flex: 1 1 100px</code>. Wie breit wird jedes Item?</summary>
+        <p>Freier Platz: 600 − 3 · 100 = 300px. Gleiche grow-Werte, also bekommt jedes Item 100px dazu:
+          200px pro Item.</p>
+      </details>
+      <details>
+        <summary>Wie oben, aber das mittlere Item hat <code>flex-grow: 2</code>.</summary>
+        <p>300px freier Platz werden im Verhältnis 1 : 2 : 1 verteilt: 75 / 150 / 75px. Die Items werden 175, 250
+          und 175px breit. Die Spielwiese oben rechnet das nach.</p>
+      </details>
+      <details>
+        <summary>Warum ändert <code>align-content: center</code> bei einem Container mit
+          <code>flex-wrap: nowrap</code> nichts?</summary>
+        <p><code>align-content</code> verteilt <i>Flex-Zeilen</i>. Ohne Umbruch gibt es nur eine Zeile, also
+          nichts zu verteilen. Für eine einzelne Zeile ist <code>align-items</code> zuständig.</p>
+      </details>
+    </section>
+  </main>
+</body>
+
+</html>

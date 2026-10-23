@@ -1,0 +1,369 @@
+/* ------------------------------------------------------------------
+   Seitenlayout – die Regeln der Beispiele stehen im <style> von index.html
+   ------------------------------------------------------------------ */
+:root {
+  --navy: #193058;
+  --cyan: #00aadc;      /* Querachse */
+  --rot: #b6163d;       /* Hauptachse */
+  --item-1: #8cb6c0;
+  --item-2: #c3d08b;
+  --item-3: #f9cc9d;
+  --item-4: #e7b7c3;
+  --container: #e3e9f2;
+}
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: var(--navy);
+}
+body > header, body > main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+body > header {
+  padding-top: 1rem;
+}
+h1 {
+  margin-bottom: 0.25rem;
+}
+section {
+  margin: 2rem 0;
+}
+code {
+  font-family: ui-monospace, Consolas, monospace;
+}
+.haupt { color: var(--rot); font-weight: 600; }
+.quer  { color: var(--cyan); font-weight: 600; }
+
+/* Beispiele nebeneinander */
+.raster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1rem;
+}
+.raster.zwei {
+  grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+}
+.beispiel {
+  background: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  min-width: 0;
+}
+.beispiel h3 {
+  margin: 0.25rem 0 0.5rem;
+  font-size: 0.95rem;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+/* Grundaussehen: Container gestrichelt, Items farbig.
+   display, Richtung und Ausrichtung kommen aus den Beispiel-Regeln. */
+.c {
+  background: var(--container);
+  border: 2px dashed var(--navy);
+  padding: 4px;
+}
+.i {
+  padding: 0.35rem 0.7rem;
+  border-radius: 4px;
+  font: 600 0.9rem ui-monospace, Consolas, monospace;
+  background: var(--item-1);
+}
+.i:nth-child(4n + 2) { background: var(--item-2); }
+.i:nth-child(4n + 3) { background: var(--item-3); }
+.i:nth-child(4n + 4) { background: var(--item-4); }
+
+/* Quelltext unter jedem Beispiel (von main.js erzeugt) */
+.quelltext {
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0.75rem;
+  background: var(--navy);
+  color: #f0f0f0;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+}
+
+/* Werkzeugleiste der Spielwiese */
+.werkzeuge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.werkzeuge output {
+  display: inline-block;
+  width: 3.5rem;
+  font-family: ui-monospace, Consolas, monospace;
+}
+.werkzeuge select {
+  font: 0.9rem ui-monospace, Consolas, monospace;
+}
+.sw-ergebnis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+/* Merkkasten und Selbsttest */
+.merke {
+  border-left: 5px solid var(--cyan);
+  background: white;
+  padding: 0.5rem 1rem;
+}
+.warnung {
+  border-left-color: var(--rot);
+}
+details {
+  background: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+}
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------------
+   Bausteine der Positioning-Demo
+   ------------------------------------------------------------------ */
+.legende {
+  padding: 0 0.4rem;
+  border-radius: 3px;
+}
+.l-ziel  { background: var(--item-3); }
+.l-anker { outline: 2px dashed var(--rot); }
+
+.buehne {
+  background: #f7f7f7;
+  padding: 0.75rem;
+  border-radius: 4px;
+}
+.buehne.hoch,
+.eltern.hoch {
+  height: 9rem;
+}
+.ziel {
+  width: 7rem;
+  padding: 0.4rem 0.6rem;
+  background: var(--item-3);
+  border: 2px solid #d9822b;
+  border-radius: 4px;
+  font: 600 0.85rem ui-monospace, Consolas, monospace;
+  box-sizing: border-box;
+}
+.nachbar {
+  padding: 0.4rem 0.6rem;
+  margin: 0.3rem 0;
+  background: var(--item-1);
+  border-radius: 4px;
+}
+.platz {                          /* gestrichelt: der Platz im Fluss */
+  width: fit-content;
+  outline: 2px dashed #999;
+}
+.eltern {
+  padding: 0.5rem;
+  background: var(--container);
+  border: 2px solid var(--navy);
+}
+.eltern-name {
+  font: 0.75rem ui-monospace, Consolas, monospace;
+}
+.anker {                          /* Bezugsrahmen: positioniert und rot gestrichelt */
+  position: relative;
+  outline: 2px dashed var(--rot);
+  outline-offset: 3px;
+}
+.beispiel { position: static; }
+.beispiel.anker-karte {
+  position: relative;
+  outline: 2px dashed var(--rot);
+}
+#inset-mitte .ziel,
+#inset-0 .ziel,
+#inset-2 .ziel {
+  width: auto;
+}
+#inset-mitte .ziel { width: 8rem; }
+
+/* Spielwiese */
+.sw-buehne {
+  height: 20rem;
+  overflow: auto;
+  background: white;
+  border: 1px solid #ccd;
+  border-radius: 4px;
+  padding: 0 0.75rem;
+}
+.sw-buehne p {
+  margin: 0.6rem 0;
+}
+#sw-eltern:not(.anker) {
+  outline: none;
+}
+.platz.aufgeloest {
+  display: contents;              /* bei sticky: die Box gehört direkt zu .eltern */
+}
+
+/* 4. Karten mit Badge */
+.karten {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  padding: 1.25rem 0.75rem;
+}
+.karte {
+  padding: 1rem 1.25rem;
+  background: white;
+  border: 1px solid #ccd;
+  border-radius: 6px;
+  min-width: 8rem;
+}
+.badge {
+  min-width: 1.5rem;
+  padding: 0.1rem 0.45rem;
+  box-sizing: border-box;
+  text-align: center;
+  background: var(--rot);
+  color: white;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* 5. Mini-Fenster und Overlay */
+.mini-fenster {
+  width: 100%;
+  height: 13rem;
+  border: 2px solid var(--navy);
+  border-radius: 4px;
+  background: white;
+}
+.overlay {
+  display: grid;
+  place-items: center;
+}
+.overlay[hidden] {
+  display: none;
+}
+.dialog {
+  max-width: 22rem;
+  margin: 1rem;
+  padding: 1rem 1.25rem;
+  background: white;
+  border-radius: 8px;
+}
+
+/* 6. sticky */
+.scroll-flaeche {
+  height: 12rem;
+  overflow: auto;
+  background: white;
+  border: 1px solid #ccd;
+  border-radius: 4px;
+}
+.liste h4 {
+  margin: 0;
+  padding: 0.25rem 0.75rem;
+  background: var(--navy);
+  color: white;
+}
+.liste p {
+  margin: 0;
+  padding: 0.3rem 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+.tabelle {
+  width: 100%;
+  border-collapse: collapse;
+}
+.tabelle th {
+  background: var(--navy);
+  color: white;
+  text-align: left;
+}
+.tabelle th,
+.tabelle td {
+  padding: 0.3rem 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+/* 7. z-index */
+.kachel {
+  width: 9rem;
+  height: 5rem;
+  padding: 0.4rem;
+  box-sizing: border-box;
+  border-radius: 6px;
+  color: white;
+  font: 600 0.9rem ui-monospace, Consolas, monospace;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.kachel.rot   { background: var(--rot);  top: 0.75rem; left: 1rem; }
+.kachel.gruen { background: #5a8a2e;     top: 2rem;    left: 5rem; }
+.kachel.blau  { background: var(--cyan); top: 3.25rem; left: 9rem; }
+#stapel { overflow: hidden; }
+#kontext .eltern-a,
+#kontext .eltern-b {
+  width: 13rem;
+  height: 4.5rem;
+  padding: 0.4rem;
+  box-sizing: border-box;
+  border-radius: 6px;
+  font: 600 0.85rem ui-monospace, Consolas, monospace;
+}
+#kontext .eltern-a { background: var(--item-1); }
+#kontext .eltern-b {
+  background: var(--item-2);
+  margin: -1.5rem 0 0 8rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+#kontext .kind {
+  top: 2.2rem;
+  left: 5rem;
+  width: 9rem;
+  padding: 0.4rem;
+  background: var(--item-3);
+  border: 2px solid #d9822b;
+  border-radius: 6px;
+}
+
+/* 8. Anchor Positioning */
+.anker-flaeche {
+  padding-bottom: 3rem;
+}
+.ausloeser {
+  font: inherit;
+  cursor: pointer;
+}
+.tooltip {
+  padding: 0.4rem 0.7rem;
+  background: var(--navy);
+  color: white;
+  border: 0;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* Tabelle im Überblick */
+.vergleich {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-size: 0.95rem;
+}
+.vergleich th,
+.vergleich td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid #dde;
+}

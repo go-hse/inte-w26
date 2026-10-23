@@ -79,3 +79,9 @@ function aktualisieren() {
 [...regler, borderBox].forEach((el) => el.addEventListener("input", aktualisieren));
 aktualisieren();
 window.addEventListener("resize", messen);
+
+// 4. Abschnitt 7: clear: both am zweiten Absatz ein- und ausschalten
+const clearDemo = document.getElementById("clear-demo");
+document.getElementById("clear-schalter").addEventListener("change", (e) => {
+  clearDemo.classList.toggle("mit-clear", e.target.checked);
+});

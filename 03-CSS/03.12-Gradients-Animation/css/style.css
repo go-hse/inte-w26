@@ -1,0 +1,266 @@
+/* ------------------------------------------------------------------
+   Seitenlayout – die Regeln der Beispiele stehen im <style> von index.html
+   ------------------------------------------------------------------ */
+:root {
+  --navy: #193058;
+  --cyan: #00aadc;      /* Querachse */
+  --rot: #b6163d;       /* Hauptachse */
+  --item-1: #8cb6c0;
+  --item-2: #c3d08b;
+  --item-3: #f9cc9d;
+  --item-4: #e7b7c3;
+  --container: #e3e9f2;
+}
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: var(--navy);
+}
+body > header, body > main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+body > header {
+  padding-top: 1rem;
+}
+h1 {
+  margin-bottom: 0.25rem;
+}
+section {
+  margin: 2rem 0;
+}
+code {
+  font-family: ui-monospace, Consolas, monospace;
+}
+.haupt { color: var(--rot); font-weight: 600; }
+.quer  { color: var(--cyan); font-weight: 600; }
+
+/* Beispiele nebeneinander */
+.raster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1rem;
+}
+.raster.zwei {
+  grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+}
+.beispiel {
+  background: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  min-width: 0;
+}
+.beispiel h3 {
+  margin: 0.25rem 0 0.5rem;
+  font-size: 0.95rem;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+/* Grundaussehen: Container gestrichelt, Items farbig.
+   display, Richtung und Ausrichtung kommen aus den Beispiel-Regeln. */
+.c {
+  background: var(--container);
+  border: 2px dashed var(--navy);
+  padding: 4px;
+}
+.i {
+  padding: 0.35rem 0.7rem;
+  border-radius: 4px;
+  font: 600 0.9rem ui-monospace, Consolas, monospace;
+  background: var(--item-1);
+}
+.i:nth-child(4n + 2) { background: var(--item-2); }
+.i:nth-child(4n + 3) { background: var(--item-3); }
+.i:nth-child(4n + 4) { background: var(--item-4); }
+
+/* Quelltext unter jedem Beispiel (von main.js erzeugt) */
+.quelltext {
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0.75rem;
+  background: var(--navy);
+  color: #f0f0f0;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+}
+
+/* Werkzeugleiste der Spielwiese */
+.werkzeuge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.werkzeuge output {
+  display: inline-block;
+  width: 3.5rem;
+  font-family: ui-monospace, Consolas, monospace;
+}
+.werkzeuge select {
+  font: 0.9rem ui-monospace, Consolas, monospace;
+}
+.sw-ergebnis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+/* Merkkasten und Selbsttest */
+.merke {
+  border-left: 5px solid var(--cyan);
+  background: white;
+  padding: 0.5rem 1rem;
+}
+.warnung {
+  border-left-color: var(--rot);
+}
+details {
+  background: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+}
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------------
+   Bausteine der Gradient- und Animations-Demo
+   ------------------------------------------------------------------ */
+.flaeche {
+  height: 8rem;
+  border-radius: 6px;
+  border: 1px solid #ccd;
+}
+.flaeche.gross { height: 16rem; }
+.flaeche.flach { height: 3rem; }
+.flaeche.rund {
+  width: 8rem;
+  margin: 0 auto;
+  border-radius: 50%;
+}
+.flaeche.bild {
+  height: 10rem;
+  display: flex;
+  align-items: flex-end;
+}
+.flaeche.bild p {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+.spinner-ring {
+  -webkit-mask: radial-gradient(circle, #0000 55%, #000 56%);  /* Loch in der Mitte */
+  mask: radial-gradient(circle, #0000 55%, #000 56%);
+  background-color: #e3e9f2;
+}
+.stopps input[type="range"] { width: 7rem; }
+.stopps label { display: inline-flex; align-items: center; gap: 0.3rem; }
+.stopps output { width: 3rem; }
+[data-fuer][hidden] { display: none; }
+
+/* Schatten */
+.schatten-buehne {
+  display: grid;
+  place-items: center;
+  min-height: 8rem;
+  background: #f7f7f7;
+  border-radius: 4px;
+}
+.karte {
+  padding: 1.25rem 2rem;
+  background: white;
+  border-radius: 8px;
+  font-weight: 600;
+}
+#knopf {
+  font: inherit;
+  padding: 0.6rem 1.2rem;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Zeitfunktionen-Rennen */
+.rennen {
+  display: grid;
+  gap: 0.35rem;
+}
+.bahn {
+  container-type: inline-size;   /* 100cqi = Breite der Bahn */
+  position: relative;
+  height: 2rem;
+  background: #f7f7f7;
+  border-radius: 1rem;
+}
+.bahn span {
+  position: absolute;
+  left: 2.6rem;
+  top: 0.3rem;
+  font: 0.8rem ui-monospace, Consolas, monospace;
+  color: #556;
+}
+.kugel {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--rot);
+}
+
+/* Animationen */
+.figur-buehne {
+  display: grid;
+  place-items: center;
+  height: 9rem;
+  background: #f7f7f7;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.figur-buehne.breit { height: 11rem; }
+.figur {
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 8px;
+  background: var(--cyan);
+  font: 600 0.8rem ui-monospace, Consolas, monospace;
+}
+.dreh-mit, .dreh-ohne { cursor: pointer; }
+
+/* Lesefortschritt (Position fest, Animation in index.html) */
+.fortschritt-spur {               /* graue Spur, damit man den Balken auch bei 0 % findet */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  z-index: 10;
+  background: rgba(25, 48, 88, 0.15);
+}
+.lesefortschritt {
+  height: 100%;
+  background: linear-gradient(to right, var(--cyan), var(--rot));
+}
+
+/* Scroll-Fläche für view() */
+.scroll-box {
+  height: 16rem;
+  overflow: auto;
+  padding: 0.5rem 1rem 8rem;
+  background: #f7f7f7;
+  border-radius: 4px;
+}
+.scroll-box .karte {
+  margin: 3rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

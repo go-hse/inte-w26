@@ -1,0 +1,173 @@
+/* ------------------------------------------------------------------
+   Seitenlayout – die Regeln der Beispiele stehen im <style> von index.html
+   ------------------------------------------------------------------ */
+:root {
+  --navy: #193058;
+  --cyan: #00aadc;      /* Querachse */
+  --rot: #b6163d;       /* Hauptachse */
+  --item-1: #8cb6c0;
+  --item-2: #c3d08b;
+  --item-3: #f9cc9d;
+  --item-4: #e7b7c3;
+  --container: #e3e9f2;
+}
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: #f0f0f0;
+  color: var(--navy);
+}
+body > header, body > main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+body > header {
+  padding-top: 1rem;
+}
+h1 {
+  margin-bottom: 0.25rem;
+}
+section {
+  margin: 2rem 0;
+}
+code {
+  font-family: ui-monospace, Consolas, monospace;
+}
+.haupt { color: var(--rot); font-weight: 600; }
+.quer  { color: var(--cyan); font-weight: 600; }
+
+/* Beispiele nebeneinander */
+.raster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1rem;
+}
+.raster.zwei {
+  grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+}
+.beispiel {
+  background: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  min-width: 0;
+}
+.beispiel h3 {
+  margin: 0.25rem 0 0.5rem;
+  font-size: 0.95rem;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+/* Grundaussehen: Container gestrichelt, Items farbig.
+   display, Richtung und Ausrichtung kommen aus den Beispiel-Regeln. */
+.c {
+  background: var(--container);
+  border: 2px dashed var(--navy);
+  padding: 4px;
+}
+.i {
+  padding: 0.35rem 0.7rem;
+  border-radius: 4px;
+  font: 600 0.9rem ui-monospace, Consolas, monospace;
+  background: var(--item-1);
+}
+.i:nth-child(4n + 2) { background: var(--item-2); }
+.i:nth-child(4n + 3) { background: var(--item-3); }
+.i:nth-child(4n + 4) { background: var(--item-4); }
+
+/* Quelltext unter jedem Beispiel (von main.js erzeugt) */
+.quelltext {
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0.75rem;
+  background: var(--navy);
+  color: #f0f0f0;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+}
+
+/* Werkzeugleiste der Spielwiese */
+.werkzeuge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.werkzeuge output {
+  display: inline-block;
+  width: 3.5rem;
+  font-family: ui-monospace, Consolas, monospace;
+}
+.werkzeuge select {
+  font: 0.9rem ui-monospace, Consolas, monospace;
+}
+.sw-ergebnis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+/* Merkkasten und Selbsttest */
+.merke {
+  border-left: 5px solid var(--cyan);
+  background: white;
+  padding: 0.5rem 1rem;
+}
+.warnung {
+  border-left-color: var(--rot);
+}
+details {
+  background: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+}
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Größen der Beispiel-Container */
+.hoch      { height: 9rem; }
+.sehr-hoch { height: 11rem; }
+.gross-klein .i:nth-child(1) { font-size: 0.8rem; }
+.gross-klein .i:nth-child(2) { font-size: 1.6rem; padding-top: 1rem; }
+.gross-klein .i:nth-child(3) { font-size: 1.1rem; }
+
+/* Spielwiese: Container mit Achsenpfeilen oben und links */
+.sw-rahmen {
+  position: relative;
+  padding: 1.9rem 0 0 1.9rem;
+}
+.achse {
+  position: absolute;
+  font: 600 0.8rem ui-monospace, Consolas, monospace;
+  text-align: center;
+  white-space: nowrap;
+}
+.achse-oben {
+  top: 0;
+  left: 1.9rem;
+  right: 0;
+  border-bottom: 3px solid;
+}
+.achse-links {
+  left: 0;
+  top: 1.9rem;
+  bottom: 0;
+  writing-mode: vertical-rl;   /* Text läuft von oben nach unten */
+  border-left: 3px solid;
+}
+.achse.ist-haupt { color: var(--rot); }
+.achse.ist-quer  { color: var(--cyan); }
+#sw-container {
+  display: flex;
+  height: 15rem;
+}
+#sw-container .i:nth-child(3n + 1) { font-size: 0.9rem; }
+#sw-container .i:nth-child(3n + 2) { font-size: 1.4rem; padding: 0.8rem 1rem; }
+#sw-container .i:nth-child(3n + 3) { font-size: 1.1rem; padding-top: 1.2rem; }
